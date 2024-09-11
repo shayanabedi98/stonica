@@ -3,6 +3,7 @@ type Props = {
   name: string;
   type: string;
   placeholder: string;
+  value: number | string
   autoComplete?: string;
   onChange: (str1: string, str2: string) => void;
 };
@@ -13,6 +14,7 @@ export default function Input({
   type,
   onChange,
   placeholder,
+  value,
   autoComplete,
 }: Props) {
   return (
@@ -24,6 +26,7 @@ export default function Input({
         minLength={type == "password" ? 8 : 1}
         autoComplete={autoComplete}
         required
+        value={value}
         placeholder={placeholder}
         className="rounded-sm bg-neutral-300 p-1 text-sm text-primary placeholder:text-neutral-700"
         type={type}

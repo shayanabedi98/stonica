@@ -72,6 +72,7 @@ export default function SignInForm() {
       >
         <h3 className="self-center">Welcome back!</h3>
         <Input
+          value={formData.email}
           placeholder="johndoe@johnny.com"
           name="email"
           label="Email"
@@ -79,6 +80,7 @@ export default function SignInForm() {
           onChange={handleChange}
         />
         <Input
+          value={formData.password}
           placeholder="New Password"
           name="password"
           label="Password"

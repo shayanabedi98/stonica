@@ -67,6 +67,7 @@ export default function ForgotPasswordForm() {
           password link
         </p>
         <Input
+        value={formData.email}
           placeholder="johndoe@email.com"
           name="email"
           label="Email"

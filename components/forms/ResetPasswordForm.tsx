@@ -5,14 +5,11 @@ import Input from "./Input";
 import Btn from "../Btn";
 import Loader from "../other/Loader";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function SignUpForm() {
+export default function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
     password: "",
     confirmPassword: "",
   });
@@ -24,12 +21,18 @@ export default function SignUpForm() {
   });
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
   const specialCharsRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?]/g;
   const capitalLetterRegex = /[A-Z]/;
   const numberRegex = /\d/;
 
   useEffect(() => {
+    if (!token) {
+      router.push("/forgot-password");
+    }
+
     const { password } = formData;
 
     setMeetsRequirements({
@@ -49,12 +52,7 @@ export default function SignUpForm() {
 
     setLoading(true);
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.password ||
-      !formData.confirmPassword
-    ) {
+    if (!formData.password || !formData.confirmPassword) {
       toast.error("Please complete all fields");
       setLoading(false);
       return;
@@ -83,35 +81,26 @@ export default function SignUpForm() {
     }
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({ token, formData }),
       });
       if (res.ok) {
-        toast.success("Created Account");
+        toast.success("Updated Password");
         setLoading(false);
         setFormData({
-          name: "",
-          email: "",
           password: "",
           confirmPassword: "",
         });
         router.push("/vendor/sign-in");
-      } else {
-        const errorData = await res.json();
-        if (errorData.message === "User already exists") {
-          toast.error("User already exists. Please use a different email.");
-          setLoading(false);
-        }
       }
     } catch (error) {
+      toast.error("Something wen wrong, try again later");
       setLoading(false);
       setFormData({
-        name: "",
-        email: "",
         password: "",
         confirmPassword: "",
       });
@@ -124,24 +113,7 @@ export default function SignUpForm() {
         className="form mt-4 flex min-w-[380px] flex-col gap-5 rounded-md bg-primary px-8 py-4 shadow-lg"
         onSubmit={handleSubmit}
       >
-        <h3 className="self-center">Sign up</h3>
-        <Input
-          value={formData.name}
-          autoComplete="off"
-          placeholder="John Doe"
-          name="name"
-          label="Name"
-          type="text"
-          onChange={handleChange}
-        />
-        <Input
-          value={formData.email}
-          placeholder="johndoe@johnny.com"
-          name="email"
-          label="Email"
-          type="email"
-          onChange={handleChange}
-        />
+        <h3 className="self-center">Reset Password</h3>
         <Input
           value={formData.password}
           placeholder="New Password"
@@ -193,13 +165,10 @@ export default function SignUpForm() {
           type="password"
           onChange={handleChange}
         />
-        <Btn content={loading ? <Loader /> : "Sign Up"} styles="bg-primary" />
-        <span className="px-2 py-1 text-sm">
-          Already have an account?{" "}
-          <Link className="underline" href={"/vendor/sign-in"}>
-            Click here
-          </Link>
-        </span>
+        <Btn
+          content={loading ? <Loader /> : "Reset Password"}
+          styles="bg-primary"
+        />
       </form>
     </div>
   );
