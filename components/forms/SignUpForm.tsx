@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import Btn from "../Btn";
 import Loader from "../other/Loader";
@@ -16,18 +16,35 @@ export default function SignUpForm() {
     password: "",
     confirmPassword: "",
   });
+  const [meetsRequirements, setMeetsRequirements] = useState({
+    minLength: false,
+    specialChar: false,
+    numChar: false,
+    capChar: false,
+  });
 
   const router = useRouter();
+
+  const specialCharsRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?]/g;
+  const capitalLetterRegex = /[A-Z]/;
+  const numberRegex = /\d/;
+
+  useEffect(() => {
+    const { password } = formData;
+
+    setMeetsRequirements({
+      minLength: password.length >= 8,
+      specialChar: specialCharsRegex.test(password),
+      numChar: numberRegex.test(password),
+      capChar: capitalLetterRegex.test(password),
+    });
+  }, [formData.password]);
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    const specialCharsRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?]/g;
-    const capitalLetterRegex = /[A-Z]/;
-    const numberRegex = /\d/;
-
     e.preventDefault();
 
     setLoading(true);
@@ -60,7 +77,7 @@ export default function SignUpForm() {
       !specialCharsRegex.test(formData.password) ||
       !numberRegex.test(formData.password)
     ) {
-      toast.error("Password is not meeting requirements");
+      toast.error("Password does not meet requirements");
       setLoading(false);
       return;
     }
@@ -82,7 +99,7 @@ export default function SignUpForm() {
           password: "",
           confirmPassword: "",
         });
-        router.push("/sign-in");
+        router.push("/vendor/sign-in");
       } else {
         const errorData = await res.json();
         if (errorData.message === "User already exists") {
@@ -133,9 +150,36 @@ export default function SignUpForm() {
         <div className="text-xs">
           <p>Minimum Requirements:</p>
           <ul className="list-disc pl-4">
-            <li>8 characters</li>
-            <li>1 special character and number</li>
-            <li>1 capital letter</li>
+            <li
+              className={
+                meetsRequirements.minLength ? "text-green-500" : "text-red-500"
+              }
+            >
+              8 characters
+            </li>
+            <li
+              className={
+                meetsRequirements.specialChar
+                  ? "text-green-500"
+                  : "text-red-500"
+              }
+            >
+              1 special character
+            </li>
+            <li
+              className={
+                meetsRequirements.numChar ? "text-green-500" : "text-red-500"
+              }
+            >
+              1 number
+            </li>
+            <li
+              className={
+                meetsRequirements.capChar ? "text-green-500" : "text-red-500"
+              }
+            >
+              1 capital letter
+            </li>
           </ul>
         </div>
         <Input
@@ -148,7 +192,7 @@ export default function SignUpForm() {
         <Btn content={loading ? <Loader /> : "Sign Up"} styles="bg-primary" />
         <span className="px-2 py-1 text-sm">
           Already have an account?{" "}
-          <Link className="underline" href={"/sign-in"}>
+          <Link className="underline" href={"/vendor/sign-in"}>
             Click here
           </Link>
         </span>

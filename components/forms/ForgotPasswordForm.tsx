@@ -5,18 +5,13 @@ import Input from "./Input";
 import Btn from "../Btn";
 import Loader from "../other/Loader";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 
-export default function SignInForm() {
+export default function ForgotPasswordForm() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
   });
-
-  const router = useRouter();
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -27,39 +22,36 @@ export default function SignInForm() {
 
     setLoading(true);
 
-    if (!formData.email || !formData.password) {
-      toast.error("Please complete all fields");
+    if (!formData.email) {
+      toast.error("Please provide an email address");
       setLoading(false);
       return;
     }
 
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email: formData.email.toLowerCase(),
-        password: formData.password,
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formData }),
       });
-
+      const data = await res.json();
       if (res?.ok) {
-        toast.success("Signed in");
+        toast.success("Email Sent");
         setLoading(false);
         setFormData({
           email: "",
-          password: "",
         });
-        router.push("/vendor/dashboard");
-      }
-
-      if (res?.error) {
-        toast.error("Wrong username and password combination");
-        setLoading(false);
+      } else {
+        if ((data.message = "User not found")) {
+          toast.error("Email address not found");
+          setLoading(false);
+        }
       }
     } catch (error) {
       toast.error("Something went wrong");
       setLoading(false);
       setFormData({
         email: "",
-        password: "",
       });
     }
   };
@@ -70,34 +62,27 @@ export default function SignInForm() {
         className="form mt-10 flex min-w-[380px] flex-col gap-4 px-8 py-4"
         onSubmit={handleSubmit}
       >
-        <h3 className="self-center">Welcome back!</h3>
+        <p className="text-center">
+          Provide an email address and if found, you&apos;ll receive a reset
+          password link
+        </p>
         <Input
-          placeholder="johndoe@johnny.com"
+          placeholder="johndoe@email.com"
           name="email"
           label="Email"
           type="email"
           onChange={handleChange}
         />
-        <Input
-          placeholder="New Password"
-          name="password"
-          label="Password"
-          type="password"
-          onChange={handleChange}
+        <Btn
+          content={loading ? <Loader /> : "Request Reset"}
+          styles="bg-primary"
         />
-        <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
         <span className="px-2 py-1 text-sm">
-          Don&apos;t have an account?{" "}
-          <Link className="underline" href={"/register"}>
+          Never mind, take me back{" "}
+          <Link className="underline" href={"/sign-in"}>
             Click here
           </Link>
         </span>
-        <Link
-          className="px-2 py-1 text-center text-sm underline"
-          href={"/vendor/forgot-password"}
-        >
-          Forgot Password?
-        </Link>
       </form>
     </div>
   );

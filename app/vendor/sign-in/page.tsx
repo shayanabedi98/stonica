@@ -6,7 +6,7 @@ export default function SignIn() {
     <div className="ancestor-container">
       <Container>
         <div className="flex flex-col items-center">
-          <h1>Welcome back!</h1>
+          <h1>Sign In</h1>
           <SignInForm />
         </div>
       </Container>

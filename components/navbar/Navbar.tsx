@@ -63,13 +63,13 @@ export default function Navbar() {
                 <hr className="w-full text-primary" />
                 <Link
                   className="font-medium lg:hover:underline"
-                  href={"/dashboard"}
+                  href={"/vendor/dashboard"}
                 >
                   Dashboard
                 </Link>
                 <Link
                   className="font-medium lg:hover:underline"
-                  href={"/settings"}
+                  href={"/vendor/settings"}
                 >
                   Settings
                 </Link>
@@ -84,7 +84,7 @@ export default function Navbar() {
         ) : (
           <Btn
             content="Vendor"
-            onClick={() => router.push("/register")}
+            onClick={() => router.push("/vendor/register")}
             styles="bg-primary border-2"
           />
         )}
