@@ -9,10 +9,21 @@ export async function POST(req: Request) {
   const hashedPassword = await hash(password, 10);
 
   try {
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { message: "User already exists" },
+        { status: 400 },
+      );
+    }
+
     const createUser = await prisma.user.create({
       data: {
         name,
-        email,
+        email: email.toLowerCase(),
         hashedPassword,
         isAdmin: false,
       },

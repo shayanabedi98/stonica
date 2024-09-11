@@ -2,14 +2,34 @@
 
 import Link from "next/link";
 import NavbarItem from "./NavbarItem";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Btn from "../Btn";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
+  const userMenu = useRef<null | HTMLDivElement>(null);
+
+  useEffect(() => {
+    const closeMenu = (e: MouseEvent) => {
+      if (userMenu.current && !userMenu.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    if (showUserMenu) {
+      document.addEventListener("click", closeMenu);
+    }
+
+    return () => {
+      document.removeEventListener("click", closeMenu);
+    };
+  }, [showUserMenu]);
+
   return (
     <header className="flex h-14 items-center justify-between px-6">
       <nav className="flex h-full items-end gap-10">
@@ -19,7 +39,7 @@ export default function Navbar() {
         >
           STONICA
         </Link>
-        <div className="border-accent h-8 border-r"></div>
+        <div className="h-8 border-r border-accent"></div>
         <NavbarItem content="Home" href="/" />
         <NavbarItem content="Products" href="/products" />
         <NavbarItem content="About" href="/about" />
@@ -27,13 +47,39 @@ export default function Navbar() {
       </nav>
       <div className="flex h-full items-end">
         {session?.user ? (
-          <div>
+          <div className="relative" ref={userMenu}>
             <Image
+              onClick={() => setShowUserMenu(!showUserMenu)}
               src={session.user.image || "/assets/avatar.png"}
-              alt=""
-              height={24}
-              width={24}
+              alt="User profile picture"
+              height={32}
+              width={32}
+              priority
+              className="cursor-pointer rounded-sm bg-secondary transition duration-200 lg:hover:scale-110"
             />
+            {showUserMenu && (
+              <div className="absolute right-0 top-10 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
+                <span className="font-semibold">{session.user.name}</span>
+                <hr className="w-full text-primary" />
+                <Link
+                  className="font-medium lg:hover:underline"
+                  href={"/dashboard"}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  className="font-medium lg:hover:underline"
+                  href={"/settings"}
+                >
+                  Settings
+                </Link>
+                <Btn
+                  content={"Sign Out"}
+                  onClick={() => signOut()}
+                  styles="bg-primary text-secondary"
+                />
+              </div>
+            )}
           </div>
         ) : (
           <Btn

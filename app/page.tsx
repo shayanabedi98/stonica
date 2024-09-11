@@ -25,9 +25,9 @@ export default function Home() {
           </div>
           <div className="flex w-1/2 justify-end">
             <Image
-              src={"/assets/black-stone.webp"}
+              src={"/assets/yellow-stone.webp"}
               alt=""
-              className="aspect-square w-[550px] rounded-md object-cover shadow-lg"
+              className="aspect-square w-[700px] transform rounded-md object-cover shadow-lg"
               height={1000}
               width={1000}
               priority
