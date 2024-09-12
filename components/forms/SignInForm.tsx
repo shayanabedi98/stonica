@@ -48,6 +48,7 @@ export default function SignInForm() {
           password: "",
         });
         router.push("/vendor/dashboard");
+        router.refresh()
       }
 
       if (res?.error) {
@@ -81,7 +82,7 @@ export default function SignInForm() {
         />
         <Input
           value={formData.password}
-          placeholder="New Password"
+          placeholder="Password"
           name="password"
           label="Password"
           type="password"
@@ -90,7 +91,7 @@ export default function SignInForm() {
         <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
         <span className="px-2 py-1 text-sm">
           Don&apos;t have an account?{" "}
-          <Link className="underline" href={"/register"}>
+          <Link className="underline" href={"/vendor/register"}>
             Click here
           </Link>
         </span>

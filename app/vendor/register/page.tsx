@@ -6,7 +6,7 @@ export default function Register() {
   return (
     <div className="ancestor-container">
       <Container>
-        <div className="flex items-center justify-center rounded-md bg-neutral-950 shadow-xl">
+        <div className="flex items-center justify-center">
           <div className="flex w-1/2 flex-col justify-center gap-8 px-10">
             <h1>Become a Vendor</h1>
             <h2>
@@ -35,10 +35,10 @@ export default function Register() {
               className="aspect-square object-cover"
               quality={100}
             />
-            <div className="absolute">
-              <SignUpForm />
-            </div>
           </div>
+        </div>
+        <div className="">
+          <SignUpForm />
         </div>
       </Container>
     </div>

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Input from "./Input";
 import Btn from "../Btn";
-// import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Loader from "../other/Loader";
+import { useRouter } from "next/navigation";
 
 type User = {
   name: string;
@@ -38,7 +38,7 @@ export default function AccountSetupForm({ existingUserData }: Props) {
     zipPostalCode: "",
   });
   const [loading, setLoading] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -88,7 +88,8 @@ export default function AccountSetupForm({ existingUserData }: Props) {
 
       if (res.ok) {
         toast.success("Updated information");
-        // router.push("/vendor/dashboard");
+        router.push("/vendor/dashboard");
+        router.refresh();
       } else {
         throw new Error("Failed to update settings");
       }

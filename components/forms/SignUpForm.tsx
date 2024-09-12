@@ -100,6 +100,7 @@ export default function SignUpForm() {
           confirmPassword: "",
         });
         router.push("/vendor/sign-in");
+        router.refresh()
       } else {
         const errorData = await res.json();
         if (errorData.message === "User already exists") {
@@ -119,9 +120,8 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-lg">
       <form
-        className="form mt-4 flex min-w-[380px] flex-col gap-5 rounded-md bg-primary px-8 py-4 shadow-lg"
+        className="form flex mx-auto mt-32 min-w-[420px] flex-col gap-5 rounded-md"
         onSubmit={handleSubmit}
       >
         <h3 className="self-center">Sign up</h3>
@@ -201,6 +201,5 @@ export default function SignUpForm() {
           </Link>
         </span>
       </form>
-    </div>
   );
 }

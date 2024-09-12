@@ -2,19 +2,27 @@
 
 import Link from "next/link";
 import NavbarItem from "./NavbarItem";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Btn from "../Btn";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-export default function Navbar() {
+type Props = {
+  user?: {
+    name: string
+    image: string | null
+  } | null
+  session: unknown
+}
+
+export default function Navbar({user, session}: Props) {
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const { data: session } = useSession();
   const router = useRouter();
   const userMenu = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
+    
     const closeMenu = (e: MouseEvent) => {
       if (userMenu.current && !userMenu.current.contains(e.target as Node)) {
         setShowUserMenu(false);
@@ -46,11 +54,11 @@ export default function Navbar() {
         <NavbarItem content="Contact" href="/contact" />
       </nav>
       <div className="flex h-full items-end">
-        {session?.user ? (
+        {session && user ? (
           <div className="relative" ref={userMenu}>
             <Image
               onClick={() => setShowUserMenu(!showUserMenu)}
-              src={session.user.image || "/assets/avatar.png"}
+              src={user.image || "/assets/avatar.png"}
               alt="User profile picture"
               height={32}
               width={32}
@@ -59,7 +67,7 @@ export default function Navbar() {
             />
             {showUserMenu && (
               <div className="absolute right-0 top-10 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
-                <span className="font-semibold">{session.user.name}</span>
+                <span className="font-semibold">{user.name}</span>
                 <hr className="w-full text-primary" />
                 <Link
                   className="font-medium lg:hover:underline"

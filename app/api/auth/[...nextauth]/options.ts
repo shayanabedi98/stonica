@@ -62,7 +62,7 @@ export const authOptions: AuthOptions = {
     // ...add more providers here
   ],
   pages: {
-    signIn: "/sign-in",
+    signIn: "/vendor/sign-in",
   },
   session: {
     strategy: "jwt",
