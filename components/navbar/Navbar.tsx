@@ -64,12 +64,14 @@ export default function Navbar() {
                 <Link
                   className="font-medium lg:hover:underline"
                   href={"/vendor/dashboard"}
+                  onClick={() => setShowUserMenu(false)}
                 >
                   Dashboard
                 </Link>
                 <Link
                   className="font-medium lg:hover:underline"
                   href={"/vendor/settings"}
+                  onClick={() => setShowUserMenu(false)}
                 >
                   Settings
                 </Link>
