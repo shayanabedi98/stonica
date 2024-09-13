@@ -6,6 +6,8 @@ import Btn from "../Btn";
 import toast from "react-hot-toast";
 import Loader from "../other/Loader";
 import { useRouter } from "next/navigation";
+import { Widget } from "@uploadcare/react-widget";
+import Image from "next/image";
 
 type User = {
   name: string;
@@ -22,14 +24,16 @@ type User = {
 
 type Props = {
   existingUserData: User;
+  pubKey: string;
 };
 
-export default function AccountSetupForm({ existingUserData }: Props) {
+export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
   const [formData, setFormData] = useState({
     name: existingUserData.name || "",
     email: existingUserData.email || "",
     phone: existingUserData.phone || "",
-    // companyLogo: existingUserData.companyLogo || "",
+    image: existingUserData.image || "",
+    imageId: "",
     companyName: existingUserData.companyName || "",
     street: existingUserData.street || "",
     aptNum: "",
@@ -42,6 +46,37 @@ export default function AccountSetupForm({ existingUserData }: Props) {
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleImageUpload = (info: any) => {
+    console.log(info);
+
+    setFormData((prev) => ({
+      ...prev,
+      image: info.cdnUrl,
+      imageId: info.uuid,
+    }));
+  };
+
+  const handleRemoveImage = async (id: string) => {
+    try {
+      const res = await fetch("/api/upload-care", {
+        method: "DELETE",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+
+      if (res.ok) {
+        toast.success("Removed Image");
+      }
+    } catch (error) {
+      console.log(error);
+      
+      toast.error("Failed to remove image");
+    } finally {
+      setFormData((prev) => ({ ...prev, image: "" }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -130,6 +165,35 @@ export default function AccountSetupForm({ existingUserData }: Props) {
         value={formData.companyName}
         onChange={handleChange}
       />
+      <div className="flex flex-col gap-2">
+        <label htmlFor="image">Company Logo</label>
+        {!formData.image ? (
+          <Widget
+            publicKey={pubKey}
+            onChange={handleImageUpload}
+            value={formData.image}
+            tabs="file url"
+            preferredTypes="image/*"
+            crop="1:1"
+            imageShrink="1024x1024"
+            // clearable={true}
+            // crop="400x400"
+            // multiple={true}
+            // multipleMax={3}
+          />
+        ) : (
+          <Btn content={"Remove Image"} onClick={() => handleRemoveImage(formData.imageId)} />
+        )}
+        {formData.image && (
+          <Image
+            src={formData.image}
+            alt="Company Logo"
+            className="mt-2 h-20 w-20 object-cover"
+            width={100}
+            height={100}
+          />
+        )}
+      </div>
       <Input
         label="Phone *"
         placeholder="1234567890"

@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 
 export default async function AccountSetup() {
   const session = await getServerSession(authOptions);
+  const pubKey = process.env.UPLOAD_CARE_PUBLIC_KEY
   let user;
   if (!session) {
     redirect("/sign-in");
@@ -34,7 +35,7 @@ export default async function AccountSetup() {
     }
   }
 
-  if (user?.companyName) {
+  if (user?.companyName && user?.image) {
     redirect("/vendor/dashboard");
   }
 
@@ -47,7 +48,7 @@ export default async function AccountSetup() {
             Feel free to change any information needed
           </h3>
           <div className="mx-auto mt-20 flex max-w-[420px] items-center justify-center rounded-sm border-2 px-4 py-6">
-            {user && session && <AccountSetupForm existingUserData={user} />}
+            {user && session && <AccountSetupForm existingUserData={user} pubKey={pubKey!} />}
           </div>
         </div>
       </Container>

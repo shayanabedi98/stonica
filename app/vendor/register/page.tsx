@@ -1,8 +1,17 @@
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 import SignUpForm from "@/components/forms/SignUpForm";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
-export default function Register() {
+export default async function Register() {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect("/vendor/dashboard");
+  }
+
   return (
     <div className="ancestor-container">
       <Container>
