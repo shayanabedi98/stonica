@@ -36,10 +36,10 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     imageId: "",
     companyName: existingUserData.companyName || "",
     street: existingUserData.street || "",
-    aptNum: "",
-    city: "",
-    stateProvince: "",
-    zipPostalCode: "",
+    aptNum: existingUserData.aptNum || "",
+    city: existingUserData.city || "",
+    stateProvince: existingUserData.stateProvince || "",
+    zipPostalCode: existingUserData.zipPostalCode || "",
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -50,11 +50,12 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleImageUpload = (info: any) => {
-    console.log(info);
+    console.log(info)
+    const croppedImageUrl = `${info.cdnUrl}`;
 
     setFormData((prev) => ({
       ...prev,
-      image: info.cdnUrl,
+      image: croppedImageUrl,
       imageId: info.uuid,
     }));
   };
@@ -72,7 +73,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
       }
     } catch (error) {
       console.log(error);
-      
+
       toast.error("Failed to remove image");
     } finally {
       setFormData((prev) => ({ ...prev, image: "" }));
@@ -182,7 +183,12 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
             // multipleMax={3}
           />
         ) : (
-          <Btn content={"Remove Image"} onClick={() => handleRemoveImage(formData.imageId)} />
+          <span
+            className="w-40 cursor-pointer rounded-md bg-secondary px-4 py-2 text-center font-semibold text-primary"
+            onClick={() => handleRemoveImage(formData.imageId)}
+          >
+            Remove Image
+          </span>
         )}
         {formData.image && (
           <Image
