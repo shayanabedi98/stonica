@@ -50,12 +50,9 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleImageUpload = (info: any) => {
-    console.log(info)
-    const croppedImageUrl = `${info.cdnUrl}`;
-
     setFormData((prev) => ({
       ...prev,
-      image: croppedImageUrl,
+      image: info.cdnUrl,
       imageId: info.uuid,
     }));
   };
@@ -170,6 +167,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
         <label htmlFor="image">Company Logo</label>
         {!formData.image ? (
           <Widget
+            imagesOnly
             publicKey={pubKey}
             onChange={handleImageUpload}
             value={formData.image}
@@ -177,6 +175,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
             preferredTypes="image/*"
             crop="1:1"
             imageShrink="1024x1024"
+            imagePreviewMaxSize={4000000}
             // clearable={true}
             // crop="400x400"
             // multiple={true}

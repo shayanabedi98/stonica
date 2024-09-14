@@ -10,19 +10,18 @@ import { useEffect, useRef, useState } from "react";
 
 type Props = {
   user?: {
-    name: string
-    image: string | null
-  } | null
-  session: unknown
-}
+    name: string;
+    image: string | null;
+  } | null;
+  session: unknown;
+};
 
-export default function Navbar({user, session}: Props) {
+export default function Navbar({ user, session }: Props) {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const router = useRouter();
   const userMenu = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    
     const closeMenu = (e: MouseEvent) => {
       if (userMenu.current && !userMenu.current.contains(e.target as Node)) {
         setShowUserMenu(false);
@@ -60,10 +59,10 @@ export default function Navbar({user, session}: Props) {
               onClick={() => setShowUserMenu(!showUserMenu)}
               src={user.image || "/assets/avatar.png"}
               alt="User profile picture"
-              height={32}
-              width={32}
+              height={36}
+              width={36}
               priority
-              className="cursor-pointer rounded-sm bg-secondary transition duration-200 lg:hover:scale-110"
+              className="cursor-pointer rounded-sm border-2 border-neutral-400 bg-secondary transition duration-200 lg:hover:scale-110"
             />
             {showUserMenu && (
               <div className="absolute right-0 top-10 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
