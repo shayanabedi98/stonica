@@ -38,7 +38,7 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="flex h-14 items-center justify-between px-6">
+    <header className="flex h-20 pb-4 items-center justify-between px-6">
       <nav className="flex h-full items-end gap-10">
         <Link
           className="logo text-2xl font-semibold tracking-widest"
@@ -92,9 +92,9 @@ export default function Navbar({ user, session }: Props) {
           </div>
         ) : (
           <Btn
-            content="Vendor"
-            onClick={() => router.push("/vendor/register")}
-            styles="bg-primary border-2"
+            content="Join"
+            onClick={() => router.push("/join")}
+            styles="bg-primary"
           />
         )}
       </div>

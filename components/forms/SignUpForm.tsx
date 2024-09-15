@@ -121,7 +121,7 @@ export default function SignUpForm() {
 
   return (
       <form
-        className="form flex mx-auto mt-32 min-w-[420px] flex-col gap-5 rounded-md"
+        className="form flex mx-auto min-w-[420px] flex-col gap-5 rounded-md"
         onSubmit={handleSubmit}
       >
         <h3 className="self-center">Sign up</h3>

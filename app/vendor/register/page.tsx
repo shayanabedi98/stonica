@@ -35,16 +35,7 @@ export default async function Register() {
               <li>Cancel your subscription at any time</li>
             </ul>
           </div>
-          <div className="relative flex h-full w-1/2 items-center justify-center">
-            <Image
-              src={"/assets/red-stone.webp"}
-              width={1000}
-              height={1000}
-              alt="Black marble stone slab"
-              className="aspect-square object-cover"
-              quality={100}
-            />
-          </div>
+
         </div>
         <div className="">
           <SignUpForm />

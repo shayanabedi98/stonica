@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="ancestor-container">
       <Container>
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
           <div className="flex w-1/2 flex-col items-start gap-8">
             <h1>Discover the Beauty of Stone</h1>
             <h2>

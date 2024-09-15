@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
+// import EmergencySignOut from "@/components/other/EmergencySignOut";
 import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
@@ -28,6 +29,7 @@ export default async function Dashboard() {
       <Container>
         <div>
           <h1>Hello, {user?.name}!</h1>
+          {/* <EmergencySignOut /> */}
         </div>
       </Container>
     </div>

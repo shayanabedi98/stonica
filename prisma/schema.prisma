@@ -26,6 +26,7 @@ model User {
   posts            Post[]
   hashedPassword   String?
   isAdmin          Boolean
+  isVendor         Boolean
   resetToken       String?
   resetTokenExpiry DateTime?
   accounts         Account[]
