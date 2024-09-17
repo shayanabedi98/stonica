@@ -49,7 +49,7 @@ export default function Join() {
               <CTA
                 icon={<MdSell />}
                 content="Vendor Sign up"
-                href="/vendor/register"
+                href="/vendor"
                 description="Become a vendor on Stonica for just $53.99 CAD/month and showcase your stone inventory to a growing audience. With your own admin portal, you can easily create posts, manage your listings, and reach potential customers looking for premium stone slabs."
                 heading="Become a Vendor"
               />
