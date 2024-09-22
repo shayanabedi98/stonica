@@ -9,13 +9,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export default function SignUpForm() {
+export default function SignUpForm({ userType }: { userType: string }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
+    userType: userType
   });
   const [meetsRequirements, setMeetsRequirements] = useState({
     minLength: false,
@@ -86,7 +87,7 @@ export default function SignUpForm() {
     }
 
     try {
-      const res = await fetch("/api/auth/register/vendor", {
+      const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -101,6 +102,7 @@ export default function SignUpForm() {
           email: "",
           password: "",
           confirmPassword: "",
+          userType
         });
         router.push("/sign-in");
         router.refresh();
@@ -118,6 +120,7 @@ export default function SignUpForm() {
         email: "",
         password: "",
         confirmPassword: "",
+        userType
       });
     }
   };
@@ -127,7 +130,9 @@ export default function SignUpForm() {
       className="form mx-auto flex min-w-[420px] flex-col gap-5 rounded-md"
       onSubmit={handleSubmit}
     >
-      <h3 className="self-center">Sign up</h3>
+      <h3 className="self-center">
+        {userType == "vendor" ? "Vendor" : "Shopper"} Sign up
+      </h3>
       <Input
         value={formData.name}
         autoComplete="off"
@@ -161,7 +166,7 @@ export default function SignUpForm() {
           onClick={() => setShowRequirements(!showRequirements)}
         />
         <ul
-          className={`list-disc pl-4 ${showRequirements ? "h-full opacity-100" : "h-0 opacity-0"}`}
+          className={`list-disc pl-4 ${showRequirements ? "flex flex-col opacity-100" : "hidden opacity-0"}`}
         >
           <li
             className={
@@ -204,7 +209,7 @@ export default function SignUpForm() {
       <Btn content={loading ? <Loader /> : "Sign Up"} styles="bg-primary" />
       <span className="px-2 py-1 text-sm">
         Already have an account?{" "}
-        <Link className="underline" href={"/vendor/sign-in"}>
+        <Link className="underline" href={"/sign-in"}>
           Click here
         </Link>
       </span>

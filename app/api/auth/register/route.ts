@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   const { formData } = await req.json();
-  const { name, email, password } = formData;
+  const { name, email, password, userType } = formData;
 
   const hashedPassword = await hash(password, 10);
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
         email: email.toLowerCase(),
         hashedPassword,
         isAdmin: false,
-        isVendor: true,
+        isVendor: userType == "vendor" ? true : false,
       },
     });
     return NextResponse.json(createUser);

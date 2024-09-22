@@ -48,7 +48,7 @@ export default function SignInForm() {
           password: "",
         });
         router.push("/vendor/dashboard");
-        router.refresh()
+        router.refresh();
       }
 
       if (res?.error) {
@@ -66,42 +66,41 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-lg">
-      <form
-        className="form mt-10 flex min-w-[380px] flex-col gap-4 px-8 py-4"
-        onSubmit={handleSubmit}
-      >
-        <h3 className="self-center">Welcome back!</h3>
-        <Input
-          value={formData.email}
-          placeholder="johndoe@johnny.com"
-          name="email"
-          label="Email"
-          type="email"
-          onChange={handleChange}
-        />
-        <Input
-          value={formData.password}
-          placeholder="Password"
-          name="password"
-          label="Password"
-          type="password"
-          onChange={handleChange}
-        />
-        <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
-        <span className="px-2 py-1 text-sm">
-          Don&apos;t have an account?{" "}
-          <Link className="underline" href={"/vendor/register"}>
-            Click here
-          </Link>
-        </span>
-        <Link
-          className="px-2 py-1 text-center text-sm underline"
-          href={"/vendor/forgot-password"}
-        >
-          Forgot Password?
+    <form
+      className="form mx-auto flex min-w-[420px] flex-col gap-5 rounded-md"
+      onSubmit={handleSubmit}
+    >
+      <h3 className="self-center">Welcome back!</h3>
+      <Input
+        value={formData.email}
+        placeholder="johndoe@johnny.com"
+        name="email"
+        label="Email"
+        type="email"
+        onChange={handleChange}
+      />
+      <Input
+        showPasswordOption
+        value={formData.password}
+        placeholder="Password"
+        name="password"
+        label="Password"
+        type="password"
+        onChange={handleChange}
+      />
+      <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
+      <span className="px-2 py-1 text-sm">
+        Don&apos;t have an account?{" "}
+        <Link className="underline" href={"/vendor/register"}>
+          Click here
         </Link>
-      </form>
-    </div>
+      </span>
+      <Link
+        className="px-2 py-1 text-sm underline"
+        href={"/vendor/forgot-password"}
+      >
+        Forgot Password?
+      </Link>
+    </form>
   );
 }
