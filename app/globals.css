@@ -55,11 +55,3 @@ form {
 .loading {
   animation: 0.8s spin infinite linear;
 }
-
-.active {
-  opacity: 1;
-}
-
-.inactive {
-  opacity: 0;
-}

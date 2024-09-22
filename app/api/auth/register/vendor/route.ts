@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         email: email.toLowerCase(),
         hashedPassword,
         isAdmin: false,
+        isVendor: true,
       },
     });
     return NextResponse.json(createUser);
