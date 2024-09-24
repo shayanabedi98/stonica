@@ -108,9 +108,8 @@ export default function ResetPasswordForm() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-lg">
       <form
-        className="form mt-4 flex min-w-[380px] flex-col gap-5 rounded-md bg-primary px-8 py-4 shadow-lg"
+        className="form"
         onSubmit={handleSubmit}
       >
         <h3 className="self-center">Reset Password</h3>
@@ -170,6 +169,5 @@ export default function ResetPasswordForm() {
           styles="bg-primary"
         />
       </form>
-    </div>
   );
 }

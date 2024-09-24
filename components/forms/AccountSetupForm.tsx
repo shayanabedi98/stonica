@@ -134,7 +134,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-5">
+    <form onSubmit={handleSubmit} className="form">
       <Input
         label="Name *"
         placeholder="Pick a name"

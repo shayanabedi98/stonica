@@ -67,7 +67,7 @@ export default function SignInForm() {
 
   return (
     <form
-      className="form mx-auto flex min-w-[420px] flex-col gap-5 rounded-md"
+className="form"
       onSubmit={handleSubmit}
     >
       <h3 className="self-center">Welcome back!</h3>

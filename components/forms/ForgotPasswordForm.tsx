@@ -57,34 +57,29 @@ export default function ForgotPasswordForm() {
   };
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center rounded-lg">
-      <form
-        className="form mt-10 flex min-w-[380px] flex-col gap-4 px-8 py-4"
-        onSubmit={handleSubmit}
-      >
-        <p className="text-center">
-          Provide an email address and if found, you&apos;ll receive a reset
-          password link
-        </p>
-        <Input
+    <form className="form" onSubmit={handleSubmit}>
+      <p className="text-center">
+        Provide an email address and if found, you&apos;ll receive a reset
+        password link
+      </p>
+      <Input
         value={formData.email}
-          placeholder="johndoe@email.com"
-          name="email"
-          label="Email"
-          type="email"
-          onChange={handleChange}
-        />
-        <Btn
-          content={loading ? <Loader /> : "Request Reset"}
-          styles="bg-primary"
-        />
-        <span className="px-2 py-1 text-sm">
-          Never mind, take me back{" "}
-          <Link className="underline" href={"/sign-in"}>
-            Click here
-          </Link>
-        </span>
-      </form>
-    </div>
+        placeholder="johndoe@email.com"
+        name="email"
+        label="Email"
+        type="email"
+        onChange={handleChange}
+      />
+      <Btn
+        content={loading ? <Loader /> : "Request Reset"}
+        styles="bg-primary"
+      />
+      <span className="px-2 py-1 text-sm">
+        Never mind, take me back{" "}
+        <Link className="underline" href={"/sign-in"}>
+          Click here
+        </Link>
+      </span>
+    </form>
   );
 }

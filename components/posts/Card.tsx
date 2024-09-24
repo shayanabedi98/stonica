@@ -4,7 +4,6 @@ import CardCarousel from "./CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
-import { GiStoneTablet } from "react-icons/gi";
 import Link from "next/link";
 import Btn from "../Btn";
 import Image from "next/image";

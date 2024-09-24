@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"); */
 
 @tailwind base;
 @tailwind components;
@@ -20,7 +20,7 @@
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  /* font-family: "Open Sans", sans-serif; */
   @apply tracking-wider;
 }
 
@@ -45,7 +45,7 @@ form {
 
 .ancestor-container {
   /* min-height: calc(100dvh - 56px); */
-  @apply min-h-[calc(100dvh-56px)] py-36;
+  @apply min-h-[calc(100dvh-56px)] py-32;
 }
 
 .nav-foot-margin {
@@ -54,4 +54,8 @@ form {
 
 .loading {
   animation: 0.8s spin infinite linear;
+}
+
+.form {
+  @apply mx-auto flex min-w-[420px] flex-col gap-5 rounded-md;
 }

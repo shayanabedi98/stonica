@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "@/components/other/Providers";
 import { Toaster } from "react-hot-toast";
 // import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import NavbarContainer from "@/components/navbar/NavbarContainer";
+import { cn } from "@/lib/utils";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const fontHeading = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-heading",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const fontBody = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-body",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-primary text-secondary`}
+        className={`${cn(
+          "antialiased",
+          fontHeading.variable,
+          fontBody.variable,
+        )} bg-primary text-secondary`}
       >
         <div className="flex min-h-screen flex-col">
           <NextAuthProvider>
