@@ -1,9 +1,9 @@
 import Container from "@/components/Container";
 import SignUpForm from "@/components/forms/SignUpForm";
-import redirectIfVendor from "@/utils/redirectIfVendor";
+import isSignedIn from "@/utils/isSignedIn";
 
 export default async function VendorRegister() {
-  await redirectIfVendor();
+  await isSignedIn("any")
 
   return (
     <div className="ancestor-container">

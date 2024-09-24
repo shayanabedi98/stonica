@@ -1,13 +1,13 @@
 import Container from "@/components/Container";
 import SignUpForm from "@/components/forms/SignUpForm";
-import redirectIfVendor from "@/utils/redirectIfVendor";
+import isSignedIn from "@/utils/isSignedIn";
 
 export default async function ShopperRegister() {
-  await redirectIfVendor();
+  await isSignedIn("any");
 
   return (
     <div className="ancestor-container">
-      <h1 className="text-center mb-20">Glad you&apos;d want to join us</h1>
+      <h1 className="mb-20 text-center">Glad you&apos;d want to join us</h1>
       <Container>
         <SignUpForm userType="shopper" />
       </Container>

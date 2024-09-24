@@ -2,12 +2,15 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 import AccountSetupForm from "@/components/forms/AccountSetupForm";
 import prisma from "@/lib/db";
+import isAccountSetup from "@/utils/isAccountSetup";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export default async function AccountSetup() {
+  await isAccountSetup("account-setup");
+
   const session = await getServerSession(authOptions);
-  const pubKey = process.env.UPLOAD_CARE_PUBLIC_KEY
+  const pubKey = process.env.UPLOAD_CARE_PUBLIC_KEY;
   let user;
   if (!session) {
     redirect("/sign-in");
@@ -35,10 +38,6 @@ export default async function AccountSetup() {
     }
   }
 
-  if (user?.companyName && user?.image) {
-    redirect("/vendor/dashboard");
-  }
-
   return (
     <div className="ancestor-container">
       <Container>
@@ -48,7 +47,9 @@ export default async function AccountSetup() {
             Feel free to change any information needed
           </h3>
           <div className="mx-auto mt-20 flex max-w-[420px] items-center justify-center rounded-sm border-2 px-4 py-6">
-            {user && session && <AccountSetupForm existingUserData={user} pubKey={pubKey!} />}
+            {user && session && (
+              <AccountSetupForm existingUserData={user} pubKey={pubKey!} />
+            )}
           </div>
         </div>
       </Container>

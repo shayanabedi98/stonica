@@ -1,15 +1,9 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 import SignInForm from "@/components/forms/SignInForm";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import isSignedIn from "@/utils/isSignedIn";
 
 export default async function SignIn() {
-  const session = await getServerSession(authOptions);
-
-  if (session) {
-    redirect("/vendor/dashboard");
-  }
+  await isSignedIn("any", "sign-in");
 
   return (
     <div className="ancestor-container">

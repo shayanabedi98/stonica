@@ -2,16 +2,16 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 // import EmergencySignOut from "@/components/other/EmergencySignOut";
 import prisma from "@/lib/db";
+import isAccountSetup from "@/utils/isAccountSetup";
+import isSignedIn from "@/utils/isSignedIn";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
+  await isSignedIn("vendor");
+  await isAccountSetup("dashboard")
   const session = await getServerSession(authOptions);
   let user;
-
-  if (!session) {
-    redirect("/vendor/sign-in");
-  }
 
   try {
     user = await prisma.user.findUnique({

@@ -1,12 +1,12 @@
 import Btn from "@/components/Btn";
 import Container from "@/components/Container";
 import Card from "@/components/posts/Card";
-import redirectIfVendor from "@/utils/redirectIfVendor";
+import isSignedIn from "@/utils/isSignedIn";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
 
 export default async function Vendor() {
-  await redirectIfVendor();
+  await isSignedIn("any")
 
   const whatsIncluded = [
     "Make unlimited posts of your stone slabs",

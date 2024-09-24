@@ -3,9 +3,10 @@ import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function redirectIfVendor() {
+export default async function isAccountSetup(
+  page: "account-setup" | "dashboard",
+) {
   const session = await getServerSession(authOptions);
-
   let user;
 
   try {
@@ -16,7 +17,13 @@ export default async function redirectIfVendor() {
     user = null;
   }
 
-  if (session && user?.isVendor) {
-    redirect("/vendor/dashboard");
+  if (page == "dashboard") {
+    if (!user?.companyName) {
+      redirect("/vendor/account-setup");
+    }
+  } else if (page == "account-setup") {
+    if (user?.companyName) {
+      redirect("/vendor/dashboard");
+    }
   }
 }
