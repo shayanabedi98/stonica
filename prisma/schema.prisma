@@ -78,4 +78,5 @@ model Post {
   color     String
   width     String?
   height    String?
+  imageId   String[]
 }

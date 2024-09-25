@@ -37,7 +37,7 @@ export default function Select({
         onChange={(e) => onChange(e.target.name, e.target.value)}
       >
         {options.map((option: string, index: number) => (
-          <option key={index} value={option}>
+          <option key={index} value={option == "- Select Type -" ? "" : option}>
             {option}
           </option>
         ))}

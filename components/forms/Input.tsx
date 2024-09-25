@@ -5,7 +5,11 @@ import { useState } from "react";
 type Props = {
   label: string;
   name: string;
+  min?: number;
+  max?: number;
+  maxLength?: number,
   type: string;
+  step?: number;
   disabled?: boolean;
   notRequired?: boolean;
   placeholder: string;
@@ -20,6 +24,10 @@ export default function Input({
   label,
   name,
   type,
+  max,
+  maxLength,
+  min,
+  step,
   onChange,
   placeholder,
   value,
@@ -39,7 +47,11 @@ export default function Input({
       <input
         pattern={pattern}
         disabled={disabled}
+        step={step}
+        min={min}
+        max={max}
         minLength={type == "password" ? 8 : 1}
+        maxLength={maxLength}
         autoComplete={autoComplete}
         required={notRequired ? false : true}
         value={value}

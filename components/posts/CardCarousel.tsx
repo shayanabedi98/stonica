@@ -18,7 +18,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
   return (
     <div className="relative flex h-60 w-full items-center justify-between">
       <button
-        className="absolute -left-3 z-10 text-4xl"
+        className={`absolute -left-3 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handlePrevious}
       >
         <FaArrowLeft className="rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
@@ -38,7 +38,10 @@ export default function CardCarousel({ images }: { images: string[] }) {
           </div>
         ))}
       </div>
-      <button className="absolute -right-3 z-10 text-4xl" onClick={handleNext}>
+      <button
+        className={`absolute -right-3 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+        onClick={handleNext}
+      >
         <FaArrowLeft className="rotate-180 rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
       </button>
     </div>
