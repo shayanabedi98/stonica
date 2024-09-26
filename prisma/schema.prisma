@@ -75,7 +75,7 @@ model Post {
   qty       Int
   title     String
   type      String
-  color     String
+  colors    String[]
   width     String?
   height    String?
   imageId   String[]

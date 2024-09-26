@@ -28,7 +28,7 @@ type Props = {
     price: string;
     salePrice?: string;
     qty: number;
-    color: string;
+    colors: string[];
   };
   task: "edit" | "create";
 };
@@ -43,15 +43,28 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
     price: postData?.price || "",
     salePrice: postData?.salePrice || "",
     qty: postData?.qty || 0,
-    color: postData?.color || "",
+    colors: postData?.colors || [],
   });
   const [imageId, setImageId] = useState<string[]>([]);
+  const [colorInputs, setColorInputs] = useState(1);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const widgetRefs = useRef<Array<any>>([]);
 
   const openWidget = (index: number) => {
     if (widgetRefs.current[index]) {
       widgetRefs.current[index].openDialog();
+    }
+  };
+
+  const handleColorChange = (index: number, value: string) => {
+    const newColors = [...formData.colors];
+    newColors[index] = value;
+    setFormData((prev) => ({ ...prev, colors: newColors }));
+  };
+
+  const handleAddColor = () => {
+    if (colorInputs < 3) {
+      setColorInputs((prev) => prev + 1);
     }
   };
 
@@ -120,23 +133,25 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
           value={formData.type}
           onChange={handleChange}
         />
-        <Select
-          options={[
-            "- Select Color -",
-            "White",
-            "Black",
-            "Gray",
-            "Brown",
-            "Red",
-            "Green",
-            "Blue",
-            "Yellow",
-          ]}
-          label="Color"
-          name="color"
-          value={formData.color}
-          onChange={handleChange}
-        />
+        {[...Array(colorInputs)].map((_, index) => (
+          <div key={index} className="mb-2 flex">
+            <input
+              type="color"
+              value={formData.colors[index]}
+              onChange={(e) => handleColorChange(index, e.target.value)}
+              className="h-8 w-40"
+            />
+          </div>
+        ))}
+        {colorInputs < 3 && (
+          <button
+            type="button"
+            onClick={handleAddColor}
+            className="rounded bg-blue-500 p-2 text-white"
+          >
+            Add Color
+          </button>
+        )}
         <div className="flex flex-col gap-2">
           <label htmlFor="image">Images</label>
           <div className="flex justify-between">

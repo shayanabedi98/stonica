@@ -27,41 +27,12 @@ type Props = {
     price: string;
     salePrice?: string;
     qty: number;
-    color: string;
+    colors: string[];
   };
 };
 
 export default function Card({ user, formData }: Props) {
-  let colorCode = ""; // default color
 
-  switch (formData?.color) {
-    case "Black":
-      colorCode = "bg-black";
-      break;
-    case "Red":
-      colorCode = "bg-red-500";
-      break;
-    case "Blue":
-      colorCode = "bg-blue-500";
-      break;
-    case "Yellow":
-      colorCode = "bg-yellow-500";
-      break;
-    case "Brown":
-      colorCode = "bg-[#A52A2A]";
-      break;
-    case "Green":
-      colorCode = "bg-green-500";
-      break;
-    case "White":
-      colorCode = "bg-white";
-      break;
-    case "Gray":
-      colorCode = "bg-gray-400";
-      break;
-    default:
-      colorCode = "bg-black"; // fallback color
-  }
   return (
     <div className="flex relative min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-gradient-to-b from-secondary to-neutral-200 px-6 py-6 text-primary shadow-lg">
       {formData?.salePrice && (<div className="absolute px-2 py-1 rounded-b-md font-semibold top-0 bg-red-500 text-secondary">On Sale</div>)}
@@ -84,12 +55,12 @@ export default function Card({ user, formData }: Props) {
         <hr className="w-full" />
         <div>
           <p className="font-bold">{formData?.type || "Stone Type"}</p>
-          <p className="flex items-center gap-2">
+          {/* <p className="flex items-center gap-2">
             <span
               className={`h-6 w-6 ${colorCode} rounded-full border-2 border-primary`}
             ></span>
             {formData?.color || "Pick a color"}
-          </p>
+          </p> */}
         </div>
       </div>
       <CardCarousel images={formData?.images ? formData.images : [""]} />
