@@ -98,7 +98,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
       <Card user={user} formData={formData} />
       <form className="form">
         <Input
-        maxLength={30}
+          maxLength={30}
           name="title"
           type="text"
           label="Stone Name"
@@ -122,7 +122,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
         />
         <Select
           options={[
-            "- Select Type -",
+            "- Select Color -",
             "White",
             "Black",
             "Gray",
@@ -221,7 +221,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
         />
         <Input
           min={0.01}
-          max={200}
+          max={150}
           name="height"
           type="number"
           label="Stone height (Inch)"
@@ -232,7 +232,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
         />
         <Input
           min={0.01}
-          max={200}
+          max={150}
           name="width"
           type="number"
           label="Stone Width (Inch)"

@@ -4,6 +4,7 @@ import CardCarousel from "./CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
+import { FaPencilRuler } from "react-icons/fa";
 import Link from "next/link";
 import Btn from "../Btn";
 import Image from "next/image";
@@ -55,17 +56,20 @@ export default function Card({ user, formData }: Props) {
     case "White":
       colorCode = "bg-white";
       break;
-      case "Gray":
-        colorCode = "bg-gray-400";
-        break;
+    case "Gray":
+      colorCode = "bg-gray-400";
+      break;
     default:
       colorCode = "bg-black"; // fallback color
   }
   return (
-    <div className="flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-gradient-to-b from-secondary to-neutral-200 px-6 py-6 text-primary shadow-lg">
+    <div className="flex relative min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-gradient-to-b from-secondary to-neutral-200 px-6 py-6 text-primary shadow-lg">
+      {formData?.salePrice && (<div className="absolute px-2 py-1 rounded-b-md font-semibold top-0 bg-red-500 text-secondary">On Sale</div>)}
       <div className="flex w-full flex-col gap-4 self-start">
         <div>
-          <p className="text-xl font-bold mb-2">{formData?.title || "Stone Name"}</p>
+          <p className="mb-2 text-xl font-bold">
+            {formData?.title || "Stone Name"}
+          </p>
           <div className="flex items-center gap-2">
             <Image
               src={user?.image || "/assets/avatar.png"}
@@ -99,10 +103,12 @@ export default function Card({ user, formData }: Props) {
             <p
               className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
             >
-              ${formData?.price.toString().slice(0,7)} CAD
+              ${formData?.price?.toString().slice(0, 7) || 0} CAD
             </p>
             {formData?.salePrice && (
-              <p className="text-red-500">${formData?.salePrice.toString().slice(0,7)} CAD</p>
+              <p className="text-red-500">
+                ${formData?.salePrice.toString().slice(0, 7)} CAD
+              </p>
             )}
           </div>
         </div>
@@ -111,7 +117,45 @@ export default function Card({ user, formData }: Props) {
             <FaBox className="text-xl" />
             Quantity
           </p>
-          <p>{formData?.qty.toString().slice(0,3) || "-"} in stock</p>
+          <p>
+            {formData?.qty
+              ? formData.qty <= 100
+                ? Math.round(formData?.qty).toString().slice(0, 3)
+                : 100
+              : "-"}{" "}
+            in stock
+          </p>
+        </div>
+        <div className="flex justify-between">
+          <p className="flex items-center gap-2 font-semibold">
+            <FaPencilRuler className="text-xl" />
+            Dimensions
+          </p>
+          {formData?.height && formData.width ? (
+            parseFloat(formData.height) <= 150 &&
+            parseFloat(formData.width) <= 150 ? (
+              <p>
+                {Math.round(parseFloat(formData?.height) * 100) / 100} in x{" "}
+                {Math.round(parseFloat(formData?.width) * 100) / 100} in or{" "}
+                {formData?.width && formData.height
+                  ? Math.round(
+                      (((Math.round((parseFloat(formData?.height) / 12) * 100) /
+                        100) *
+                        Math.round((parseFloat(formData?.width) / 12) * 100)) /
+                        100) *
+                        100,
+                    ) / 100
+                  : 0}{" "}
+                ft<sup>2</sup>
+              </p>
+            ) : (
+              <p>Invalid Dimensions</p>
+            )
+          ) : (
+            <p>
+              0 ft<sup>2</sup>
+            </p>
+          )}
         </div>
         <div className="flex justify-between">
           <p className="flex items-center gap-2 font-semibold">

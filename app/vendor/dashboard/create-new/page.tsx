@@ -12,10 +12,7 @@ export default async function CreateNew() {
     image: true,
     phone: true,
     stateProvince: true,
-  });
-
-  console.log(user);
-  
+  });  
 
   return (
     <div className="ancestor-container">
