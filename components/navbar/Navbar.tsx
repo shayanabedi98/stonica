@@ -59,10 +59,10 @@ export default function Navbar({ user, session }: Props) {
               onClick={() => setShowUserMenu(!showUserMenu)}
               src={user.image || "/assets/avatar.png"}
               alt="User profile picture"
-              height={36}
-              width={36}
+              height={40}
+              width={40}
               priority
-              className="cursor-pointer rounded-sm border-2 border-neutral-400 bg-secondary transition duration-200 lg:hover:scale-110"
+              className="cursor-pointer rounded-full border-2 border-secondary bg-secondary transition duration-200 lg:hover:scale-110"
             />
             {showUserMenu && (
               <div className="absolute right-0 top-10 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">

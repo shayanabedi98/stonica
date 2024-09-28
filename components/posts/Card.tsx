@@ -8,6 +8,7 @@ import { FaPencilRuler } from "react-icons/fa";
 import Link from "next/link";
 import Btn from "../Btn";
 import Image from "next/image";
+import { formatPrice } from "@/utils/formatPrice";
 
 type Props = {
   user: {
@@ -32,10 +33,13 @@ type Props = {
 };
 
 export default function Card({ user, formData }: Props) {
-
   return (
-    <div className="flex relative min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-gradient-to-b from-secondary to-neutral-200 px-6 py-6 text-primary shadow-lg">
-      {formData?.salePrice && (<div className="absolute px-2 py-1 rounded-b-md font-semibold top-0 bg-red-500 text-secondary">On Sale</div>)}
+    <div className="relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-gradient-to-b from-secondary to-neutral-200 px-6 py-6 text-primary shadow-lg">
+      {formData?.salePrice && (
+        <div className="absolute top-0 rounded-b-md bg-red-500 px-2 py-1 font-semibold text-secondary">
+          On Sale
+        </div>
+      )}
       <div className="flex w-full flex-col gap-4 self-start">
         <div>
           <p className="mb-2 text-xl font-bold">
@@ -55,12 +59,16 @@ export default function Card({ user, formData }: Props) {
         <hr className="w-full" />
         <div>
           <p className="font-bold">{formData?.type || "Stone Type"}</p>
-          {/* <p className="flex items-center gap-2">
-            <span
-              className={`h-6 w-6 ${colorCode} rounded-full border-2 border-primary`}
-            ></span>
-            {formData?.color || "Pick a color"}
-          </p> */}
+          <div className="flex gap-1">
+            {formData?.colors.map((color, index) => (
+              <p key={index} className="flex items-center gap-2">
+                <span
+                  style={{ backgroundColor: color }}
+                  className={`h-6 w-6 rounded-full border-2 border-primary`}
+                ></span>
+              </p>
+            ))}
+          </div>
         </div>
       </div>
       <CardCarousel images={formData?.images ? formData.images : [""]} />
@@ -74,11 +82,19 @@ export default function Card({ user, formData }: Props) {
             <p
               className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
             >
-              ${formData?.price?.toString().slice(0, 7) || 0} CAD
+              {formData?.price
+                ? parseFloat(formData.price) <= 20000
+                  ? formatPrice(parseFloat(formData.price))
+                  : "Set a real price"
+                : formatPrice(0)}
             </p>
             {formData?.salePrice && (
               <p className="text-red-500">
-                ${formData?.salePrice.toString().slice(0, 7)} CAD
+                {formData?.salePrice
+                  ? parseFloat(formData.salePrice) <= 20000
+                    ? formatPrice(parseFloat(formData.salePrice))
+                    : "Set a real price"
+                  : 0}
               </p>
             )}
           </div>
@@ -107,7 +123,7 @@ export default function Card({ user, formData }: Props) {
             parseFloat(formData.width) <= 150 ? (
               <p>
                 {Math.round(parseFloat(formData?.height) * 100) / 100} in x{" "}
-                {Math.round(parseFloat(formData?.width) * 100) / 100} in or{" "}
+                {Math.round(parseFloat(formData?.width) * 100) / 100} in | {" "}
                 {formData?.width && formData.height
                   ? Math.round(
                       (((Math.round((parseFloat(formData?.height) / 12) * 100) /

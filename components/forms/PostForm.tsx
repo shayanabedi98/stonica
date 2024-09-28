@@ -8,6 +8,8 @@ import toast from "react-hot-toast";
 import { Widget } from "@uploadcare/react-widget";
 import { GoPlus } from "react-icons/go";
 import Card from "../posts/Card";
+import Btn from "../Btn";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: {
@@ -30,10 +32,15 @@ type Props = {
     qty: number;
     colors: string[];
   };
-  task: "edit" | "create";
+  fetchMethod: "PUT" | "POST";
 };
 
-export default function PostForm({ postData, user, task, pubKey }: Props) {
+export default function PostForm({
+  postData,
+  user,
+  fetchMethod,
+  pubKey,
+}: Props) {
   const [formData, setFormData] = useState({
     title: postData?.title || "",
     type: postData?.type || "",
@@ -43,12 +50,14 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
     price: postData?.price || "",
     salePrice: postData?.salePrice || "",
     qty: postData?.qty || 0,
-    colors: postData?.colors || [],
+    colors: postData?.colors || ["#d6132d"],
   });
   const [imageId, setImageId] = useState<string[]>([]);
   const [colorInputs, setColorInputs] = useState(1);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const widgetRefs = useRef<Array<any>>([]);
+  const router = useRouter();
 
   const openWidget = (index: number) => {
     if (widgetRefs.current[index]) {
@@ -66,6 +75,13 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
     if (colorInputs < 3) {
       setColorInputs((prev) => prev + 1);
     }
+    setFormData((prev) => ({ ...prev, colors: [...prev.colors, "#000000"] }));
+  };
+
+  const handleRemoveColor = (index: number) => {
+    const newColors = formData.colors.filter((_, idx: number) => idx !== index);
+    setFormData((prev) => ({ ...prev, colors: newColors }));
+    setColorInputs((prev) => prev - 1);
   };
 
   const handleChange = (name: string, value: string) => {
@@ -106,10 +122,44 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.images.length < 1) {
+      toast.error("Please provide at least 1 image");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/post", {
+        method: fetchMethod,
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ formData, imageId }),
+      });
+
+      if (res.ok) {
+        if (fetchMethod == "POST") {
+          toast.success("Created Post");
+        } else {
+          toast.success("Updated Post");
+        }
+        router.refresh();
+        router.push("/vendor/dashboard");
+      }
+    } catch (error) {
+      toast.error("Something went wrong, try again later or contact us");
+    }
+  };
+
   return (
-    <div className="flex gap-4">
-      <Card user={user} formData={formData} />
-      <form className="form">
+    <div className="flex gap-20">
+      <div className="flex flex-col items-center justify-center gap-6">
+        <h3>Preview</h3>
+        <Card user={user} formData={formData} />
+      </div>
+      <form onSubmit={handleSubmit} className="form border-2 px-4 py-4">
         <Input
           maxLength={30}
           name="title"
@@ -133,25 +183,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
           value={formData.type}
           onChange={handleChange}
         />
-        {[...Array(colorInputs)].map((_, index) => (
-          <div key={index} className="mb-2 flex">
-            <input
-              type="color"
-              value={formData.colors[index]}
-              onChange={(e) => handleColorChange(index, e.target.value)}
-              className="h-8 w-40"
-            />
-          </div>
-        ))}
-        {colorInputs < 3 && (
-          <button
-            type="button"
-            onClick={handleAddColor}
-            className="rounded bg-blue-500 p-2 text-white"
-          >
-            Add Color
-          </button>
-        )}
+        {/* IMAGES */}
         <div className="flex flex-col gap-2">
           <label htmlFor="image">Images</label>
           <div className="flex justify-between">
@@ -161,7 +193,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
                   !formData.images[index] && openWidget(index);
                 }}
                 key={index}
-                className={`relative flex h-32 w-32 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer"}`}
+                className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer"}`}
               >
                 {formData.images[index] ? (
                   <div>
@@ -184,6 +216,40 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+        {/* COLORS */}
+        <div className="flex flex-col gap-1">
+          <label className="text-sm font-semibold">Colors</label>
+          <div className="flex justify-between">
+            {[...Array(colorInputs)].map((_, index) => (
+              <div key={index} className="flex flex-col gap-4">
+                <input
+                  type="color"
+                  value={formData.colors[index]}
+                  onChange={(e) => handleColorChange(index, e.target.value)}
+                  className="h-8 w-28"
+                />
+                {index >= 1 && (
+                  <button
+                    onClick={() => handleRemoveColor(index)}
+                    type="button"
+                    className="w-28 rounded bg-secondary px-2 py-1 text-sm font-semibold text-primary"
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
+            {colorInputs < 3 && (
+              <button
+                type="button"
+                onClick={handleAddColor}
+                className="flex h-8 w-28 items-center justify-center rounded bg-secondary p-2 text-sm font-semibold text-primary"
+              >
+                Add Color
+              </button>
+            )}
           </div>
         </div>
         {/* Hidden Widgets, each tied to an index */}
@@ -225,7 +291,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
         />
         <Input
           min={0.01}
-          max={parseFloat(formData.price)}
+          max={parseFloat(formData.price) - 1}
           name="salePrice"
           type="number"
           label="Sale Price (CAD) (Optional)"
@@ -256,6 +322,7 @@ export default function PostForm({ postData, user, task, pubKey }: Props) {
           step={0.01}
           onChange={handleChange}
         />
+        <Btn content={"Create Post"} styles="bg-secondary" />
       </form>
     </div>
   );

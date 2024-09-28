@@ -39,6 +39,20 @@ form {
   @apply max-w-96;
 }
 
+input[type="color"] {
+  border: 3px solid white;
+  background-color: rgba(0, 0, 0, 0);
+  @apply rounded-md;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
 .logo {
   font-family: "Nunito Sans", sans-serif;
 }
@@ -57,5 +71,5 @@ form {
 }
 
 .form {
-  @apply mx-auto flex min-w-[420px] flex-col gap-5 rounded-md;
+  @apply mx-auto flex min-w-[420px] flex-col gap-4 rounded-md;
 }
