@@ -13,6 +13,7 @@ const config: Config = {
         primary: "#FAF9F6",
         secondary: "#18181B",
         accent: "#999797",
+        hover: "#383737"
       },
     },
   },

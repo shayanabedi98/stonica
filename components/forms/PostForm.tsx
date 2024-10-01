@@ -25,15 +25,16 @@ type Props = {
     textureType: string;
     title: string;
     type: string;
-    width: string;
-    height: string;
+    width: string | null;
+    height: string | null;
     images: string[];
     veins: string;
     bookmatched: string;
     price: string;
-    salePrice?: string;
+    salePrice?: string | null;
+    imageId: string[];
     qty: number;
-    colors: { base: string; vein: string; secondary: string };
+    colors: { base: string; vein: string; secondary: string } | null;
   };
   fetchMethod: "PUT" | "POST";
 };
@@ -45,6 +46,7 @@ export default function PostForm({
   pubKey,
 }: Props) {
   const [formData, setFormData] = useState({
+    id: postData?.id,
     title: postData?.title || "",
     type: postData?.type || "",
     textureType: postData?.textureType || "Matte/Honed",
@@ -59,10 +61,10 @@ export default function PostForm({
     colors: postData?.colors || {
       base: "Black",
       vein: "White",
-      secondary: "- Select",
+      secondary: "None",
     },
+    imageId: postData?.imageId || [],
   });
-  const [imageId, setImageId] = useState<string[]>([]);
   const colorOptions = [
     "None",
     "White",
@@ -101,10 +103,10 @@ export default function PostForm({
       newImages[index] = info.cdnUrl;
       return { ...prev, images: newImages };
     });
-    setImageId((prev) => {
-      const newImageIds = [...(prev || [])];
-      newImageIds[index] = info.uuid;
-      return newImageIds;
+    setFormData((prev) => {
+      const newImages = [...(prev.imageId || [])];
+      newImages[index] = info.uuid;
+      return { ...prev, imageId: newImages };
     });
   };
 
@@ -157,17 +159,19 @@ export default function PostForm({
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ formData, imageId }),
+        body: JSON.stringify({ formData }),
       });
 
       if (res.ok) {
         if (fetchMethod == "POST") {
           toast.success("Created Post");
+          router.push("/vendor/dashboard");
+          router.refresh();
         } else {
           toast.success("Updated Post");
+          router.push("/vendor/dashboard");
+          router.refresh();
         }
-        router.refresh();
-        router.push("/vendor/dashboard");
       }
     } catch (error) {
       toast.error("Something went wrong, try again later or contact us");
@@ -285,7 +289,9 @@ export default function PostForm({
                       />
                       <span
                         className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-secondary text-sm font-semibold text-primary transition lg:hover:bg-accent"
-                        onClick={() => handleRemoveImage(imageId[index], index)}
+                        onClick={() =>
+                          handleRemoveImage(formData.imageId[index], index)
+                        }
                       >
                         Remove
                       </span>
@@ -338,6 +344,7 @@ export default function PostForm({
           />
           <Input
             min={0.01}
+            notRequired
             max={formData.price ? parseFloat(formData.price) - 1 : undefined}
             name="salePrice"
             type="number"
@@ -350,10 +357,10 @@ export default function PostForm({
           <Input
             min={0.01}
             max={150}
-            name="height"
+            name="width"
             type="number"
-            label="Stone height (Inch)"
-            value={formData.height}
+            label="Stone Width (Inch)"
+            value={formData.width}
             placeholder="Inches"
             step={0.01}
             onChange={handleChange}
@@ -361,10 +368,10 @@ export default function PostForm({
           <Input
             min={0.01}
             max={150}
-            name="width"
+            name="height"
             type="number"
-            label="Stone Width (Inch)"
-            value={formData.width}
+            label="Stone Height (Inch)"
+            value={formData.height}
             placeholder="Inches"
             step={0.01}
             onChange={handleChange}

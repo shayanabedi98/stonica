@@ -34,7 +34,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
                 width={400}
                 quality={100}
                 priority
-                className={`h-full w-full object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
+                className={`h-full w-full object-cover rounded-t-md transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
               />
             </div>
           ))

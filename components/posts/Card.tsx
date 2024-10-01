@@ -4,9 +4,12 @@ import CardCarousel from "./CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
+import { GiStoneTablet } from "react-icons/gi";
+import { formatPrice } from "@/utils/formatPrice";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Btn from "../Btn";
-import { formatPrice } from "@/utils/formatPrice";
+import toast from "react-hot-toast";
 
 type Props = {
   user: {
@@ -22,16 +25,43 @@ type Props = {
     type: string;
     images: string[];
     price: string;
-    salePrice?: string;
+    salePrice?: string | null;
     qty: number;
+    imageId: string[];
   };
 };
 
 export default function Card({ user, formData }: Props) {
+  const path = usePathname();
+  const router = useRouter();
+
+  const handleDelete = async (id: string, imageId: string[] | undefined) => {
+    const confirmed = confirm("Are you sure you want to delete this product?");
+
+    if (confirmed) {
+      try {
+        const res = await fetch("/api/post", {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ id, imageId }),
+        });
+
+        if (res.ok) {
+          toast.success("Deleted Product");
+          router.refresh();
+        }
+      } catch (error) {
+        toast.error(
+          "Something went wrong. Please try again later or contact support.",
+        );
+      }
+    }
+  };
+
   return (
     <div className="relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-secondary text-primary shadow-lg">
       {formData?.salePrice && (
-        <div className="absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
+        <div className="absolute right-0 top-0 z-10 rounded-md rounded-tl-none bg-red-500 px-2 py-1 font-semibold text-primary">
           On Sale
         </div>
       )}
@@ -40,17 +70,13 @@ export default function Card({ user, formData }: Props) {
         <div className="relative flex flex-col gap-4 px-6 pb-6 pt-2">
           <div className="flex flex-col items-center justify-center">
             <p className="text-lg">{formData?.title || "Pick a name"}</p>
-            {/* <div className="flex items-center gap-2">
-              <Image
-                src={user?.image ? user.image : ""}
-                alt="Company Logo"
-                height={30}
-                width={30}
-                className="rounded-full object-cover"
-                quality={90}
-              />
-              <p className="font-bold text-lg">{user?.companyName}</p>
-            </div> */}
+          </div>
+          <div className="flex justify-between">
+            <p className="flex items-center gap-2 font-semibold">
+              <GiStoneTablet className="text-xl" />
+              Material
+            </p>
+            <p>{formData?.type}</p>
           </div>
           <div className="flex justify-between">
             <p className="flex items-center gap-2 font-semibold">
@@ -134,21 +160,40 @@ export default function Card({ user, formData }: Props) {
             </p>
             <p>{user?.phone}</p>
           </div>
-          <div className="flex items-center justify-center">
-            {formData?.id ? (
-              <Link href={`/product/${formData?.id}`}>
+          {path == "/vendor/dashboard" ? (
+            <div className="flex items-center justify-between">
+              <Link
+                className=""
+                href={`/vendor/dashboard/edit-product/${formData?.id}`}
+              >
+                <Btn styles="bg-secondary" content={"Edit"} />
+              </Link>
+
+              <Btn
+                styles="bg-secondary"
+                content={"Delete"}
+                onClick={() =>
+                  handleDelete(formData?.id || "", formData?.imageId)
+                }
+              />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center">
+              {formData?.id ? (
+                <Link href={`/product/${formData?.id}`}>
+                  <Btn
+                    content={"Learn More"}
+                    styles="bg-primary text-secondary min-w-44"
+                  />
+                </Link>
+              ) : (
                 <Btn
                   content={"Learn More"}
                   styles="bg-primary text-secondary min-w-44"
                 />
-              </Link>
-            ) : (
-              <Btn
-                content={"Learn More"}
-                styles="bg-primary text-secondary min-w-44"
-              />
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
