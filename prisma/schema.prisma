@@ -66,17 +66,20 @@ model Session {
 }
 
 model Post {
-  id        String   @id @default(cuid())
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
-  price     String
-  salePrice String?
-  images    String[]
-  qty       Int
-  title     String
-  type      String
-  colors    String[]
-  width     String?
-  height    String?
-  imageId   String[]
+  id           String   @id @default(cuid())
+  User         User?    @relation(fields: [userId], references: [id])
+  userId       String?
+  price        String
+  salePrice    String?
+  images       String[]
+  qty          Int
+  title        String
+  type         String
+  textureType String
+  colors       Json
+  veins        String
+  bookmatched  String
+  width        String?
+  height       String?
+  imageId      String[]
 }

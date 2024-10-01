@@ -23,11 +23,14 @@ export async function POST(req: Request) {
             salePrice: formData.salePrice,
             images: formData.images,
             qty: parseInt(formData.qty),
+            veins: formData.veins,
+            bookmatched: formData.bookmatched,
             title: formData.title,
             colors: formData.colors,
             width: formData.width,
             height: formData.height,
             type: formData.type,
+            textureType: formData.textureType,
             imageId,
           },
         });
@@ -35,8 +38,8 @@ export async function POST(req: Request) {
         return NextResponse.json(createPost);
       }
     } catch (error) {
-        console.log(error);
-        return NextResponse.json({ message: "Could not create new post" });
+      console.log(error);
+      return NextResponse.json({ message: "Could not create new post" });
     }
   }
 }

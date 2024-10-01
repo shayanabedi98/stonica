@@ -18,7 +18,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
   return (
     <div className="relative flex h-60 w-full items-center justify-between">
       <button
-        className={`absolute -left-3 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+        className={`absolute left-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handlePrevious}
       >
         <FaArrowLeft className="rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
@@ -34,7 +34,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
                 width={400}
                 quality={100}
                 priority
-                className={`h-full w-full rounded-md object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
+                className={`h-full w-full object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
               />
             </div>
           ))
@@ -47,13 +47,13 @@ export default function CardCarousel({ images }: { images: string[] }) {
               width={400}
               quality={100}
               priority
-              className={`duration-500opacity-100 h-full w-full rounded-md object-cover transition`}
+              className={`h-full w-full object-cover opacity-100 transition duration-500 border-2`}
             />
           </div>
         )}
       </div>
       <button
-        className={`absolute -right-3 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+        className={`absolute right-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handleNext}
       >
         <FaArrowLeft className="rotate-180 rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />

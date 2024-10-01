@@ -22,15 +22,18 @@ type Props = {
   pubKey: string;
   postData?: {
     id: string;
+    textureType: string;
     title: string;
     type: string;
     width: string;
     height: string;
     images: string[];
+    veins: string;
+    bookmatched: string;
     price: string;
     salePrice?: string;
     qty: number;
-    colors: string[];
+    colors: { base: string; vein: string; secondary: string };
   };
   fetchMethod: "PUT" | "POST";
 };
@@ -44,16 +47,38 @@ export default function PostForm({
   const [formData, setFormData] = useState({
     title: postData?.title || "",
     type: postData?.type || "",
+    textureType: postData?.textureType || "Matte/Honed",
     width: postData?.width || "",
     height: postData?.height || "",
     images: postData?.images || [],
     price: postData?.price || "",
     salePrice: postData?.salePrice || "",
     qty: postData?.qty || 0,
-    colors: postData?.colors || ["#d6132d"],
+    veins: postData?.veins || "Thin",
+    bookmatched: postData?.bookmatched || "No",
+    colors: postData?.colors || {
+      base: "Black",
+      vein: "White",
+      secondary: "- Select",
+    },
   });
   const [imageId, setImageId] = useState<string[]>([]);
-  const [colorInputs, setColorInputs] = useState(1);
+  const colorOptions = [
+    "None",
+    "White",
+    "Black",
+    "Gray",
+    "Beige",
+    "Brown",
+    "Red",
+    "Green",
+    "Blue",
+    "Yellow",
+    "Pink",
+    "Gold",
+    "Cream",
+    "Silver",
+  ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const widgetRefs = useRef<Array<any>>([]);
@@ -63,25 +88,6 @@ export default function PostForm({
     if (widgetRefs.current[index]) {
       widgetRefs.current[index].openDialog();
     }
-  };
-
-  const handleColorChange = (index: number, value: string) => {
-    const newColors = [...formData.colors];
-    newColors[index] = value;
-    setFormData((prev) => ({ ...prev, colors: newColors }));
-  };
-
-  const handleAddColor = () => {
-    if (colorInputs < 3) {
-      setColorInputs((prev) => prev + 1);
-    }
-    setFormData((prev) => ({ ...prev, colors: [...prev.colors, "#000000"] }));
-  };
-
-  const handleRemoveColor = (index: number) => {
-    const newColors = formData.colors.filter((_, idx: number) => idx !== index);
-    setFormData((prev) => ({ ...prev, colors: newColors }));
-    setColorInputs((prev) => prev - 1);
   };
 
   const handleChange = (name: string, value: string) => {
@@ -100,6 +106,16 @@ export default function PostForm({
       newImageIds[index] = info.uuid;
       return newImageIds;
     });
+  };
+
+  const handleColorChange = (name: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      colors: {
+        ...prev.colors,
+        [name]: value,
+      },
+    }));
   };
 
   const handleRemoveImage = async (id: string, index: number) => {
@@ -130,6 +146,11 @@ export default function PostForm({
       return;
     }
 
+    if (formData.colors.base == "None") {
+      toast.error("Please pick a base color");
+      return;
+    }
+
     try {
       const res = await fetch("/api/post", {
         method: fetchMethod,
@@ -154,175 +175,202 @@ export default function PostForm({
   };
 
   return (
-    <div className="flex gap-20">
-      <div className="flex flex-col items-center justify-center gap-6">
-        <h3>Preview</h3>
+    <div className="flex w-full justify-center gap-20">
+      <div className="flex w-1/3 flex-col items-center justify-center">
         <Card user={user} formData={formData} />
       </div>
-      <form onSubmit={handleSubmit} className="form border-2 px-4 py-4">
-        <Input
-          maxLength={30}
-          name="title"
-          type="text"
-          label="Stone Name"
-          value={formData.title}
-          placeholder="Name"
-          onChange={handleChange}
-        />
-        <Select
-          options={[
-            "- Select Type -",
-            "Marble",
-            "Quartz",
-            "Porcelain",
-            "Onyx",
-            "Granite",
-          ]}
-          label="Stone Type"
-          name="type"
-          value={formData.type}
-          onChange={handleChange}
-        />
-        {/* IMAGES */}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="image">Images</label>
-          <div className="flex justify-between">
-            {[...Array(3)].map((_, index) => (
-              <div
-                onClick={() => {
-                  !formData.images[index] && openWidget(index);
-                }}
-                key={index}
-                className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer"}`}
-              >
-                {formData.images[index] ? (
-                  <div>
-                    <Image
-                      src={formData.images[index]}
-                      alt=""
-                      quality={100}
-                      fill
-                      className="rounded-md object-cover"
-                    />
-                    <span
-                      className="absolute bottom-0 left-0 right-0 flex cursor-pointer justify-center rounded-b-md border-t-2 bg-red-500 text-sm font-semibold"
-                      onClick={() => handleRemoveImage(imageId[index], index)}
-                    >
-                      Remove
-                    </span>
-                  </div>
-                ) : (
-                  <GoPlus className="text-4xl text-primary" />
-                )}
-              </div>
-            ))}
+      <form
+        onSubmit={handleSubmit}
+        className="flex w-2/3 gap-3 rounded-md bg-secondary px-4 py-4 text-primary"
+      >
+        <div className="flex w-1/2 flex-col gap-4">
+          <Input
+            maxLength={30}
+            name="title"
+            type="text"
+            label="Stone Name"
+            value={formData.title}
+            placeholder="Name"
+            onChange={handleChange}
+          />
+          <Select
+            options={[
+              "- Select Type -",
+              "Marble",
+              "Quartz",
+              "Porcelain",
+              "Onyx",
+              "Granite",
+            ]}
+            label="Stone Type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+          />
+          {/* COLORS */}
+          <div className="flex flex-col gap-1">
+            <div className="flex justify-between gap-1">
+              <Select
+                label="Base Color"
+                options={colorOptions}
+                name="base"
+                value={formData.colors.base}
+                onChange={handleColorChange}
+              />
+              <Select
+                label="Vein Color"
+                options={colorOptions}
+                name="vein"
+                value={formData.colors.vein}
+                onChange={handleColorChange}
+              />
+              <Select
+                label="Second Color"
+                options={colorOptions}
+                name="secondary"
+                value={formData.colors.secondary}
+                onChange={handleColorChange}
+              />
+            </div>
           </div>
+          <div className="flex gap-1">
+            <div className="flex w-full flex-col gap-2">
+              <Select
+                label="Veins"
+                name="veins"
+                onChange={handleChange}
+                value={formData.veins}
+                options={["None", "Thick", "Thin"]}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-2">
+              <Select
+                label="Bookmatched"
+                name="bookmatched"
+                onChange={handleChange}
+                value={formData.bookmatched}
+                options={["Yes", "No"]}
+              />
+            </div>
+            <div className="flex w-full flex-col gap-2">
+              <Select
+                label="Texture Type"
+                name="textureType"
+                onChange={handleChange}
+                value={formData.textureType}
+                options={["Polished/Shiny", "Matte/Honed"]}
+              />
+            </div>
+          </div>
+          {/* IMAGES */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="image">Images</label>
+            <div className="flex justify-between">
+              {[...Array(3)].map((_, index) => (
+                <div
+                  onClick={() => {
+                    !formData.images[index] && openWidget(index);
+                  }}
+                  key={index}
+                  className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer"}`}
+                >
+                  {formData.images[index] ? (
+                    <div>
+                      <Image
+                        src={formData.images[index]}
+                        alt=""
+                        quality={100}
+                        fill
+                        className="rounded-md object-cover"
+                      />
+                      <span
+                        className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-secondary text-sm font-semibold text-primary transition lg:hover:bg-accent"
+                        onClick={() => handleRemoveImage(imageId[index], index)}
+                      >
+                        Remove
+                      </span>
+                    </div>
+                  ) : (
+                    <GoPlus className="text-4xl text-primary" />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Hidden Widgets, each tied to an index */}
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="hidden">
+              <Widget
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ref={(el: any) => (widgetRefs.current[index] = el)}
+                imagesOnly
+                publicKey={pubKey}
+                onChange={(info) => handleImageUpload(index, info)}
+                tabs="file url"
+                preferredTypes="image/*"
+                imageShrink="1024x1024"
+                imagePreviewMaxSize={4000000}
+              />
+            </div>
+          ))}
         </div>
-        {/* COLORS */}
-        <div className="flex flex-col gap-1">
-          <label className="text-sm font-semibold">Colors</label>
-          <div className="flex justify-between">
-            {[...Array(colorInputs)].map((_, index) => (
-              <div key={index} className="flex flex-col gap-4">
-                <input
-                  type="color"
-                  value={formData.colors[index]}
-                  onChange={(e) => handleColorChange(index, e.target.value)}
-                  className="h-8 w-28"
-                />
-                {index >= 1 && (
-                  <button
-                    onClick={() => handleRemoveColor(index)}
-                    type="button"
-                    className="w-28 rounded bg-secondary px-2 py-1 text-sm font-semibold text-primary"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            ))}
-            {colorInputs < 3 && (
-              <button
-                type="button"
-                onClick={handleAddColor}
-                className="flex h-8 w-28 items-center justify-center rounded bg-secondary p-2 text-sm font-semibold text-primary"
-              >
-                Add Color
-              </button>
-            )}
-          </div>
+        <div className="flex w-1/2 flex-col gap-4">
+          <Input
+            min={1}
+            max={100}
+            name="qty"
+            type="number"
+            label="Quantity in Stock"
+            value={formData.qty}
+            placeholder="1 - 100"
+            onChange={handleChange}
+          />
+          <Input
+            min={0.01}
+            max={20000}
+            name="price"
+            type="number"
+            label="Price (CAD)"
+            value={formData.price}
+            placeholder="$1000"
+            step={0.01}
+            onChange={handleChange}
+          />
+          <Input
+            min={0.01}
+            max={formData.price ? parseFloat(formData.price) - 1 : undefined}
+            name="salePrice"
+            type="number"
+            label="Sale Price (CAD) (Optional)"
+            value={formData.salePrice}
+            placeholder="$1000"
+            step={0.01}
+            onChange={handleChange}
+          />
+          <Input
+            min={0.01}
+            max={150}
+            name="height"
+            type="number"
+            label="Stone height (Inch)"
+            value={formData.height}
+            placeholder="Inches"
+            step={0.01}
+            onChange={handleChange}
+          />
+          <Input
+            min={0.01}
+            max={150}
+            name="width"
+            type="number"
+            label="Stone Width (Inch)"
+            value={formData.width}
+            placeholder="Inches"
+            step={0.01}
+            onChange={handleChange}
+          />
+          <Btn content={"Create Post"} styles="bg-secondary" />
         </div>
-        {/* Hidden Widgets, each tied to an index */}
-        {[...Array(3)].map((_, index) => (
-          <div key={index} className="hidden">
-            <Widget
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ref={(el: any) => (widgetRefs.current[index] = el)}
-              imagesOnly
-              publicKey={pubKey}
-              onChange={(info) => handleImageUpload(index, info)}
-              tabs="file url"
-              preferredTypes="image/*"
-              imageShrink="1024x1024"
-              imagePreviewMaxSize={4000000}
-            />
-          </div>
-        ))}
-        <Input
-          min={1}
-          max={100}
-          name="qty"
-          type="number"
-          label="Quantity in Stock"
-          value={formData.qty}
-          placeholder="1 - 100"
-          onChange={handleChange}
-        />
-        <Input
-          min={0.01}
-          max={20000}
-          name="price"
-          type="number"
-          label="Price (CAD)"
-          value={formData.price}
-          placeholder="$1000"
-          step={0.01}
-          onChange={handleChange}
-        />
-        <Input
-          min={0.01}
-          max={parseFloat(formData.price) - 1}
-          name="salePrice"
-          type="number"
-          label="Sale Price (CAD) (Optional)"
-          value={formData.salePrice}
-          placeholder="$1000"
-          step={0.01}
-          onChange={handleChange}
-        />
-        <Input
-          min={0.01}
-          max={150}
-          name="height"
-          type="number"
-          label="Stone height (Inch)"
-          value={formData.height}
-          placeholder="Inches"
-          step={0.01}
-          onChange={handleChange}
-        />
-        <Input
-          min={0.01}
-          max={150}
-          name="width"
-          type="number"
-          label="Stone Width (Inch)"
-          value={formData.width}
-          placeholder="Inches"
-          step={0.01}
-          onChange={handleChange}
-        />
-        <Btn content={"Create Post"} styles="bg-secondary" />
       </form>
     </div>
   );

@@ -38,7 +38,7 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="flex h-20 pb-4 items-center justify-between px-6">
+    <header className="z-30 opacity-95 flex h-20 items-center justify-between bg-secondary px-20 pb-4 text-primary shadow-md fixed w-full">
       <nav className="flex h-full items-end gap-10">
         <Link
           className="logo text-2xl font-semibold tracking-widest"
@@ -65,7 +65,7 @@ export default function Navbar({ user, session }: Props) {
               className="cursor-pointer rounded-full border-2 border-secondary bg-secondary transition duration-200 lg:hover:scale-110"
             />
             {showUserMenu && (
-              <div className="absolute right-0 top-10 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
+              <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
                 <span className="font-semibold">{user.name}</span>
                 <hr className="w-full text-primary" />
                 <Link

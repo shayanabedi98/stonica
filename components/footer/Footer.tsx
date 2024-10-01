@@ -2,7 +2,7 @@ import FooterItem from "./FooterItem";
 
 export default function Footer() {
   return (
-    <footer className="flex h-14 items-center justify-between px-6 text-xs text-accent">
+    <footer className="flex h-14 items-center justify-between bg-secondary px-6 text-xs text-accent">
       <div>
         &copy; {new Date().getFullYear()} Stonica Group. All rights Reserved.
       </div>

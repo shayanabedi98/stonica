@@ -20,9 +20,9 @@ export default async function CreateNew() {
       <Container>
         <GoBack href="/vendor/dashboard" content="Dashboard" />
         <h1 className="mb-4 text-center">Create a Post</h1>
-        <h2 className="lg:w-1/2 text-center mx-auto mb-20">
-          Build your next product post with a preview of what others will see. Don&apos;t worry,
-          you&apos;ll be able to change it later.
+        <h2 className="mx-auto mb-20 text-center lg:w-1/2">
+          Build your next product post with a preview of what others will see.
+          Don&apos;t worry, you&apos;ll be able to change it later.
         </h2>
         <div className="flex justify-center">
           <PostForm user={user} pubKey={pubKey!} fetchMethod="POST" />
