@@ -16,10 +16,10 @@ export default function Home() {
             </h2>
             <div className="flex items-center justify-center gap-4">
               <Link href={"/products"}>
-                <Btn content="Products" />
+                <Btn content="Products" styles="bg-primary" />
               </Link>
               <Link href={"/contact"}>
-                <Btn content="Contact" styles="bg-secondary" />
+                <Btn content="Contact" styles="" />
               </Link>
             </div>
           </div>
