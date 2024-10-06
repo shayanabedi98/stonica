@@ -67,5 +67,5 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .form {
-  @apply mx-auto flex min-w-[420px] flex-col gap-4 rounded-md;
+  @apply mx-auto flex min-w-[420px] flex-col gap-4 bg-secondary text-primary rounded-md px-4 py-6;
 }

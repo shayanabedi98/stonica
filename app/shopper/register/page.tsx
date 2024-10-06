@@ -7,9 +7,11 @@ export default async function ShopperRegister() {
 
   return (
     <div className="ancestor-container">
-      <h1 className="mb-20 text-center">Glad you&apos;d want to join us</h1>
       <Container>
-        <SignUpForm userType="shopper" />
+        <div className="flex flex-col items-center">
+          <h1 className="mb-20">Glad you&apos;d want to join us!</h1>
+          <SignUpForm userType="shopper" />
+        </div>
       </Container>
     </div>
   );

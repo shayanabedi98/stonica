@@ -24,7 +24,7 @@ export default function CTA({
         <p className="text-xl">{description}</p>
       </div>
       <Link href={href}>
-        <Btn content={content} styles="min-w-44" />
+        <Btn content={content} styles="min-w-44 bg-secondary" />
       </Link>
     </div>
   );

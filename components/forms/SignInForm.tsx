@@ -66,10 +66,7 @@ export default function SignInForm() {
   };
 
   return (
-    <form
-className="form"
-      onSubmit={handleSubmit}
-    >
+    <form className="form" onSubmit={handleSubmit}>
       <h3 className="self-center">Welcome back!</h3>
       <Input
         value={formData.email}
@@ -89,14 +86,14 @@ className="form"
         onChange={handleChange}
       />
       <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
-      <span className="px-2 py-1 text-sm">
+      <span className="px-2 py-1 text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link className="underline" href={"/vendor/register"}>
           Click here
         </Link>
       </span>
       <Link
-        className="px-2 py-1 text-sm underline"
+        className="px-2 py-1 text-center text-sm underline"
         href={"/vendor/forgot-password"}
       >
         Forgot Password?

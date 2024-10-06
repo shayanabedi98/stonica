@@ -35,8 +35,8 @@ export default function Join() {
       </div>
       <div className="ancestor-container bg-secondary">
         <Container>
-          <div className="flex items-center justify-center bg-primary">
-            <div className="w-full text-center xl:border-r-2">
+          <div className="flex items-center justify-center gap-1">
+            <div className="rounded-md w-full bg-primary text-center">
               <CTA
                 icon={<FaShoppingBag />}
                 content="Shopper Sign up"
@@ -45,7 +45,7 @@ export default function Join() {
                 heading="Become a Shopper"
               />
             </div>
-            <div className="w-full bg-red-500 text-center xl:border-l-2">
+            <div className="rounded-md w-full bg-primary text-center">
               <CTA
                 icon={<MdSell />}
                 content="Vendor Sign up"
@@ -55,10 +55,10 @@ export default function Join() {
               />
             </div>
           </div>
-          <div className="flex w-full flex-col items-center justify-center mt-1 gap-4 bg-primary py-6">
+          <div className="mt-1 flex w-full flex-col items-center justify-center gap-4 border-2 rounded-md bg-secondary text-primary py-8">
             <h3>Already have an account?</h3>
             <Link href={"/sign-in"}>
-              <Btn content={"Sign in"} styles="min-w-44" />
+              <Btn content={"Sign in"} styles="min-w-44 bg-primary" />
             </Link>
           </div>
         </Container>

@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export default function SignUpForm({ userType }: { userType: string }) {
+export default function SignUpForm({ userType }: { userType: "shopper" | "vendor" }) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",

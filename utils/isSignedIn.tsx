@@ -18,9 +18,11 @@ export default async function isSignedIn(
     user = null;
   }
 
-  if (page !== "sign-in") {
-    if (!user) {
-      redirect("/sign-in");
+  if (page) {
+    if (page !== "sign-in") {
+      if (!user) {
+        redirect("/sign-in");
+      }
     }
   }
 

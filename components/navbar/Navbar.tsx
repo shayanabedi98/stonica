@@ -5,7 +5,7 @@ import NavbarItem from "./NavbarItem";
 import { signOut } from "next-auth/react";
 import Btn from "../Btn";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type Props = {
@@ -20,6 +20,7 @@ export default function Navbar({ user, session }: Props) {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const router = useRouter();
   const userMenu = useRef<null | HTMLDivElement>(null);
+  const path = usePathname();
 
   useEffect(() => {
     const closeMenu = (e: MouseEvent) => {
@@ -38,7 +39,7 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="z-30 opacity-95 flex h-20 items-center justify-between bg-secondary px-20 pb-4 text-primary shadow-md fixed w-full">
+    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-secondary px-20 pb-4 text-primary opacity-95 shadow-md">
       <nav className="flex h-full items-end gap-10">
         <Link
           className="logo text-2xl font-semibold tracking-widest"
@@ -91,11 +92,13 @@ export default function Navbar({ user, session }: Props) {
             )}
           </div>
         ) : (
-          <Btn
-            content="Join"
-            onClick={() => router.push("/join")}
-            styles="bg-primary"
-          />
+          path !== "/join" && (
+            <Btn
+              content="Join"
+              onClick={() => router.push("/join")}
+              styles="bg-primary"
+            />
+          )
         )}
       </div>
     </header>
