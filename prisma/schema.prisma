@@ -21,12 +21,16 @@ model User {
   zipPostalCode    String?
   phone            String?
   image            String?
+  imageId          String?
   latitude         Float?
   longitude        Float?
   posts            Post[]
   hashedPassword   String?
   isAdmin          Boolean
   isVendor         Boolean
+  instagram        String?
+  website          String?
+  facebook         String?
   resetToken       String?
   resetTokenExpiry DateTime?
   accounts         Account[]
@@ -66,20 +70,20 @@ model Session {
 }
 
 model Post {
-  id           String   @id @default(cuid())
-  User         User?    @relation(fields: [userId], references: [id])
-  userId       String?
-  price        String
-  salePrice    String?
-  images       String[]
-  qty          Int
-  title        String
-  type         String
+  id          String   @id @default(cuid())
+  User        User?    @relation(fields: [userId], references: [id])
+  userId      String?
+  price       String
+  salePrice   String?
+  images      String[]
+  qty         Int
+  title       String
+  type        String
   textureType String
-  colors       Json
-  veins        String
-  bookmatched  String
-  width        String?
-  height       String?
-  imageId      String[]
+  colors      String[]
+  veins       String
+  bookmatched String
+  width       String?
+  height      String?
+  imageId     String[]
 }

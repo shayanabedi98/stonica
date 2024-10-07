@@ -88,13 +88,13 @@ export default function SignInForm() {
       <Btn content={loading ? <Loader /> : "Sign In"} styles="bg-primary" />
       <span className="px-2 py-1 text-center text-sm">
         Don&apos;t have an account?{" "}
-        <Link className="underline" href={"/vendor/register"}>
+        <Link className="underline" href={"/join#options"}>
           Click here
         </Link>
       </span>
       <Link
         className="px-2 py-1 text-center text-sm underline"
-        href={"/vendor/forgot-password"}
+        href={"/forgot-password"}
       >
         Forgot Password?
       </Link>

@@ -54,7 +54,7 @@ export default async function Dashboard() {
     return (
       <Link
         href={href}
-        className="lg:hover:bg-hover flex min-h-11 w-full items-center gap-2 rounded-md bg-secondary px-1 text-primary transition"
+        className="flex min-h-11 w-full items-center gap-2 rounded-md bg-secondary px-1 text-primary transition lg:hover:bg-hover"
       >
         <div className="text-xl">{icon}</div>
         <p className="text-sm">{title}</p>

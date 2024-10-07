@@ -276,7 +276,7 @@ export default function PostForm({
                     !formData.images[index] && openWidget(index);
                   }}
                   key={index}
-                  className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer"}`}
+                  className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer lg:hover:bg-accent"}`}
                 >
                   {formData.images[index] ? (
                     <div>
@@ -288,7 +288,7 @@ export default function PostForm({
                         className="rounded-md object-cover"
                       />
                       <span
-                        className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-secondary text-sm font-semibold text-primary transition lg:hover:bg-accent"
+                        className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-primary text-sm font-semibold text-secondary transition lg:hover:bg-accent"
                         onClick={() =>
                           handleRemoveImage(formData.imageId[index], index)
                         }

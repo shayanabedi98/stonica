@@ -35,7 +35,7 @@ export default function Join() {
       </div>
       <div className="ancestor-container bg-secondary">
         <Container>
-          <div className="flex items-center justify-center gap-1">
+          <div id="options" className="flex items-center justify-center gap-1">
             <div className="rounded-md w-full bg-primary text-center">
               <CTA
                 icon={<FaShoppingBag />}

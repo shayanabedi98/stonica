@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Input from "./Input";
 import Btn from "../Btn";
 import toast from "react-hot-toast";
@@ -8,6 +9,7 @@ import Loader from "../other/Loader";
 import { useRouter } from "next/navigation";
 import { Widget } from "@uploadcare/react-widget";
 import Image from "next/image";
+import { GoPlus } from "react-icons/go";
 
 type User = {
   name: string;
@@ -20,6 +22,10 @@ type User = {
   stateProvince: string | null;
   zipPostalCode: string | null;
   image: string | null;
+  imageId: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  website: string | null;
 };
 
 type Props = {
@@ -33,19 +39,29 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     email: existingUserData.email || "",
     phone: existingUserData.phone || "",
     image: existingUserData.image || "",
-    imageId: "",
+    imageId: existingUserData.imageId || "",
     companyName: existingUserData.companyName || "",
     street: existingUserData.street || "",
     aptNum: existingUserData.aptNum || "",
     city: existingUserData.city || "",
     stateProvince: existingUserData.stateProvince || "",
     zipPostalCode: existingUserData.zipPostalCode || "",
+    instagram: existingUserData.instagram || "",
+    facebook: existingUserData.facebook || "",
+    website: existingUserData.website || "",
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const widgetRefs = useRef<any>();
 
   const handleChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const openWidget = () => {
+    if (widgetRefs.current) {
+      widgetRefs.current.openDialog();
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +98,8 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     setLoading(true);
 
     const requiredFields = Object.keys(formData).filter(
-      (key) => key !== "aptNum",
+      (key) =>
+        ["aptNum", "instagram", "facebook", "website"].includes(key) == false,
     );
 
     if (requiredFields.some((key) => !formData[key as keyof typeof formData])) {
@@ -109,7 +126,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
       }
 
       // Only proceed with settings update if geocoding was successful
-      const res = await fetch("/api/settings", {
+      const res = await fetch("/api/account-settings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,7 +151,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     }
   };
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <form onSubmit={handleSubmit} className="account-setup-form">
       <Input
         label="Name *"
         placeholder="Pick a name"
@@ -163,41 +180,45 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
         value={formData.companyName}
         onChange={handleChange}
       />
-      <div className="flex flex-col gap-2">
-        <label htmlFor="image">Company Logo</label>
-        {!formData.image ? (
+      <label className="text-sm font-semibold">Company Logo</label>
+      <div
+        onClick={() => {
+          !formData.image && openWidget();
+        }}
+        className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition ${formData.image ? "cursor-default" : "cursor-pointer lg:hover:bg-accent"}`}
+      >
+        {formData.image ? (
+          <div>
+            <Image
+              src={formData.image}
+              alt=""
+              quality={100}
+              fill
+              className="rounded-md object-cover"
+            />
+            <span
+              className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-primary text-sm font-semibold text-secondary transition lg:hover:bg-accent"
+              onClick={() => handleRemoveImage(formData.imageId)}
+            >
+              Remove
+            </span>
+          </div>
+        ) : (
+          <GoPlus className="text-4xl text-primary" />
+        )}
+        <div className="hidden">
           <Widget
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ref={(el: any) => (widgetRefs.current = el)}
             imagesOnly
             publicKey={pubKey}
-            onChange={handleImageUpload}
-            value={formData.image}
+            onChange={(info) => handleImageUpload(info)}
             tabs="file url"
             preferredTypes="image/*"
-            crop="1:1"
             imageShrink="1024x1024"
             imagePreviewMaxSize={4000000}
-            // clearable={true}
-            // crop="400x400"
-            // multiple={true}
-            // multipleMax={3}
           />
-        ) : (
-          <span
-            className="w-40 cursor-pointer rounded-md bg-secondary px-4 py-2 text-center font-semibold text-primary"
-            onClick={() => handleRemoveImage(formData.imageId)}
-          >
-            Remove Image
-          </span>
-        )}
-        {formData.image && (
-          <Image
-            src={formData.image}
-            alt="Company Logo"
-            className="mt-2 h-20 w-20 object-cover"
-            width={100}
-            height={100}
-          />
-        )}
+        </div>
       </div>
       <Input
         label="Phone *"
@@ -255,7 +276,40 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
         value={formData.zipPostalCode}
         onChange={handleChange}
       />
-      <Btn content={loading ? <Loader /> : "Update Info"} styles="bg-primary" />
+      <Input
+        notRequired
+        label="Instagram (URL)"
+        placeholder="Instagram URL"
+        name="instagram"
+        type="text"
+        autoComplete="off"
+        value={formData.instagram}
+        onChange={handleChange}
+      />
+      <Input
+        notRequired
+        label="Facebook (URL)"
+        placeholder="Instagram URL"
+        name="facebook"
+        type="text"
+        autoComplete="off"
+        value={formData.facebook}
+        onChange={handleChange}
+      />
+      <Input
+        notRequired
+        label="Website (URL)"
+        placeholder="https://www.company.com"
+        name="website"
+        type="text"
+        autoComplete="off"
+        value={formData.website}
+        onChange={handleChange}
+      />
+      <Btn
+        content={loading ? <Loader /> : "Update Info"}
+        styles="bg-primary w-36 mx-auto"
+      />
     </form>
   );
 }

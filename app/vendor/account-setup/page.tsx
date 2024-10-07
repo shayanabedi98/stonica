@@ -31,6 +31,9 @@ export default async function AccountSetup() {
           stateProvince: true,
           zipPostalCode: true,
           image: true,
+          instagram: true,
+          facebook: true,
+          website: true
         },
       });
     } catch (error) {
@@ -42,11 +45,11 @@ export default async function AccountSetup() {
     <div className="ancestor-container">
       <Container>
         <div>
-          <h1 className="text-center">Account Setup</h1>
-          <h3 className="mt-10 text-center">
+          <h1 className="text-center mb-10">Account Setup</h1>
+          <h3 className="mb-10-10 text-center">
             Feel free to change any information needed
           </h3>
-          <div className="mx-auto mt-20 flex max-w-[420px] items-center justify-center rounded-sm border-2 px-4 py-6">
+          <div className="flex items-center justify-center rounded-sm px-4 py-6">
             {user && session && (
               <AccountSetupForm existingUserData={user} pubKey={pubKey!} />
             )}

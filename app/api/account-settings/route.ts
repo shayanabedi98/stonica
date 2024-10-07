@@ -17,6 +17,10 @@ export async function POST(req: Request) {
     aptNum,
     stateProvince,
     zipPostalCode,
+    imageId,
+    instagram,
+    facebook,
+    website,
   } = formData;
 
   if (!session) {
@@ -36,6 +40,10 @@ export async function POST(req: Request) {
           aptNum: aptNum ? aptNum : null,
           stateProvince,
           zipPostalCode,
+          imageId,
+          instagram,
+          facebook,
+          website,
         },
       });
       return NextResponse.json(updateUserInfo);

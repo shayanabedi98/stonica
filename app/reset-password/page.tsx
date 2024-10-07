@@ -6,7 +6,7 @@ export default function ResetPassword() {
     <div className="ancestor-container">
       <Container>
         <div className="flex flex-col items-center">
-          <h3 className="self-center"></h3>
+          <h1 className="mb-20">Reset password</h1>
           <ResetPasswordForm />
         </div>
       </Container>

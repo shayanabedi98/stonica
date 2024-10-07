@@ -95,7 +95,7 @@ export default function ResetPasswordForm() {
           password: "",
           confirmPassword: "",
         });
-        router.push("/vendor/sign-in");
+        router.push("/sign-in");
       }
     } catch (error) {
       toast.error("Something wen wrong, try again later");
@@ -108,66 +108,61 @@ export default function ResetPasswordForm() {
   };
 
   return (
-      <form
-        className="form"
-        onSubmit={handleSubmit}
-      >
-        <h3 className="self-center">Reset Password</h3>
-        <Input
-          value={formData.password}
-          placeholder="New Password"
-          name="password"
-          label="Password"
-          type="password"
-          onChange={handleChange}
-        />
-        <div className="text-xs">
-          <p>Minimum Requirements:</p>
-          <ul className="list-disc pl-4">
-            <li
-              className={
-                meetsRequirements.minLength ? "text-green-500" : "text-red-500"
-              }
-            >
-              8 characters
-            </li>
-            <li
-              className={
-                meetsRequirements.specialChar
-                  ? "text-green-500"
-                  : "text-red-500"
-              }
-            >
-              1 special character
-            </li>
-            <li
-              className={
-                meetsRequirements.numChar ? "text-green-500" : "text-red-500"
-              }
-            >
-              1 number
-            </li>
-            <li
-              className={
-                meetsRequirements.capChar ? "text-green-500" : "text-red-500"
-              }
-            >
-              1 capital letter
-            </li>
-          </ul>
-        </div>
-        <Input
-          value={formData.confirmPassword}
-          placeholder="Confirm password"
-          name="confirmPassword"
-          label="Confirm Password"
-          type="password"
-          onChange={handleChange}
-        />
-        <Btn
-          content={loading ? <Loader /> : "Reset Password"}
-          styles="bg-primary"
-        />
-      </form>
+    <form className="form" onSubmit={handleSubmit}>
+      <Input
+        showPasswordOption
+        value={formData.password}
+        placeholder="New Password"
+        name="password"
+        label="Password"
+        type="password"
+        onChange={handleChange}
+      />
+      <div className="text-xs">
+        <p>Minimum Requirements:</p>
+        <ul className="list-disc pl-4">
+          <li
+            className={
+              meetsRequirements.minLength ? "text-green-500" : "text-red-500"
+            }
+          >
+            8 characters
+          </li>
+          <li
+            className={
+              meetsRequirements.specialChar ? "text-green-500" : "text-red-500"
+            }
+          >
+            1 special character
+          </li>
+          <li
+            className={
+              meetsRequirements.numChar ? "text-green-500" : "text-red-500"
+            }
+          >
+            1 number
+          </li>
+          <li
+            className={
+              meetsRequirements.capChar ? "text-green-500" : "text-red-500"
+            }
+          >
+            1 capital letter
+          </li>
+        </ul>
+      </div>
+      <Input
+        value={formData.confirmPassword}
+        placeholder="Confirm password"
+        name="confirmPassword"
+        label="Confirm Password"
+        type="password"
+        onChange={handleChange}
+      />
+      <Btn
+        content={loading ? <Loader /> : "Reset Password"}
+        styles="bg-primary"
+      />
+    </form>
   );
 }

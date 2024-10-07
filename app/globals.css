@@ -67,5 +67,11 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .form {
-  @apply mx-auto flex min-w-[420px] flex-col gap-4 bg-secondary text-primary rounded-md px-4 py-6;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  @apply mx-auto flex min-w-[420px] flex-col gap-4 rounded-md bg-secondary px-4 py-6 text-primary;
+}
+
+.account-setup-form {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  @apply mx-auto flex min-w-[480px] flex-col gap-4 rounded-md bg-secondary px-4 py-6 text-primary;
 }

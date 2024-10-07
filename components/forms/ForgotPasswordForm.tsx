@@ -58,10 +58,7 @@ export default function ForgotPasswordForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <p className="text-center">
-        Provide an email address and if found, you&apos;ll receive a reset
-        password link
-      </p>
+      <p className="text-center">Provide an email address</p>
       <Input
         value={formData.email}
         placeholder="johndoe@email.com"
@@ -74,7 +71,7 @@ export default function ForgotPasswordForm() {
         content={loading ? <Loader /> : "Request Reset"}
         styles="bg-primary"
       />
-      <span className="px-2 py-1 text-sm">
+      <span className="px-2 py-1 text-sm text-center">
         Never mind, take me back{" "}
         <Link className="underline" href={"/sign-in"}>
           Click here
