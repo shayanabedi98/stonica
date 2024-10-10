@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   const session = await getServerSession(authOptions);
-  const { formData } = await req.json();
+  const { formData, waitingForDelete } = await req.json();
 
   if (!session) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
@@ -55,6 +55,23 @@ export async function PUT(req: Request) {
       const getUser = await prisma.user.findUnique({
         where: { email: session.user?.email as string },
       });
+
+      if (waitingForDelete.length > 0) {
+        const deleteId = waitingForDelete.filter(
+          (item: string) => formData.imageId.includes(item) == false,
+        );
+
+        for (let i = 0; i < deleteId.length; i++) {
+          const fileId = deleteId[i];
+          await fetch(`https://api.uploadcare.com/files/${fileId}/`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Uploadcare.Simple ${process.env.UPLOAD_CARE_PUBLIC_KEY}:${process.env.UPLOAD_CARE_SECRET_KEY}`,
+            },
+          });
+        }
+      }
 
       if (getUser) {
         const createPost = await prisma.post.update({

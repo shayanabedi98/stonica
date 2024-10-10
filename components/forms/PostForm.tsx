@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Input from "./Input";
 import Select from "./Select";
 import Image from "next/image";
@@ -77,10 +77,24 @@ export default function PostForm({
     "Cream",
     "Silver",
   ];
+  const [waitingForDelete, setWaitingForDelete] = useState<string[]>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const widgetRefs = useRef<Array<any>>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    const handleUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
 
   const openWidget = (index: number) => {
     if (widgetRefs.current[index]) {
@@ -106,15 +120,6 @@ export default function PostForm({
     });
   };
 
-  const handleColorChange = (name: string, value: string) => {
-    const colors = ["base", "vein", "secondary"];
-    const index = colors.indexOf(name);
-    setFormData((prev) => ({
-      ...prev,
-      colors: prev.colors.map((i, idx) => (idx === index ? value : i)),
-    }));
-  };
-
   const handleRemoveImage = async (id: string, index: number) => {
     if (fetchMethod == "POST") {
       try {
@@ -135,7 +140,24 @@ export default function PostForm({
         setFormData((prev) => ({ ...prev, images: newImages }));
       }
     } else if (fetchMethod == "PUT") {
+      const newImageId = formData.imageId.filter((i) => i !== id);
+      const newImages = formData.images.filter((_, idx) => idx !== index);
+      setFormData((prev) => ({
+        ...prev,
+        imageId: newImageId,
+        images: newImages,
+      }));
+      setWaitingForDelete((prev) => [...prev, id]);
     }
+  };
+
+  const handleColorChange = (name: string, value: string) => {
+    const colors = ["base", "vein", "secondary"];
+    const index = colors.indexOf(name);
+    setFormData((prev) => ({
+      ...prev,
+      colors: prev.colors.map((i, idx) => (idx === index ? value : i)),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -157,7 +179,7 @@ export default function PostForm({
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({ formData, waitingForDelete }),
       });
 
       if (res.ok) {
