@@ -58,7 +58,7 @@ export async function PUT(req: Request) {
 
       if (getUser) {
         const createPost = await prisma.post.update({
-          where: {id: formData.id},
+          where: { id: formData.id },
           data: {
             userId: getUser?.id,
             price: formData.price,

@@ -34,7 +34,7 @@ type Props = {
     salePrice?: string | null;
     imageId: string[];
     qty: number;
-    colors: { base: string; vein: string; secondary: string } | null;
+    colors: string[] | null;
   };
   fetchMethod: "PUT" | "POST";
 };
@@ -58,11 +58,7 @@ export default function PostForm({
     qty: postData?.qty || 0,
     veins: postData?.veins || "Thin",
     bookmatched: postData?.bookmatched || "No",
-    colors: postData?.colors || {
-      base: "Black",
-      vein: "White",
-      secondary: "None",
-    },
+    colors: postData?.colors || ["Black", "None", "None"],
     imageId: postData?.imageId || [],
   });
   const colorOptions = [
@@ -111,32 +107,34 @@ export default function PostForm({
   };
 
   const handleColorChange = (name: string, value: string) => {
+    const colors = ["base", "vein", "secondary"];
+    const index = colors.indexOf(name);
     setFormData((prev) => ({
       ...prev,
-      colors: {
-        ...prev.colors,
-        [name]: value,
-      },
+      colors: prev.colors.map((i, idx) => (idx === index ? value : i)),
     }));
   };
 
   const handleRemoveImage = async (id: string, index: number) => {
-    try {
-      const res = await fetch("/api/upload-care", {
-        method: "DELETE",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
+    if (fetchMethod == "POST") {
+      try {
+        const res = await fetch("/api/upload-care", {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
 
-      if (res.ok) {
-        toast.success("Removed Image");
+        if (res.ok) {
+          toast.success("Removed Image");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to remove image");
+      } finally {
+        const newImages = formData.images.filter((_, idx) => idx !== index);
+        setFormData((prev) => ({ ...prev, images: newImages }));
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to remove image");
-    } finally {
-      const newImages = formData.images.filter((_, idx) => idx !== index);
-      setFormData((prev) => ({ ...prev, images: newImages }));
+    } else if (fetchMethod == "PUT") {
     }
   };
 
@@ -148,7 +146,7 @@ export default function PostForm({
       return;
     }
 
-    if (formData.colors.base == "None") {
+    if (formData.colors[0] == "None") {
       toast.error("Please pick a base color");
       return;
     }
@@ -218,21 +216,21 @@ export default function PostForm({
                 label="Base Color"
                 options={colorOptions}
                 name="base"
-                value={formData.colors.base}
+                value={formData.colors[0]}
                 onChange={handleColorChange}
               />
               <Select
                 label="Vein Color"
                 options={colorOptions}
                 name="vein"
-                value={formData.colors.vein}
+                value={formData.colors[1]}
                 onChange={handleColorChange}
               />
               <Select
                 label="Second Color"
                 options={colorOptions}
                 name="secondary"
-                value={formData.colors.secondary}
+                value={formData.colors[2]}
                 onChange={handleColorChange}
               />
             </div>
@@ -376,7 +374,12 @@ export default function PostForm({
             step={0.01}
             onChange={handleChange}
           />
-          <Btn content={"Create Post"} styles="bg-secondary" />
+          <Btn
+            content={
+              fetchMethod == "POST" ? "Create Product" : "Update Product"
+            }
+            styles="bg-secondary"
+          />
         </div>
       </form>
     </div>
