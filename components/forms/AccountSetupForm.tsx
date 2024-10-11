@@ -31,9 +31,14 @@ type User = {
 type Props = {
   existingUserData: User;
   pubKey: string;
+  fetchMethod: "PUT" | "POST";
 };
 
-export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
+export default function AccountSetupForm({
+  existingUserData,
+  pubKey,
+  fetchMethod,
+}: Props) {
   const [formData, setFormData] = useState({
     name: existingUserData.name || "",
     email: existingUserData.email || "",
@@ -50,6 +55,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
     facebook: existingUserData.facebook || "",
     website: existingUserData.website || "",
   });
+  const [waitingForDelete, setWaitingForDelete] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const widgetRefs = useRef<any>();
@@ -74,22 +80,28 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
   };
 
   const handleRemoveImage = async (id: string) => {
-    try {
-      const res = await fetch("/api/upload-care", {
-        method: "DELETE",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
+    if (fetchMethod == "POST") {
+      try {
+        const res = await fetch("/api/upload-care", {
+          method: "DELETE",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
 
-      if (res.ok) {
-        toast.success("Removed Image");
+        if (res.ok) {
+          toast.success("Removed Image");
+        }
+      } catch (error) {
+        console.log(error);
+
+        toast.error("Failed to remove image");
+      } finally {
+        setFormData((prev) => ({ ...prev, image: "" }));
       }
-    } catch (error) {
-      console.log(error);
-
-      toast.error("Failed to remove image");
-    } finally {
-      setFormData((prev) => ({ ...prev, image: "" }));
+    } else if (fetchMethod == "PUT") {
+      toast.success("Removed Image");
+      setFormData((prev) => ({ ...prev, imageId: "", image: "" }));
+      setWaitingForDelete(id);
     }
   };
 
@@ -127,12 +139,13 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
 
       // Only proceed with settings update if geocoding was successful
       const res = await fetch("/api/account-settings", {
-        method: "POST",
+        method: fetchMethod,
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           formData,
+          waitingForDelete,
         }),
       });
 
@@ -141,7 +154,7 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
         router.push("/vendor/dashboard");
         router.refresh();
       } else {
-        throw new Error("Failed to update settings");
+        throw new Error("Failed to update account information");
       }
     } catch (error) {
       console.error("Form submission error:", error);
@@ -152,43 +165,15 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
   };
   return (
     <form onSubmit={handleSubmit} className="account-setup-form">
-      <Input
-        label="Name *"
-        placeholder="Pick a name"
-        name="name"
-        type="text"
-        autoComplete="off"
-        value={formData.name}
-        onChange={handleChange}
-      />
-      <Input
-        disabled
-        label="Email"
-        placeholder="Pick a name"
-        name="email"
-        type="email"
-        autoComplete="off"
-        value={formData.email}
-        onChange={handleChange}
-      />
-      <Input
-        label="Company Name *"
-        placeholder="Stone Supplier Co."
-        name="companyName"
-        type="text"
-        autoComplete="off"
-        value={formData.companyName}
-        onChange={handleChange}
-      />
-      <label className="text-sm font-semibold">Company Logo</label>
+      <label className="text-sm font-semibold">Company Logo *</label>
       <div
         onClick={() => {
           !formData.image && openWidget();
         }}
-        className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition ${formData.image ? "cursor-default" : "cursor-pointer lg:hover:bg-accent"}`}
+        className={`flex flex-col items-center justify-center rounded-md bg-secondary transition ${formData.image ? "cursor-default" : "cursor-pointer lg:hover:bg-accent"}`}
       >
         {formData.image ? (
-          <div>
+          <div className="relative h-40 w-40">
             <Image
               src={formData.image}
               alt=""
@@ -220,6 +205,34 @@ export default function AccountSetupForm({ existingUserData, pubKey }: Props) {
           />
         </div>
       </div>
+      <Input
+        label="Name *"
+        placeholder="Pick a name"
+        name="name"
+        type="text"
+        autoComplete="off"
+        value={formData.name}
+        onChange={handleChange}
+      />
+      <Input
+        disabled
+        label="Email"
+        placeholder="Pick a name"
+        name="email"
+        type="email"
+        autoComplete="off"
+        value={formData.email}
+        onChange={handleChange}
+      />
+      <Input
+        label="Company Name *"
+        placeholder="Stone Supplier Co."
+        name="companyName"
+        type="text"
+        autoComplete="off"
+        value={formData.companyName}
+        onChange={handleChange}
+      />
       <Input
         label="Phone *"
         placeholder="1234567890"

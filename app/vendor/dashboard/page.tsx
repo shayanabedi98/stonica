@@ -87,7 +87,7 @@ export default async function Dashboard() {
         />
         <DashboardOptions
           icon={<BsPencilFill />}
-          href="/vendor/dashboard/edit-account"
+          href="/vendor/edit-account"
           title="Edit Account"
         />
         <DashboardOptions

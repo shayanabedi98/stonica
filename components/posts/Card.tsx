@@ -10,25 +10,11 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Btn from "../Btn";
 import toast from "react-hot-toast";
+import { Product, User } from "@/types";
 
 type Props = {
-  user: {
-    companyName: string | null;
-    phone: string | null;
-    image: string | null;
-    city: string | null;
-    stateProvince: string | null;
-  } | null;
-  formData?: {
-    id?: string;
-    title: string;
-    type: string;
-    images: string[];
-    price: string;
-    salePrice?: string | null;
-    qty: number;
-    imageId: string[];
-  };
+  user: User | null;
+  formData?: Product | null;
 };
 
 export default function Card({ user, formData }: Props) {

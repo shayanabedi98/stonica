@@ -10,32 +10,12 @@ import { GoPlus } from "react-icons/go";
 import Card from "../posts/Card";
 import Btn from "../Btn";
 import { useRouter } from "next/navigation";
+import { Product, User } from "@/types";
 
 type Props = {
-  user: {
-    companyName: string | null;
-    phone: string | null;
-    image: string | null;
-    city: string | null;
-    stateProvince: string | null;
-  } | null;
+  user: User | null;
   pubKey: string;
-  postData?: {
-    id: string;
-    textureType: string;
-    title: string;
-    type: string;
-    width: string | null;
-    height: string | null;
-    images: string[];
-    veins: string;
-    bookmatched: string;
-    price: string;
-    salePrice?: string | null;
-    imageId: string[];
-    qty: number;
-    colors: string[] | null;
-  };
+  postData?: Product
   fetchMethod: "PUT" | "POST";
 };
 

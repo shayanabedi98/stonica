@@ -3,6 +3,18 @@ import { authOptions } from "../auth/[...nextauth]/options";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 
+export async function GET() {
+  try {
+    const getPosts = await prisma.post.findMany({
+      include: { User: true },
+    });
+    return NextResponse.json(getPosts);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ message: "Could not get products" });
+  }
+}
+
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   const { formData } = await req.json();

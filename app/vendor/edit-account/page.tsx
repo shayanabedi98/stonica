@@ -2,13 +2,10 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import Container from "@/components/Container";
 import AccountSetupForm from "@/components/forms/AccountSetupForm";
 import prisma from "@/lib/db";
-import isAccountSetup from "@/utils/isAccountSetup";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function AccountSetup() {
-  await isAccountSetup("account-setup");
-
+export default async function EditAccount() {
   const session = await getServerSession(authOptions);
   const pubKey = process.env.UPLOAD_CARE_PUBLIC_KEY;
   let user;
@@ -52,7 +49,7 @@ export default async function AccountSetup() {
           </h3>
           <div className="flex items-center justify-center rounded-sm px-4 py-6">
             {user && session && (
-              <AccountSetupForm fetchMethod="POST" existingUserData={user} pubKey={pubKey!} />
+              <AccountSetupForm fetchMethod="PUT" existingUserData={user} pubKey={pubKey!} />
             )}
           </div>
         </div>
