@@ -6,7 +6,7 @@ export default async function ProductsPage() {
     <div className="ancestor-container">
       <Container>
         <div>
-            <ProductsList />
+          <ProductsList />
         </div>
       </Container>
     </div>

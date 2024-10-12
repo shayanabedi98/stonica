@@ -5,6 +5,7 @@ import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
 import { GiStoneTablet } from "react-icons/gi";
+import { IoBookmark } from "react-icons/io5";
 import { formatPrice } from "@/utils/formatPrice";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -20,6 +21,25 @@ type Props = {
 export default function Card({ user, formData }: Props) {
   const path = usePathname();
   const router = useRouter();
+
+  const handleWishlist = async (id: string | undefined) => {
+    try {
+      const res = await fetch("/api/post/wishlist", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      const data = await res.json();
+      if (data.message == "Cannot add duplicates") {
+        toast.error("Already Wishlisted");
+      } else if (res.ok) {
+        toast.success("Added to Wishlist");
+        router.refresh();
+      }
+    } catch (error) {
+      toast.error("Something went wrong, try again later");
+    }
+  };
 
   const handleDelete = async (id: string, imageId: string[] | undefined) => {
     const confirmed = confirm("Are you sure you want to delete this product?");
@@ -146,6 +166,15 @@ export default function Card({ user, formData }: Props) {
             </p>
             <p>{user?.phone}</p>
           </div>
+          {path.includes("/vendor") === false && (
+            <span
+              className="flex cursor-pointer items-center justify-center gap-1 transition lg:hover:text-neutral-300"
+              onClick={() => handleWishlist(formData?.id)}
+            >
+              <IoBookmark className="text-2xl" />
+              Wishlist
+            </span>
+          )}
           {path == "/vendor/dashboard" ? (
             <div className="flex items-center justify-between">
               <Link
