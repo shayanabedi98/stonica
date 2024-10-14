@@ -8,6 +8,7 @@ export type User = {
   phone: string | null;
   image: string | null;
   isVendor?: boolean;
+  wishlist: string[] | null;
 } | null;
 
 export type Product = {

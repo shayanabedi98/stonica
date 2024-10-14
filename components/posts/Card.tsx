@@ -6,6 +6,7 @@ import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";
 import { GiStoneTablet } from "react-icons/gi";
 import { IoBookmark } from "react-icons/io5";
+import { IoBookmarkOutline } from "react-icons/io5";
 import { formatPrice } from "@/utils/formatPrice";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -14,30 +15,33 @@ import toast from "react-hot-toast";
 import { Product, User } from "@/types";
 
 type Props = {
+  signedInUser?: User | null;
   user: User | null;
   formData?: Product | null;
 };
 
-export default function Card({ user, formData }: Props) {
+export default function Card({ signedInUser, user, formData }: Props) {
   const path = usePathname();
   const router = useRouter();
 
   const handleWishlist = async (id: string | undefined) => {
-    try {
-      const res = await fetch("/api/post/wishlist", {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
-      const data = await res.json();
-      if (data.message == "Cannot add duplicates") {
-        toast.error("Already Wishlisted");
-      } else if (res.ok) {
-        toast.success("Added to Wishlist");
-        router.refresh();
+    if (signedInUser) {
+      try {
+        const res = await fetch("/api/post/wishlist", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ id }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          toast.success(data.message);
+          router.refresh();
+        }
+      } catch (error) {
+        toast.error("Something went wrong, try again later");
       }
-    } catch (error) {
-      toast.error("Something went wrong, try again later");
+    } else {
+      router.push("/sign-in");
     }
   };
 
@@ -171,7 +175,11 @@ export default function Card({ user, formData }: Props) {
               className="flex cursor-pointer items-center justify-center gap-1 transition lg:hover:text-neutral-300"
               onClick={() => handleWishlist(formData?.id)}
             >
-              <IoBookmark className="text-2xl" />
+              {signedInUser?.wishlist?.includes(formData?.id as string) ? (
+                <IoBookmark className="text-2xl" />
+              ) : (
+                <IoBookmarkOutline className="text-2xl" />
+              )}
               Wishlist
             </span>
           )}
