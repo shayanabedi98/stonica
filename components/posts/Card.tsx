@@ -170,16 +170,16 @@ export default function Card({ signedInUser, user, formData }: Props) {
             </p>
             <p>{user?.phone}</p>
           </div>
+          {/* Wishlist button */}
           {path.includes("/vendor") === false && (
-            <span
-              className="flex cursor-pointer items-center justify-center gap-1 transition lg:hover:text-neutral-300"
-              onClick={() => handleWishlist(formData?.id)}
-            >
-              {signedInUser?.wishlist?.includes(formData?.id as string) ? (
-                <IoBookmark className="text-2xl" />
-              ) : (
-                <IoBookmarkOutline className="text-2xl" />
-              )}
+            <span className="flex cursor-pointer items-center justify-center gap-1 transition">
+              <div onClick={() => handleWishlist(formData?.id)}>
+                {signedInUser?.wishlist?.includes(formData?.id as string) ? (
+                  <IoBookmark className="wishlist" />
+                ) : (
+                  <IoBookmarkOutline className="wishlist" />
+                )}
+              </div>
               Wishlist
             </span>
           )}

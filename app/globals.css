@@ -58,6 +58,14 @@ input[type="color"]::-webkit-color-swatch {
   @apply min-h-[calc(100dvh-56px)] pb-40 pt-44;
 }
 
+.ancestor-container-home {
+  @apply min-h-[calc(100dvh-56px)] pb-40 pt-20;
+}
+
+.screen-sized-image {
+  @apply min-h-[calc(100dvh-80px)];
+}
+
 .nav-foot-margin {
   @apply mt-14;
 }
@@ -67,11 +75,19 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .form {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   @apply mx-auto flex min-w-[420px] flex-col gap-4 rounded-md bg-secondary px-4 py-6 text-primary;
 }
 
 .account-setup-form {
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  box-shadow:
+    rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   @apply mx-auto flex min-w-[480px] flex-col gap-4 rounded-md bg-secondary px-4 py-6 text-primary;
+}
+
+.wishlist {
+  @apply text-2xl transition lg:hover:text-neutral-400 lg:active:scale-125;
 }
