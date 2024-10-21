@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Input from "./Input";
 import Btn from "../Btn";
 import Loader from "../other/Loader";
@@ -9,14 +9,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export default function SignUpForm({ userType }: { userType: "shopper" | "vendor" }) {
+export default function SignUpForm({
+  userType,
+}: {
+  userType: "shopper" | "vendor";
+}) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    userType: userType
+    userType: userType,
   });
   const [meetsRequirements, setMeetsRequirements] = useState({
     minLength: false,
@@ -27,6 +31,8 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
   const [showRequirements, setShowRequirements] = useState(false);
 
   const router = useRouter();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const hiddenTokenRef = useRef<any>(null); // Reference for hidden field
 
   const specialCharsRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?]/g;
   const capitalLetterRegex = /[A-Z]/;
@@ -51,6 +57,13 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
     e.preventDefault();
 
     setLoading(true);
+
+    // Generate a unique token for this form submission
+    const securityToken = Math.random().toString(36).substring(2);
+
+    if (hiddenTokenRef.current) {
+      hiddenTokenRef.current.value = securityToken; // Set the hidden input's value
+    }
 
     if (
       !formData.name ||
@@ -92,7 +105,7 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify({ formData, securityToken }), // Send securityToken
       });
       if (res.ok) {
         toast.success("Created Account");
@@ -102,7 +115,7 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
           email: "",
           password: "",
           confirmPassword: "",
-          userType
+          userType,
         });
         router.push("/sign-in");
         router.refresh();
@@ -120,16 +133,13 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
         email: "",
         password: "",
         confirmPassword: "",
-        userType
+        userType,
       });
     }
   };
 
   return (
-    <form
-      className="form"
-      onSubmit={handleSubmit}
-    >
+    <form className="form" onSubmit={handleSubmit}>
       <h3 className="self-center">
         {userType == "vendor" ? "Vendor" : "Shopper"} Sign up
       </h3>
@@ -206,6 +216,8 @@ export default function SignUpForm({ userType }: { userType: "shopper" | "vendor
         type="password"
         onChange={handleChange}
       />
+      <input ref={hiddenTokenRef} type="hidden" name="securityToken" />{" "}
+      {/* Hidden input for security token */}
       <Btn content={loading ? <Loader /> : "Sign Up"} styles="bg-primary" />
       <span className="px-2 py-1 text-sm">
         Already have an account?{" "}

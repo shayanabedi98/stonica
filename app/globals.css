@@ -91,3 +91,25 @@ input[type="color"]::-webkit-color-swatch {
 .wishlist {
   @apply text-2xl transition lg:hover:text-neutral-400 lg:active:scale-125;
 }
+
+.home-header {
+  @apply text-8xl;
+}
+
+/* .home-hero-bg {
+  background-image: linear-gradient(
+    to right bottom,
+    #eff2f8,
+    #e3e8f1,
+    #d6ddea,
+    #cad3e4,
+    #bec9dd,
+    #b5c1d8,
+    #acbad3,
+    #a3b2ce,
+    #9babca,
+    #93a4c5,
+    #8b9dc1,
+    #8396bc
+  );
+} */

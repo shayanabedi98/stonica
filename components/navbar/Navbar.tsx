@@ -40,7 +40,7 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary text-secondary">
+    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary bg-opacity-80 text-secondary backdrop-blur-lg">
       <Container>
         <div className="flex h-20 w-full items-center justify-between">
           <nav className="flex h-full items-end gap-10 pb-4">

@@ -3,10 +3,17 @@ import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { formData } = await req.json();
+  const { formData, securityToken } = await req.json();
   const { name, email, password, userType } = formData;
 
   const hashedPassword = await hash(password, 10);
+
+  if (!securityToken || securityToken.length < 10) {
+    return NextResponse.json(
+      { message: "Invalid security token" },
+      { status: 403 },
+    );
+  }
 
   try {
     const existingUser = await prisma.user.findUnique({
