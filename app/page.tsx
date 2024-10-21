@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="ancestor-container-home flex flex-col gap-20">
-      <div className="screen-sized-image relative w-full home-hero-bg">
+      <div className="screen-sized-image home-hero-bg relative w-full">
         <Image
           src={"/assets/home/hero-gradient.png"}
           alt=""
@@ -18,13 +18,20 @@ export default function Home() {
           <Container>
             <div className="flex h-full w-full items-center justify-center gap-10 text-secondary">
               <div className="flex h-full w-1/2 flex-col items-center justify-center gap-6">
-                <h1 className="home-header">
-                  Lorem ipsum dolor sit amet consectetur
-                </h1>
+                <h1 className="home-header">Finding Stones Made Easy</h1>
                 <p className="font-semibold">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Dignissimos voluptatibus ullam laudantium ipsum
+                  Welcome to the hub of stones, where you can find the perfect
+                  set for your next project. Connect with top suppliers, explore
+                  a wide variety of stone slabs, and simplify your search today!
                 </p>
+                <div className="flex gap-4 self-start">
+                  <Link href={"/products"}>
+                    <Btn content="Shop" styles="bg-primary" />
+                  </Link>
+                  <Link href={"/vendor"}>
+                    <Btn content="Sell" styles="" />
+                  </Link>
+                </div>
               </div>
               <div className="relative h-[470px] w-1/2">
                 <Image
@@ -49,14 +56,6 @@ export default function Home() {
                 perfect for enhancing your home or business. Find the ideal
                 stone to suit your style and bring your vision to life.
               </h2>
-              <div className="flex items-center justify-center gap-4">
-                <Link href={"/products"}>
-                  <Btn content="Products" styles="bg-primary" />
-                </Link>
-                <Link href={"/contact"}>
-                  <Btn content="Contact" styles="" />
-                </Link>
-              </div>
             </div>
             <div className="flex w-1/2 justify-end">
               <Image
