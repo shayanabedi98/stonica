@@ -29,7 +29,7 @@ export default function Home() {
                     <Btn content="Shop" styles="bg-primary" />
                   </Link>
                   <Link href={"/vendor"}>
-                    <Btn content="Sell" styles="" />
+                    <Btn content="Sell" styles="bg-primary" />
                   </Link>
                 </div>
               </div>
@@ -47,21 +47,24 @@ export default function Home() {
         </div>
       </div>
       <Container>
-        <div className="flex flex-col gap-20">
-          <div className="flex items-center gap-4">
-            <div className="flex w-1/2 flex-col items-start gap-8">
-              <h1>Discover the Beauty of Stone</h1>
-              <h2>
-                Explore our selection of high-quality natural stone products,
-                perfect for enhancing your home or business. Find the ideal
-                stone to suit your style and bring your vision to life.
-              </h2>
+        <div>
+          <div className="flex items-center gap-10">
+            <div className="flex w-1/2 flex-col items-start gap-4">
+              <h2>Discover the Timeless Beauty of Natural Stone</h2>
+              <h3>
+                Explore our curated selection of premium, high-quality natural
+                stone products, ideal for elevating the aesthetic and
+                functionality of your home or business. Whether you&apos;re
+                looking for elegant countertops, stunning flooring, or unique
+                decorative elements, find the perfect stone to match your style
+                and bring your design vision to life.
+              </h3>
             </div>
             <div className="flex w-1/2 justify-end">
               <Image
                 src={"/assets/yellow-stone.webp"}
                 alt=""
-                className="aspect-square w-[700px] transform rounded-md object-cover shadow-lg"
+                className="h-[450px] w-[700px] transform rounded-sm object-cover shadow-lg"
                 height={1000}
                 width={1000}
                 priority
