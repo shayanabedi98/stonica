@@ -15,7 +15,7 @@ const config: Config = {
         accent: "#999797",
         hover: "#383737",
         color1: "#55799d",
-        color2: "#253444",
+        color2: "#2c3e51",
       },
     },
   },

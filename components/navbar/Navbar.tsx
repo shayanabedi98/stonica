@@ -98,7 +98,7 @@ export default function Navbar({ user, session }: Props) {
                 <Btn
                   content="Join"
                   onClick={() => router.push("/join")}
-                  styles="bg-primary"
+                  styles="bg-color1"
                 />
               )
             )}
