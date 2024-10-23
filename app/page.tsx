@@ -24,12 +24,12 @@ export default function Home() {
                   set for your next project. Connect with top suppliers, explore
                   a wide variety of stone slabs, and simplify your search today!
                 </p>
-                <div className="flex gap-4 self-start">
+                <div className="flex items-center gap-4 self-start">
                   <Link href={"/products"}>
-                    <Btn content="Shop" styles="bg-primary" />
+                    <Btn content="Shop" styles="bg-color1" />
                   </Link>
                   <Link href={"/vendor"}>
-                    <Btn content="Sell" styles="bg-primary" />
+                    <Btn content="Sell" styles="bg-color2" />
                   </Link>
                 </div>
               </div>
@@ -49,17 +49,6 @@ export default function Home() {
       <Container>
         <div>
           <div className="flex items-center gap-10">
-            <div className="flex w-1/2 flex-col items-start gap-4">
-              <h2>Discover the Timeless Beauty of Natural Stone</h2>
-              <h3>
-                Explore our curated selection of premium, high-quality natural
-                stone products, ideal for elevating the aesthetic and
-                functionality of your home or business. Whether you&apos;re
-                looking for elegant countertops, stunning flooring, or unique
-                decorative elements, find the perfect stone to match your style
-                and bring your design vision to life.
-              </h3>
-            </div>
             <div className="flex w-1/2 justify-end">
               <Image
                 src={"/assets/yellow-stone.webp"}
@@ -70,6 +59,17 @@ export default function Home() {
                 priority
                 quality={100}
               />
+            </div>
+            <div className="flex w-1/2 flex-col items-start gap-4">
+              <h2>Discover the Timeless Beauty of Natural Stone</h2>
+              <p className="font-semibold">
+                Explore our curated selection of premium, high-quality natural
+                stone products, ideal for elevating the aesthetic and
+                functionality of your home or business. Whether you&apos;re
+                looking for elegant countertops, stunning flooring, or unique
+                decorative elements, find the perfect stone to match your style
+                and bring your design vision to life.
+              </p>
             </div>
           </div>
         </div>
