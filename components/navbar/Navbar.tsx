@@ -13,6 +13,8 @@ type Props = {
   user?: {
     name: string;
     image: string | null;
+    email: string;
+    isVendor: boolean;
   } | null;
   session: unknown;
 };
@@ -68,15 +70,24 @@ export default function Navbar({ user, session }: Props) {
                   className={`cursor-pointer rounded-full border-2 border-secondary ${user.image ? "" : "bg-primary"} transition duration-200 lg:hover:scale-110`}
                 />
                 {showUserMenu && (
-                  <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-2 text-sm text-primary">
+                  <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-color2 px-4 py-4 text-sm text-primary shadow-md">
                     <span className="font-semibold">{user.name}</span>
                     <hr className="w-full text-primary" />
+                    {user.isVendor && (
+                      <Link
+                        className="font-medium lg:hover:underline"
+                        href={"/vendor/dashboard"}
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Dashboard
+                      </Link>
+                    )}
                     <Link
                       className="font-medium lg:hover:underline"
-                      href={"/vendor/dashboard"}
+                      href={"/wishlist"}
                       onClick={() => setShowUserMenu(false)}
                     >
-                      Dashboard
+                      Wishlist
                     </Link>
                     <Link
                       className="font-medium lg:hover:underline"
@@ -88,7 +99,7 @@ export default function Navbar({ user, session }: Props) {
                     <Btn
                       content={"Sign Out"}
                       onClick={() => signOut()}
-                      styles="bg-primary text-secondary"
+                      styles="bg-color1"
                     />
                   </div>
                 )}

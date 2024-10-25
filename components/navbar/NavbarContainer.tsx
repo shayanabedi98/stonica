@@ -16,10 +16,10 @@ export default async function NavbarContainer() {
           name: true,
           image: true,
           email: true,
+          isVendor: true,
         },
       });
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   return session ? (

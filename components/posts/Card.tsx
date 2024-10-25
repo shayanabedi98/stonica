@@ -69,9 +69,9 @@ export default function Card({ signedInUser, user, formData }: Props) {
   };
 
   return (
-    <div className="relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-secondary text-primary shadow-lg">
+    <div className="bg-color4 relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md text-primary shadow-lg">
       {formData?.salePrice && (
-        <div className="absolute right-0 top-0 z-10 rounded-md rounded-tl-none bg-red-500 px-2 py-1 font-semibold text-primary">
+        <div className="roundedtr-md absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
           On Sale
         </div>
       )}
@@ -79,7 +79,9 @@ export default function Card({ signedInUser, user, formData }: Props) {
       <div className="flex w-full flex-col gap-4 text-sm">
         <div className="relative flex flex-col gap-4 px-6 pb-6 pt-2">
           <div className="flex flex-col items-center justify-center">
-            <p className="text-lg">{formData?.title || "Pick a name"}</p>
+            <p className="text-xl font-semibold">
+              {formData?.title || "Pick a name"}
+            </p>
           </div>
           <div className="flex justify-between">
             <p className="flex items-center gap-2 font-semibold">
@@ -95,7 +97,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
             </p>
             <div className="flex gap-4">
               <p
-                className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
+                className={`${formData?.salePrice ? "text-neutral-300 line-through" : ""}`}
               >
                 {formData?.price
                   ? parseFloat(formData.price) <= 20000
@@ -104,7 +106,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
                   : formatPrice(0)}
               </p>
               {formData?.salePrice && (
-                <p className="text-red-500">
+                <p className="font-semibold text-red-500">
                   {formData?.salePrice
                     ? parseFloat(formData.salePrice) <= 20000
                       ? formatPrice(parseFloat(formData.salePrice))
@@ -170,19 +172,6 @@ export default function Card({ signedInUser, user, formData }: Props) {
             </p>
             <p>{user?.phone}</p>
           </div>
-          {/* Wishlist button */}
-          {path.includes("/vendor") === false && (
-            <span className="flex cursor-pointer items-center justify-center gap-1 transition">
-              <div onClick={() => handleWishlist(formData?.id)}>
-                {signedInUser?.wishlist?.includes(formData?.id as string) ? (
-                  <IoBookmark className="wishlist" />
-                ) : (
-                  <IoBookmarkOutline className="wishlist" />
-                )}
-              </div>
-              Wishlist
-            </span>
-          )}
           {path == "/vendor/dashboard" ? (
             <div className="flex items-center justify-between">
               <Link
@@ -204,16 +193,23 @@ export default function Card({ signedInUser, user, formData }: Props) {
             <div className="flex items-center justify-center">
               {formData?.id ? (
                 <Link href={`/product/${formData?.id}`}>
-                  <Btn
-                    content={"Learn More"}
-                    styles="bg-primary text-secondary min-w-44"
-                  />
+                  <Btn content={"Learn More"} styles="bg-color1" />
                 </Link>
               ) : (
-                <Btn
-                  content={"Learn More"}
-                  styles="bg-primary text-secondary min-w-44"
-                />
+                <Btn content={"Learn More"} styles="bg-color1" />
+              )}
+            </div>
+          )}
+          {/* Wishlist button */}
+          {path.includes("/vendor") === false && (
+            <div
+              className="absolute bottom-8 right-10 flex cursor-pointer items-center justify-center gap-1 transition"
+              onClick={() => handleWishlist(formData?.id)}
+            >
+              {signedInUser?.wishlist?.includes(formData?.id as string) ? (
+                <IoBookmark className="wishlist" />
+              ) : (
+                <IoBookmarkOutline className="wishlist" />
               )}
             </div>
           )}
