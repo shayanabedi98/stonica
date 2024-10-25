@@ -88,3 +88,9 @@ model Post {
   height      String?
   imageId     String[]
 }
+
+model EmailSubscriber {
+  id        String   @id @default(cuid())
+  emails    String
+  createdAt DateTime @default(now())
+}

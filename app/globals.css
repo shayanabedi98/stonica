@@ -59,7 +59,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .ancestor-container-home {
-  @apply min-h-[calc(100dvh-56px)] pb-40 pt-20;
+  @apply min-h-[calc(100dvh-56px)] pt-20;
 }
 
 .screen-sized-image {

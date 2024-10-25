@@ -16,6 +16,7 @@ const config: Config = {
         hover: "#383737",
         color1: "#55799d",
         color2: "#2c3e51",
+        color3: "#7388b3",
       },
     },
   },
