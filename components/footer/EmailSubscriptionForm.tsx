@@ -1,8 +1,52 @@
 "use client";
 
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { LuLoader } from "react-icons/lu";
+
 export default function EmailSubscriptionForm() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (formData.email.trim() !== "") {
+      setIsLoading(true);
+      try {
+        const res = await fetch("/api/email-subscription", {
+          method: "POST",
+          headers: { "Content-type": "application/json" },
+          body: JSON.stringify({ formData }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          toast.success("Subscribed!");
+          setFormData({
+            email: "",
+          });
+        } else if (data.error === "Already exists") {
+          toast.error("This email is already subscribed");
+        } else {
+          toast.error("Failed to subscribe. Try again.");
+        }
+      } catch (error) {
+        toast.error("Something went wrong, try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
-    <div className="flex min-w-72 flex-col gap-2">
+    <form className="flex min-w-72 flex-col gap-2" onSubmit={handleSubmit}>
       <label className="max-w-72 text-2xl font-thin">
         Subscribe to Receive Updates &amp; Offers!
       </label>
@@ -21,16 +65,23 @@ export default function EmailSubscriptionForm() {
         </div>
         <div className="flex gap-2">
           <input
-            type="text"
+            required
+            type="email"
             id="input-group-1"
             className="dark:placeholder-gray-40 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 ps-10 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             placeholder="joe@email.com"
+            name="email"
+            value={formData.email}
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
           />
-          <button className="flex items-center justify-center rounded-md bg-color1 px-3 text-sm font-semibold transition lg:hover:bg-color2">
-            Subscribe
+          <button
+            type="submit"
+            className="flex min-w-24 items-center justify-center rounded-lg bg-color1 px-3 text-sm font-semibold transition lg:hover:bg-color2"
+          >
+            {isLoading ? <LuLoader className="loading text-xl" /> : "Subscribe"}
           </button>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
