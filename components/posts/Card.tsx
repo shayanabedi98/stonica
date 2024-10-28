@@ -192,7 +192,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
           ) : (
             <div className="flex items-center justify-center">
               {formData?.id ? (
-                <Link href={`/product/${formData?.id}`}>
+                <Link href={`/products/${formData?.id}`}>
                   <Btn content={"Learn More"} styles="bg-color1" />
                 </Link>
               ) : (
