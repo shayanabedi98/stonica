@@ -13,6 +13,7 @@ import Link from "next/link";
 import Btn from "../Btn";
 import toast from "react-hot-toast";
 import { Product, User } from "@/types";
+import Image from "next/image";
 
 type Props = {
   signedInUser?: User | null;
@@ -69,7 +70,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
   };
 
   return (
-    <div className="bg-color4 relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md text-primary shadow-lg">
+    <div className="card-shadow relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-secondary text-primary">
       {formData?.salePrice && (
         <div className="roundedtr-md absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
           On Sale
@@ -77,9 +78,24 @@ export default function Card({ signedInUser, user, formData }: Props) {
       )}
       <CardCarousel images={formData?.images ? formData.images : [""]} />
       <div className="flex w-full flex-col gap-4 text-sm">
-        <div className="relative flex flex-col gap-4 px-6 pb-6 pt-2">
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-xl font-semibold">
+        <div className="relative flex flex-col gap-4 px-6 pb-6">
+          <div className="flex flex-col items-center justify-center gap-1">
+            <div
+              className="flex cursor-pointer items-center gap-2"
+              onClick={() =>
+                router.push(`/vendor/${formData?.User?.companyName}`)
+              }
+            >
+              <Image
+                src={formData?.User?.image || "/assets/avatar.png"}
+                alt="Vendor profile picture"
+                height={24}
+                width={24}
+                className="rounded-full"
+              />
+              <p className="font-semibold">{formData?.User?.companyName}</p>
+            </div>
+            <p className="text-2xl font-bold">
               {formData?.title || "Pick a name"}
             </p>
           </div>
@@ -97,7 +113,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
             </p>
             <div className="flex gap-4">
               <p
-                className={`${formData?.salePrice ? "text-neutral-300 line-through" : ""}`}
+                className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
               >
                 {formData?.price
                   ? parseFloat(formData.price) <= 20000
@@ -196,7 +212,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
                   <Btn content={"Learn More"} styles="bg-color1" />
                 </Link>
               ) : (
-                <Btn content={"Learn More"} styles="bg-color1" />
+                <Btn content={"Learn More"} styles="bg-color2" />
               )}
             </div>
           )}

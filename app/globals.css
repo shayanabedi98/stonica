@@ -89,7 +89,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .wishlist {
-  @apply text-2xl transition lg:hover:text-neutral-400 lg:active:scale-125;
+  @apply text-2xl transition lg:hover:text-neutral-400 lg:active:scale-125 text-color5;
 }
 
 .home-header {
@@ -113,3 +113,9 @@ input[type="color"]::-webkit-color-swatch {
     #8396bc
   );
 } */
+
+.card-shadow {
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}

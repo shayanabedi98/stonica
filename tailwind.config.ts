@@ -13,11 +13,12 @@ const config: Config = {
         primary: "#eff2f8",
         secondary: "#222222",
         accent: "#999797",
-        hover: "#383737",
+        hover: "#dde4f0",
         color1: "#55799d",
         color2: "#2c3e51",
         color3: "#7388b3",
-        color4: "#1f2d39"
+        color4: "#1f2d39",
+        color5: "#b5c5d7"
       },
     },
   },
