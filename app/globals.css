@@ -13,6 +13,24 @@
   }
 }
 
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 180%;
+  }
+  75% {
+    background-position: 180% 200%;
+  }
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
 *,
 *::before,
 *::after {
@@ -74,6 +92,41 @@ input[type="color"]::-webkit-color-swatch {
   animation: 0.8s spin infinite linear;
 }
 
+.loading-card1,
+.loading-card2,
+.loading-card3 {
+  background-image: linear-gradient(
+    to right,
+    #999797,
+    #817f80,
+    #696869,
+    #525252,
+    #3d3d3d,
+    #3d3d3d,
+    #3d3d3d,
+    #3d3d3d,
+    #525252,
+    #696869,
+    #817f80,
+    #999797
+  );
+  background-size: 200% 200%;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  @apply h-[550px] w-[400px] rounded-md opacity-35;
+}
+
+.loading-card1 {
+  animation: 1s gradientAnimation infinite linear;
+}
+.loading-card2 {
+  animation: 1.2s gradientAnimation infinite linear;
+}
+.loading-card3 {
+  animation: 1.4s gradientAnimation infinite linear;
+}
+
 .form {
   box-shadow:
     rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
@@ -89,7 +142,7 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 .wishlist {
-  @apply text-2xl transition lg:hover:text-neutral-400 lg:active:scale-125 text-color5;
+  @apply text-2xl text-color5 transition lg:hover:text-neutral-400 lg:active:scale-125;
 }
 
 .home-header {
