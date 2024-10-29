@@ -83,7 +83,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
             <div
               className="flex cursor-pointer items-center gap-2"
               onClick={() =>
-                router.push(`/vendor/${formData?.User?.companyName}`)
+                router.push(`/vendor/${formData?.User?.id}`)
               }
             >
               <Image
