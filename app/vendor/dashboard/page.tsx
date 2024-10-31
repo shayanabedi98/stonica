@@ -12,7 +12,7 @@ import { FiPlus } from "react-icons/fi";
 import { BsPencilFill } from "react-icons/bs";
 import { FaGear } from "react-icons/fa6";
 import { MdOutlineContactSupport } from "react-icons/md";
-import Card from "@/components/posts/Card";
+import Card from "@/components/products/Card";
 import CreateNewPost from "@/components/dashboard/CreateNewPost";
 
 export default async function Dashboard() {

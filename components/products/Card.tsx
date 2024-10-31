@@ -1,6 +1,6 @@
 "use client";
 
-import CardCarousel from "./CardCarousel";
+import CardCarousel from "../products/CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
 import { BsTelephoneFill } from "react-icons/bs";

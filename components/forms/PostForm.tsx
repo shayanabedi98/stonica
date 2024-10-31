@@ -7,7 +7,7 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { Widget } from "@uploadcare/react-widget";
 import { GoPlus } from "react-icons/go";
-import Card from "../posts/Card";
+import Card from "../products/Card";
 import Btn from "../Btn";
 import { useRouter } from "next/navigation";
 import { Product, User } from "@/types";

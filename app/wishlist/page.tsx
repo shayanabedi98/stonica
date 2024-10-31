@@ -1,5 +1,5 @@
 import Container from "@/components/Container";
-import Card from "@/components/posts/Card";
+import Card from "@/components/products/Card";
 import prisma from "@/lib/db";
 import getAuthUser from "@/utils/getAuthUser";
 

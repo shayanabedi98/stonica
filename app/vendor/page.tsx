@@ -1,6 +1,6 @@
 import Btn from "@/components/Btn";
 import Container from "@/components/Container";
-import Card from "@/components/posts/Card";
+// import Card from "@/components/products/Card";
 import Link from "next/link";
 import { FaCheck } from "react-icons/fa";
 
@@ -16,22 +16,22 @@ export default async function Vendor() {
     "Cancel your subscription at any time",
   ];
 
-  const images = [
-    [
-      "/assets/example-stones/1.jpeg",
-      "/assets/example-stones/2.jpeg",
-      "/assets/example-stones/3.jpeg",
-    ],
-    [
-      "/assets/example-stones/4.jpeg",
-      "/assets/example-stones/5.jpeg",
-      "/assets/example-stones/6.jpeg",
-    ],
-    [
-      "/assets/example-stones/7.jpeg",
-      "/assets/example-stones/8.jpeg",
-    ],
-  ];
+  // const images = [
+  //   [
+  //     "/assets/example-stones/1.jpeg",
+  //     "/assets/example-stones/2.jpeg",
+  //     "/assets/example-stones/3.jpeg",
+  //   ],
+  //   [
+  //     "/assets/example-stones/4.jpeg",
+  //     "/assets/example-stones/5.jpeg",
+  //     "/assets/example-stones/6.jpeg",
+  //   ],
+  //   [
+  //     "/assets/example-stones/7.jpeg",
+  //     "/assets/example-stones/8.jpeg",
+  //   ],
+  // ];
 
   return (
     <div className="ancestor-container">
@@ -87,7 +87,7 @@ export default async function Vendor() {
           <div className="mt-32 flex w-full flex-col items-center justify-center gap-6">
             <h3>Preview</h3>
             <div className="flex gap-16">
-              <Card
+              {/* <Card
                 companyName="Your Company Name"
                 title={"Black Desert"}
                 images={images[0]}
@@ -116,7 +116,7 @@ export default async function Vendor() {
                 price={1900.0}
                 type="Onyx"
                 tel="555-555-5555"
-              />
+              /> */}
             </div>
           </div>
         </div>
