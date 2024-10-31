@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import ProductCarousel from "@/components/products/ProductCarousel";
+import ProductDescription from "@/components/products/ProductDescription";
 import prisma from "@/lib/db";
 
 export default async function ProductPage({
@@ -21,8 +22,9 @@ export default async function ProductPage({
   return (
     <div className="ancestor-container">
       <Container>
-        <div className="grid grid-cols-2">
+        <div className="grid grid-cols-2 gap-10">
           <ProductCarousel images={product?.images || []} />
+          <ProductDescription product={product!} />
         </div>
       </Container>
     </div>
