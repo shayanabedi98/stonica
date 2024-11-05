@@ -18,7 +18,7 @@ export default function ProductCarousel({ images }: Props) {
         width={600}
         height={600}
         quality={100}
-        className="rounded-md"
+        className="w-full rounded-md object-cover"
       />
       <div className="flex items-center justify-center gap-4">
         {images.map((i, index) => (

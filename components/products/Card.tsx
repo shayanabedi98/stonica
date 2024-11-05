@@ -17,11 +17,10 @@ import Image from "next/image";
 
 type Props = {
   signedInUser?: User | null;
-  user: User | null;
   formData?: Product | null;
 };
 
-export default function Card({ signedInUser, user, formData }: Props) {
+export default function Card({ signedInUser, formData }: Props) {
   const path = usePathname();
   const router = useRouter();
 
@@ -186,7 +185,7 @@ export default function Card({ signedInUser, user, formData }: Props) {
               <BsTelephoneFill className="text-xl" />
               Contact
             </p>
-            <p>{user?.phone}</p>
+            <p>{formData?.User?.phone}</p>
           </div>
           {path == "/vendor/dashboard" ? (
             <div className="flex items-center justify-between">

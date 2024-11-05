@@ -31,12 +31,7 @@ export default function ProductsList({ signedInUser }: Props) {
   return (
     <div className="grid grid-cols-3 justify-items-center gap-10">
       {products.map((product, index) => (
-        <Card
-          user={product.User as User}
-          signedInUser={signedInUser}
-          key={index}
-          formData={product}
-        />
+        <Card signedInUser={signedInUser} key={index} formData={product} />
       ))}
     </div>
   );
