@@ -42,21 +42,32 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary bg-opacity-80 text-secondary backdrop-blur-lg">
+    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary bg-opacity-80 text-secondary shadow-sm backdrop-blur-lg">
       <Container>
         <div className="flex h-20 w-full items-center justify-between">
-          <nav className="flex h-full items-end gap-10 pb-4">
-            <Link
-              className="logo text-2xl font-semibold tracking-widest"
-              href={"/"}
-            >
-              STONICA
-            </Link>
-            <NavbarItem content="Home" href="/" />
-            <NavbarItem content="Products" href="/products" />
-            <NavbarItem content="About" href="/about" />
-            <NavbarItem content="Contact" href="/contact" />
-          </nav>
+          {path.includes("/dashboard") ? (
+            <nav className="flex h-full items-end gap-10 pb-4">
+              <Link
+                className="logo text-2xl font-semibold tracking-widest"
+                href={"/"}
+              >
+                STONICA
+              </Link>
+            </nav>
+          ) : (
+            <nav className="flex h-full items-end gap-10 pb-4">
+              <Link
+                className="logo text-2xl font-semibold tracking-widest"
+                href={"/"}
+              >
+                STONICA
+              </Link>
+              <NavbarItem content="Home" href="/" />
+              <NavbarItem content="Products" href="/products" />
+              <NavbarItem content="About" href="/about" />
+              <NavbarItem content="Contact" href="/contact" />
+            </nav>
+          )}
           <div className="flex h-full items-end pb-4">
             {session && user ? (
               <div className="relative" ref={userMenu}>
@@ -106,11 +117,19 @@ export default function Navbar({ user, session }: Props) {
               </div>
             ) : (
               path !== "/join" && (
-                <Btn
-                  content="Join"
-                  onClick={() => router.push("/join")}
-                  styles="bg-color1"
-                />
+                <div className="flex items-center justify-center gap-2">
+                  <Btn
+                    content="Sign In"
+                    onClick={() => router.push("/sign-in")}
+                    styles="bg-color2"
+                  />
+                  <span className="text-3xl text-neutral-400">/</span>
+                  <Btn
+                    content="Join"
+                    onClick={() => router.push("/join")}
+                    styles="bg-color1"
+                  />
+                </div>
               )
             )}
           </div>
