@@ -7,7 +7,8 @@ import isSignedIn from "@/utils/isSignedIn";
 export default async function CreateNew() {
   await isSignedIn("vendor");
   const pubKey = process.env.UPLOAD_CARE_PUBLIC_KEY;
-  const user = await getAuthUser("select", {
+  const signedInUser = await getAuthUser("select", {
+    id: true,
     companyName: true,
     city: true,
     image: true,
@@ -20,12 +21,16 @@ export default async function CreateNew() {
       <Container>
         <GoBack href="/vendor/dashboard" content="Dashboard" />
         <h1 className="mb-4 text-center">Create a Post</h1>
-        <h2 className="mx-auto mb-20 text-center lg:w-1/2">
+        <p className="mx-auto mb-20 text-center lg:w-1/2">
           Build your next product post with a preview of what others will see.
           Don&apos;t worry, you&apos;ll be able to change it later.
-        </h2>
+        </p>
         <div className="flex justify-center">
-          <PostForm user={user} pubKey={pubKey!} fetchMethod="POST" />
+          <PostForm
+            signedInUser={signedInUser}
+            pubKey={pubKey!}
+            fetchMethod="POST"
+          />
         </div>
       </Container>
     </div>

@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { Product, User } from "@/types";
 
 type Props = {
-  user: User | null;
+  signedInUser: User | null;
   pubKey: string;
   postData?: Product
   fetchMethod: "PUT" | "POST";
@@ -21,7 +21,7 @@ type Props = {
 
 export default function PostForm({
   postData,
-  user,
+  signedInUser,
   fetchMethod,
   pubKey,
 }: Props) {
@@ -181,7 +181,7 @@ export default function PostForm({
   return (
     <div className="flex w-full justify-center gap-20">
       <div className="flex w-1/3 flex-col items-center justify-center">
-        <Card user={user} formData={formData} />
+        <Card signedInUser={signedInUser} formData={formData} />
       </div>
       <form
         onSubmit={handleSubmit}

@@ -7,7 +7,7 @@ export default function CreateNewPost() {
       <h2>You don&apos;t have any posts to show</h2>
       <Link
         href={"/vendor/dashboard/create-new"}
-        className="lg:hover:bg-hover flex flex-col items-center gap-2 justify-center rounded-md bg-secondary p-6 shadow-lg text-primary transition"
+        className="flex flex-col items-center justify-center gap-2 rounded-md bg-secondary p-6 text-primary shadow-lg transition lg:hover:bg-hover"
       >
         <FiPlus className="text-3xl" />
         <p className="text-lg font-semibold">Create Product</p>

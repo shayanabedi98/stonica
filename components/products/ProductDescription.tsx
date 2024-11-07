@@ -49,7 +49,11 @@ export default function ProductDescription({ product }: { product: Product }) {
           <strong>Texture:</strong> {product.textureType}
         </p>
         <p>
-          <strong>Colors:</strong> {product.colors?.map((i) => `${i}, `)}
+          <strong>Colors:</strong>{" "}
+          {product.colors?.map(
+            (i, index) =>
+              `${i}${product?.colors!.length > 1 ? (index == product.colors!.length - 1 ? "" : ",") : ""} `,
+          )}
         </p>
         <p>
           <strong>Veins:</strong> {product.veins}

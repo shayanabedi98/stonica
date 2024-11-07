@@ -81,18 +81,26 @@ export default function Card({ signedInUser, formData }: Props) {
           <div className="flex flex-col items-center justify-center gap-1">
             <div
               className="flex cursor-pointer items-center gap-2"
-              onClick={() =>
-                router.push(`/vendor/${formData?.User?.id}`)
-              }
+              onClick={() => {
+                formData?.User
+                  ? router.push(`/vendor/${formData?.User?.id}`)
+                  : router.push(`/vendor/${signedInUser?.id}`);
+              }}
             >
               <Image
-                src={formData?.User?.image || "/assets/avatar.png"}
+                src={
+                  formData?.User?.image ||
+                  signedInUser?.image ||
+                  "/assets/avatar.png"
+                }
                 alt="Vendor profile picture"
                 height={24}
                 width={24}
                 className="rounded-full"
               />
-              <p className="font-semibold">{formData?.User?.companyName}</p>
+              <p className="font-semibold">
+                {formData?.User?.companyName || signedInUser?.companyName}
+              </p>
             </div>
             <p className="text-2xl font-bold">
               {formData?.title || "Pick a name"}
@@ -185,7 +193,7 @@ export default function Card({ signedInUser, formData }: Props) {
               <BsTelephoneFill className="text-xl" />
               Contact
             </p>
-            <p>{formData?.User?.phone}</p>
+            <p>{formData?.User?.phone || signedInUser?.phone}</p>
           </div>
           {path == "/vendor/dashboard" ? (
             <div className="flex items-center justify-between">
