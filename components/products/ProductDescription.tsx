@@ -11,7 +11,7 @@ export default function ProductDescription({ product }: { product: Product }) {
       <h2>{product.title}</h2>
       <div className="flex flex-col gap-2">
         <h3>{formatPrice(parseInt(product.price))}</h3>
-        <p className="flex w-28 items-center justify-center rounded-lg bg-slate-300 p-1 text-sm font-semibold">
+        <p className="flex w-28 items-center justify-center rounded-lg bg-color3 p-1 text-sm font-semibold text-primary">
           In Stock: {product.qty}
         </p>
       </div>
