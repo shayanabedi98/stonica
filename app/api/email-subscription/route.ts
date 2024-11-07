@@ -10,7 +10,7 @@ export async function POST(req: Request) {
     });
 
     if (findEmail) {
-      return NextResponse.json({ error: "Already exists" }, {status: 400});
+      return NextResponse.json({ error: "Already exists" }, { status: 400 });
     } else {
       const addToEmailSubscription = await prisma.emailSubscriber.create({
         data: {
