@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { FaArrowLeft } from "react-icons/fa";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export default function CardCarousel({ images }: { images: string[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,17 +16,20 @@ export default function CardCarousel({ images }: { images: string[] }) {
   };
 
   return (
-    <div className="relative flex h-60 w-full items-center justify-between">
+    <div className="relative flex h-72 w-[340px] items-center justify-between">
       <button
         className={`absolute left-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handlePrevious}
       >
-        <FaArrowLeft className="rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
+        <IoIosArrowBack className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
       </button>
       <div className="flex items-center justify-center">
         {images.length > 0 ? (
           images.map((src, index) => (
-            <div key={index} className={`absolute inset-0 h-full w-full`}>
+            <div
+              key={index}
+              className={`absolute inset-0 aspect-square h-full w-full`}
+            >
               <Image
                 src={src}
                 alt=""
@@ -34,7 +37,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
                 width={400}
                 quality={100}
                 priority
-                className={`h-full w-full object-cover rounded-t-md transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
+                className={`h-full w-full rounded-md object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
               />
             </div>
           ))
@@ -47,7 +50,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
               width={400}
               quality={100}
               priority
-              className={`h-full w-full object-cover opacity-100 transition duration-500 border-2`}
+              className={`h-full w-full border-2 object-cover opacity-100 transition duration-500`}
             />
           </div>
         )}
@@ -56,7 +59,7 @@ export default function CardCarousel({ images }: { images: string[] }) {
         className={`absolute right-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handleNext}
       >
-        <FaArrowLeft className="rotate-180 rounded-full bg-primary bg-opacity-80 p-2 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
+        <IoIosArrowForward className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
       </button>
     </div>
   );

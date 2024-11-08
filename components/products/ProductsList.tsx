@@ -24,15 +24,15 @@ export default function ProductsList({ signedInUser }: Props) {
     fetchProducts();
   }, []);
 
-  if (loading) {
-    return <LoadingCard />;
-  }
-
   return (
-    <div className="grid grid-cols-3 justify-items-center gap-10">
-      {products.map((product, index) => (
-        <Card signedInUser={signedInUser} key={index} formData={product} />
-      ))}
+    <div className="grid grid-cols-3 justify-items-center gap-6">
+      {loading && <LoadingCard style="loading-card" />}
+      {loading && <LoadingCard style="loading-card" />}
+      {loading && <LoadingCard style="loading-card" />}
+      {!loading &&
+        products.map((product, index) => (
+          <Card signedInUser={signedInUser} key={index} formData={product} />
+        ))}
     </div>
   );
 }

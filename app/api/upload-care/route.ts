@@ -27,24 +27,3 @@ export async function DELETE(req: Request) {
   }
 }
 
-export async function GET() {
-  const uuidList = [];
-  const apiUrl = "https://api.uploadcare.com/files/";
-
-  try {
-    const res = await fetch(`${apiUrl}`, {
-      headers: {
-        Authorization: `Uploadcare.Simple ${process.env.UPLOAD_CARE_PUBLIC_KEY}:${process.env.UPLOAD_CARE_SECRET_KEY}`,
-      },
-    });
-
-    const data = await res.json();
-    for (const i of data.results) {
-      uuidList.push(i.uuid);
-    }
-    return NextResponse.json(uuidList);
-  } catch (error) {
-    console.log(error);
-    return NextResponse.json({ message: "something went wrong" });
-  }
-}

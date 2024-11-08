@@ -1,9 +1,5 @@
-export default function LoadingCard() {
+export default function LoadingCard({style}: {style: string}) {
   return (
-    <div className="flex gap-10">
-      <div className="loading-card1"></div>
-      <div className="loading-card2"></div>
-      <div className="loading-card3"></div>
-    </div>
+    <div className={style}></div>
   );
 }

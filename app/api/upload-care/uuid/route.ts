@@ -26,7 +26,7 @@ export async function DELETE() {
       select: { imageId: true },
     });
 
-    for (const i of allUser) {
+    for (const i of allUser) { 
       if (i.imageId !== null) {
         allImageIdsUsed.push(i.imageId);
       }
@@ -57,12 +57,15 @@ export async function DELETE() {
           },
         );
       } catch (error) {
-        console.log(`error trying to delete uuid: ${deletePromise[uuid]}`, error);
+        console.log(
+          `error trying to delete uuid: ${deletePromise[uuid]}`,
+          error,
+        );
       }
     }
 
-    console.log(deletePromise);
-    
+    console.log("deleted following UUIDs", deletePromise);
+
     return NextResponse.json(deletePromise);
   } catch (error) {
     console.log(error);

@@ -3,7 +3,6 @@
 import CardCarousel from "../products/CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
-import { BsTelephoneFill } from "react-icons/bs";
 import { GiStoneTablet } from "react-icons/gi";
 import { IoBookmark } from "react-icons/io5";
 import { IoBookmarkOutline } from "react-icons/io5";
@@ -69,16 +68,16 @@ export default function Card({ signedInUser, formData }: Props) {
   };
 
   return (
-    <div className="card-shadow relative flex min-h-[500px] w-[400px] flex-col items-center gap-4 rounded-md bg-secondary text-primary">
+    <div className="card-shadow relative flex flex-col items-center gap-4 rounded-md bg-secondary p-4 text-primary">
       {formData?.salePrice && (
         <div className="roundedtr-md absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
           On Sale
         </div>
       )}
       <CardCarousel images={formData?.images ? formData.images : [""]} />
-      <div className="flex w-full flex-col gap-4 text-sm">
-        <div className="relative flex flex-col gap-4 px-6 pb-6">
-          <div className="flex flex-col items-center justify-center gap-1">
+      <div className="w-full text-sm">
+        <div className="relative flex flex-col gap-3 pb-1">
+          <div className="flex flex-col justify-center gap-1">
             <div
               className="flex cursor-pointer items-center gap-2"
               onClick={() => {
@@ -106,18 +105,14 @@ export default function Card({ signedInUser, formData }: Props) {
               {formData?.title || "Pick a name"}
             </p>
           </div>
-          <div className="flex justify-between">
+          <div className="flex gap-2">
+            <GiStoneTablet className="text-xl" />
             <p className="flex items-center gap-2 font-semibold">
-              <GiStoneTablet className="text-xl" />
-              Material
+              {formData?.type}
             </p>
-            <p>{formData?.type}</p>
           </div>
-          <div className="flex justify-between">
-            <p className="flex items-center gap-2 font-semibold">
-              <IoIosPricetag className="text-xl" />
-              Price
-            </p>
+          <div className="flex gap-2">
+            <IoIosPricetag className="text-xl" />
             <div className="flex gap-4">
               <p
                 className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
@@ -139,11 +134,8 @@ export default function Card({ signedInUser, formData }: Props) {
               )}
             </div>
           </div>
-          <div className="flex justify-between">
-            <p className="flex items-center gap-2 font-semibold">
-              <FaBox className="text-xl" />
-              Quantity
-            </p>
+          <div className="flex gap-2">
+            <FaBox className="text-xl" />
             <p>
               {formData?.qty
                 ? formData.qty <= 100
@@ -188,13 +180,6 @@ export default function Card({ signedInUser, formData }: Props) {
               </p>
             )}
           </div> */}
-          <div className="flex justify-between">
-            <p className="flex items-center gap-2 font-semibold">
-              <BsTelephoneFill className="text-xl" />
-              Contact
-            </p>
-            <p>{formData?.User?.phone || signedInUser?.phone}</p>
-          </div>
           {path == "/vendor/dashboard" ? (
             <div className="flex items-center justify-between">
               <Link
@@ -213,29 +198,31 @@ export default function Card({ signedInUser, formData }: Props) {
               />
             </div>
           ) : (
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center gap-3">
               {formData?.id ? (
-                <Link href={`/products/${formData?.id}`}>
-                  <Btn content={"Learn More"} styles="bg-color1" />
+                <Link className="w-full" href={`/products/${formData?.id}`}>
+                  <button className="product-card-button">
+                    {"Learn More"}
+                  </button>
                 </Link>
               ) : (
-                <Btn content={"Learn More"} styles="bg-color2" />
+                <button className="product-card-button">{"Learn More"}</button>
+              )}
+              {path.includes("/vendor") === false && (
+                <div
+                  className="flex cursor-pointer items-center justify-center rounded-md bg-color1 p-[11px] text-2xl text-primary"
+                  onClick={() => handleWishlist(formData?.id)}
+                >
+                  {signedInUser?.wishlist?.includes(formData?.id as string) ? (
+                    <IoBookmark className="wishlist" />
+                  ) : (
+                    <IoBookmarkOutline className="wishlist" />
+                  )}
+                </div>
               )}
             </div>
           )}
           {/* Wishlist button */}
-          {path.includes("/vendor") === false && (
-            <div
-              className="absolute bottom-8 right-10 flex cursor-pointer items-center justify-center gap-1 transition"
-              onClick={() => handleWishlist(formData?.id)}
-            >
-              {signedInUser?.wishlist?.includes(formData?.id as string) ? (
-                <IoBookmark className="wishlist" />
-              ) : (
-                <IoBookmarkOutline className="wishlist" />
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>
