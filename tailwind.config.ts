@@ -10,15 +10,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#eff2f8",
-        secondary: "#222222",
-        accent: "#999797",
-        hover: "#dde4f0",
-        color1: "#55799d",
-        color2: "#2c3e51",
-        color3: "#7388b3",
-        color4: "#1f2d39",
-        color5: "#b5c5d7"
+        primary: "#00030f",
+        secondary: "#f0f0f0",
+        accentdark: "#001529",
+        accentlight: "#004773",
+        color1: "#0076b6",
+        color2: "#0099ff",
+        color3: "#0044C2",
+        color4: "#8855ff",
+        color5: "#b5c5d7",
       },
     },
   },

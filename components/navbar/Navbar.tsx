@@ -42,7 +42,7 @@ export default function Navbar({ user, session }: Props) {
   }, [showUserMenu]);
 
   return (
-    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary bg-opacity-80 text-secondary shadow-sm backdrop-blur-lg">
+    <header className="fixed z-30 flex h-20 w-full items-center justify-between bg-primary bg-opacity-80 text-secondary backdrop-blur-lg">
       <Container>
         <div className="flex h-20 w-full items-center justify-between">
           {path.includes("/dashboard") ? (

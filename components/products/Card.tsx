@@ -3,9 +3,6 @@
 import CardCarousel from "../products/CardCarousel";
 import { IoIosPricetag } from "react-icons/io";
 import { FaBox } from "react-icons/fa";
-import { GiStoneTablet } from "react-icons/gi";
-import { IoBookmark } from "react-icons/io5";
-import { IoBookmarkOutline } from "react-icons/io5";
 import { formatPrice } from "@/utils/formatPrice";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -22,27 +19,6 @@ type Props = {
 export default function Card({ signedInUser, formData }: Props) {
   const path = usePathname();
   const router = useRouter();
-
-  const handleWishlist = async (id: string | undefined) => {
-    if (signedInUser) {
-      try {
-        const res = await fetch("/api/post/wishlist", {
-          method: "POST",
-          headers: { "Content-type": "application/json" },
-          body: JSON.stringify({ id }),
-        });
-        const data = await res.json();
-        if (res.ok) {
-          toast.success(data.message);
-          router.refresh();
-        }
-      } catch (error) {
-        toast.error("Something went wrong, try again later");
-      }
-    } else {
-      router.push("/sign-in");
-    }
-  };
 
   const handleDelete = async (id: string, imageId: string[] | undefined) => {
     const confirmed = confirm("Are you sure you want to delete this product?");
@@ -68,84 +44,118 @@ export default function Card({ signedInUser, formData }: Props) {
   };
 
   return (
-    <div className="card-shadow relative flex flex-col items-center gap-4 rounded-md bg-secondary p-4 text-primary">
+    <div className="card-shadow relative flex flex-col items-center gap-4 rounded-md bg-secondary text-sm text-primary">
       {formData?.salePrice && (
         <div className="roundedtr-md absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
           On Sale
         </div>
       )}
       <CardCarousel images={formData?.images ? formData.images : [""]} />
-      <div className="w-full text-sm">
-        <div className="relative flex flex-col gap-3 pb-1">
-          <div className="flex flex-col justify-center gap-1">
-            <div
-              className="flex cursor-pointer items-center gap-2"
-              onClick={() => {
-                formData?.User
-                  ? router.push(`/vendor/${formData?.User?.id}`)
-                  : router.push(`/vendor/${signedInUser?.id}`);
-              }}
+      <div className="card-carousel-gradient absolute left-0 top-0 flex h-96 w-full flex-col justify-end gap-3 px-5 py-2">
+        <div className="flex flex-col justify-center gap-1">
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            onClick={() => {
+              formData?.User
+                ? router.push(`/vendor/${formData?.User?.id}`)
+                : router.push(`/vendor/${signedInUser?.id}`);
+            }}
+          >
+            <Image
+              src={
+                formData?.User?.image ||
+                signedInUser?.image ||
+                "/assets/avatar.png"
+              }
+              alt="Vendor profile picture"
+              height={24}
+              width={24}
+              className="rounded-full"
+            />
+            <p className="font-semibold">
+              {formData?.User?.companyName || signedInUser?.companyName}
+            </p>
+          </div>
+          <p className="text-2xl font-bold">
+            {formData?.title || "Pick a name"}
+          </p>
+        </div>
+      </div>
+      <div className="flex w-full flex-col gap-2 px-5 pb-4">
+        <div className="flex gap-2">
+          <p className="flex items-center justify-center gap-2 rounded-2xl bg-color1 px-2 py-1 font-semibold">
+            {formData?.type}
+          </p>
+        </div>
+        <div className="flex gap-2">
+          <IoIosPricetag className="text-xl" />
+          <div className="flex gap-4">
+            <p
+              className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
             >
-              <Image
-                src={
-                  formData?.User?.image ||
-                  signedInUser?.image ||
-                  "/assets/avatar.png"
-                }
-                alt="Vendor profile picture"
-                height={24}
-                width={24}
-                className="rounded-full"
-              />
-              <p className="font-semibold">
-                {formData?.User?.companyName || signedInUser?.companyName}
-              </p>
-            </div>
-            <p className="text-2xl font-bold">
-              {formData?.title || "Pick a name"}
+              {formData?.price
+                ? parseFloat(formData.price) <= 20000
+                  ? formatPrice(parseFloat(formData.price))
+                  : "Set a real price"
+                : formatPrice(0)}
             </p>
-          </div>
-          <div className="flex gap-2">
-            <GiStoneTablet className="text-xl" />
-            <p className="flex items-center gap-2 font-semibold">
-              {formData?.type}
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <IoIosPricetag className="text-xl" />
-            <div className="flex gap-4">
-              <p
-                className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
-              >
-                {formData?.price
-                  ? parseFloat(formData.price) <= 20000
-                    ? formatPrice(parseFloat(formData.price))
+            {formData?.salePrice && (
+              <p className="font-semibold text-red-500">
+                {formData?.salePrice
+                  ? parseFloat(formData.salePrice) <= 20000
+                    ? formatPrice(parseFloat(formData.salePrice))
                     : "Set a real price"
-                  : formatPrice(0)}
+                  : 0}
               </p>
-              {formData?.salePrice && (
-                <p className="font-semibold text-red-500">
-                  {formData?.salePrice
-                    ? parseFloat(formData.salePrice) <= 20000
-                      ? formatPrice(parseFloat(formData.salePrice))
-                      : "Set a real price"
-                    : 0}
-                </p>
-              )}
-            </div>
+            )}
           </div>
-          <div className="flex gap-2">
-            <FaBox className="text-xl" />
-            <p>
-              {formData?.qty
-                ? formData.qty <= 100
-                  ? Math.round(formData?.qty).toString().slice(0, 3)
-                  : 100
-                : "-"}{" "}
-              in stock
-            </p>
+        </div>
+        <div className="flex gap-2">
+          <FaBox className="text-xl" />
+          <p>
+            {formData?.qty
+              ? formData.qty <= 100
+                ? Math.round(formData?.qty).toString().slice(0, 3)
+                : 100
+              : "-"}{" "}
+            in stock
+          </p>
+        </div>
+        {path == "/vendor/dashboard" ? (
+          <div className="flex items-center justify-between">
+            <Link
+              className=""
+              href={`/vendor/dashboard/edit-product/${formData?.id}`}
+            >
+              <Btn styles="bg-secondary" content={"Edit"} />
+            </Link>
+
+            <Btn
+              styles="bg-secondary"
+              content={"Delete"}
+              onClick={() =>
+                handleDelete(formData?.id || "", formData?.imageId)
+              }
+            />
           </div>
-          {/* <div className="flex justify-between">
+        ) : (
+          <div className="flex items-center justify-center gap-3">
+            {formData?.id ? (
+              <Link className="w-full" href={`/products/${formData?.id}`}>
+                <button className="product-card-button">{"Learn More"}</button>
+              </Link>
+            ) : (
+              <button className="product-card-button">{"Learn More"}</button>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+{
+  /* <div className="flex justify-between">
             <p className="flex items-center gap-2 font-semibold">
               <FaPencilRuler className="text-xl" />
               Dimensions
@@ -179,52 +189,5 @@ export default function Card({ signedInUser, formData }: Props) {
                 0 ft<sup>2</sup>
               </p>
             )}
-          </div> */}
-          {path == "/vendor/dashboard" ? (
-            <div className="flex items-center justify-between">
-              <Link
-                className=""
-                href={`/vendor/dashboard/edit-product/${formData?.id}`}
-              >
-                <Btn styles="bg-secondary" content={"Edit"} />
-              </Link>
-
-              <Btn
-                styles="bg-secondary"
-                content={"Delete"}
-                onClick={() =>
-                  handleDelete(formData?.id || "", formData?.imageId)
-                }
-              />
-            </div>
-          ) : (
-            <div className="flex items-center justify-center gap-3">
-              {formData?.id ? (
-                <Link className="w-full" href={`/products/${formData?.id}`}>
-                  <button className="product-card-button">
-                    {"Learn More"}
-                  </button>
-                </Link>
-              ) : (
-                <button className="product-card-button">{"Learn More"}</button>
-              )}
-              {path.includes("/vendor") === false && (
-                <div
-                  className="flex cursor-pointer items-center justify-center rounded-md bg-color1 p-[11px] text-2xl text-primary"
-                  onClick={() => handleWishlist(formData?.id)}
-                >
-                  {signedInUser?.wishlist?.includes(formData?.id as string) ? (
-                    <IoBookmark className="wishlist" />
-                  ) : (
-                    <IoBookmarkOutline className="wishlist" />
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-          {/* Wishlist button */}
-        </div>
-      </div>
-    </div>
-  );
+          </div> */
 }

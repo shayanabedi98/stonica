@@ -35,7 +35,7 @@ const FooterItemHeader = ({ content }: { content: string }) => {
 
 export default function Footer() {
   return (
-    <footer className="flex min-h-44 items-center bg-secondary pb-10 pt-20 text-xs text-primary">
+    <footer className="flex min-h-44 items-center bg-black pb-10 pt-20 text-xs text-secondary">
       <Container>
         <div className="relative z-10 flex items-start justify-between">
           <div className="flex flex-col items-center justify-center">
