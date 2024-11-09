@@ -13,7 +13,7 @@ export default function NavbarItem({ href, content }: Props) {
 
   return (
     <Link
-      className={`${path == href ? "border-b" : ""} h-6 border-color4 text-sm transition lg:hover:text-accent`}
+      className={`${path == href ? "border-b" : ""} h-6 border-color4 text-sm transition lg:hover:text-neutral-300`}
       href={href}
     >
       {content}

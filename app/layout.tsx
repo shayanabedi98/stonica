@@ -37,7 +37,7 @@ export default function RootLayout({
           "antialiased",
           fontHeading.variable,
           fontBody.variable,
-        )} bg-primary text-secondary`}
+        )} layout-bg text-secondary`}
       >
         <div className="flex min-h-screen flex-col">
           <NextAuthProvider>

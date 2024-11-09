@@ -14,8 +14,8 @@ export default function CardCarousel({
   formData,
 }: {
   images: string[];
-  signedInUser?: User;
-  formData?: Product;
+  signedInUser?: User | null;
+  formData?: Product | null;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
@@ -51,10 +51,10 @@ export default function CardCarousel({
   };
 
   return (
-    <div className="relative flex h-96 w-96 items-center justify-between">
+    <div className="relative flex h-96 w-[400px] items-center justify-center">
       {path.includes("/vendor") === false && (
         <div
-          className="absolute bottom-4 right-4 z-20 flex cursor-pointer items-center justify-center rounded-full bg-color1 p-[11px] text-2xl text-primary"
+          className="absolute bottom-4 right-4 z-20 flex cursor-pointer items-center justify-center rounded-full bg-neutral-300 bg-opacity-10 p-2 text-2xl text-secondary backdrop-blur-md"
           onClick={() => handleWishlist(formData?.id)}
         >
           {signedInUser?.wishlist?.includes(formData?.id as string) ? (
@@ -65,7 +65,17 @@ export default function CardCarousel({
         </div>
       )}
       <button
-        className={`absolute left-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+        className="absolute z-10 rounded-3xl border border-neutral-300 bg-neutral-800 bg-opacity-10 px-5 py-1 text-base font-semibold backdrop-blur-sm transition duration-200 lg:hover:border-neutral-800 lg:hover:bg-opacity-100"
+        onClick={() =>
+          path == "/vendor/dashboard/create-new"
+            ? null
+            : router.push(`/products/${formData?.id}`)
+        }
+      >
+        View
+      </button>
+      <button
+        className={`absolute left-1 z-20 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
         onClick={handlePrevious}
       >
         <IoIosArrowBack className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
@@ -84,7 +94,7 @@ export default function CardCarousel({
                 width={400}
                 quality={100}
                 priority
-                className={`h-full w-full rounded-t-md object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
+                className={`h-full w-full rounded-lg object-cover transition duration-500 ${index == currentIndex ? "opacity-100" : "opacity-0"}`}
               />
             </div>
           ))

@@ -44,17 +44,23 @@ export default function Card({ signedInUser, formData }: Props) {
   };
 
   return (
-    <div className="card-shadow relative flex flex-col items-center gap-4 rounded-md bg-secondary text-sm text-primary">
+    <div
+      className="relative flex flex-col items-center gap-4 rounded-md text-sm text-secondary"
+    >
       {formData?.salePrice && (
-        <div className="roundedtr-md absolute right-0 top-0 z-10 rounded-bl-md bg-red-500 px-2 py-1 font-semibold text-primary">
+        <div className="absolute right-0 top-0 z-10 rounded-bl-md rounded-tr-md bg-red-500 px-2 py-1 font-semibold text-secondary">
           On Sale
         </div>
       )}
-      <CardCarousel images={formData?.images ? formData.images : [""]} />
-      <div className="card-carousel-gradient absolute left-0 top-0 flex h-96 w-full flex-col justify-end gap-3 px-5 py-2">
-        <div className="flex flex-col justify-center gap-1">
+      <CardCarousel
+        signedInUser={signedInUser || null}
+        formData={formData}
+        images={formData?.images ? formData.images : [""]}
+      />
+      <div className="card-carousel-gradient absolute left-0 bottom-0 flex h-1/3 w-full flex-col justify-end gap-3 px-5 py-2">
+        <div className="flex flex-col gap-1">
           <div
-            className="flex cursor-pointer items-center gap-2"
+            className="flex cursor-pointer items-center gap-2 min-w-10 "
             onClick={() => {
               formData?.User
                 ? router.push(`/vendor/${formData?.User?.id}`)
@@ -68,9 +74,9 @@ export default function Card({ signedInUser, formData }: Props) {
                 "/assets/avatar.png"
               }
               alt="Vendor profile picture"
-              height={24}
-              width={24}
-              className="rounded-full"
+              height={28}
+              width={28}
+              className="rounded-full border-2"
             />
             <p className="font-semibold">
               {formData?.User?.companyName || signedInUser?.companyName}
@@ -79,16 +85,6 @@ export default function Card({ signedInUser, formData }: Props) {
           <p className="text-2xl font-bold">
             {formData?.title || "Pick a name"}
           </p>
-        </div>
-      </div>
-      <div className="flex w-full flex-col gap-2 px-5 pb-4">
-        <div className="flex gap-2">
-          <p className="flex items-center justify-center gap-2 rounded-2xl bg-color1 px-2 py-1 font-semibold">
-            {formData?.type}
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <IoIosPricetag className="text-xl" />
           <div className="flex gap-4">
             <p
               className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
@@ -110,46 +106,48 @@ export default function Card({ signedInUser, formData }: Props) {
             )}
           </div>
         </div>
-        <div className="flex gap-2">
-          <FaBox className="text-xl" />
-          <p>
-            {formData?.qty
-              ? formData.qty <= 100
-                ? Math.round(formData?.qty).toString().slice(0, 3)
-                : 100
-              : "-"}{" "}
-            in stock
-          </p>
-        </div>
-        {path == "/vendor/dashboard" ? (
-          <div className="flex items-center justify-between">
-            <Link
-              className=""
-              href={`/vendor/dashboard/edit-product/${formData?.id}`}
-            >
-              <Btn styles="bg-secondary" content={"Edit"} />
-            </Link>
-
-            <Btn
-              styles="bg-secondary"
-              content={"Delete"}
-              onClick={() =>
-                handleDelete(formData?.id || "", formData?.imageId)
-              }
-            />
-          </div>
-        ) : (
-          <div className="flex items-center justify-center gap-3">
-            {formData?.id ? (
-              <Link className="w-full" href={`/products/${formData?.id}`}>
-                <button className="product-card-button">{"Learn More"}</button>
-              </Link>
-            ) : (
-              <button className="product-card-button">{"Learn More"}</button>
-            )}
-          </div>
-        )}
       </div>
+      {path == "/vendor/dashboard" && (
+        <div className="flex w-full flex-col gap-2 px-5 pb-4">
+          <div className="flex gap-2">
+            <p className="flex items-center justify-center gap-2 rounded-2xl bg-color4 px-2 py-1 font-semibold text-secondary">
+              {formData?.type}
+            </p>
+          </div>
+          <div className="flex gap-2">
+            <IoIosPricetag className="text-xl" />
+          </div>
+          <div className="flex gap-2">
+            <FaBox className="text-xl" />
+            <p>
+              {formData?.qty
+                ? formData.qty <= 100
+                  ? Math.round(formData?.qty).toString().slice(0, 3)
+                  : 100
+                : "-"}{" "}
+              in stock
+            </p>
+          </div>
+          {path == "/vendor/dashboard" && (
+            <div className="flex items-center justify-between">
+              <Link
+                className=""
+                href={`/vendor/dashboard/edit-product/${formData?.id}`}
+              >
+                <Btn styles="bg-secondary" content={"Edit"} />
+              </Link>
+
+              <Btn
+                styles="bg-secondary"
+                content={"Delete"}
+                onClick={() =>
+                  handleDelete(formData?.id || "", formData?.imageId)
+                }
+              />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
