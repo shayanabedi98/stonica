@@ -10,6 +10,7 @@ import Btn from "../Btn";
 import toast from "react-hot-toast";
 import { Product, User } from "@/types";
 import Image from "next/image";
+import { useState } from "react";
 
 type Props = {
   signedInUser?: User | null;
@@ -17,8 +18,15 @@ type Props = {
 };
 
 export default function Card({ signedInUser, formData }: Props) {
+  const [isHovering, setIsHovering] = useState(false);
   const path = usePathname();
   const router = useRouter();
+
+  let stoneTypeColor: string;
+  if (formData?.type == "Porcelain") stoneTypeColor = "bg-color2";
+  if (formData?.type == "Onyx") stoneTypeColor = "bg-color4";
+  if (formData?.type == "Quartz") stoneTypeColor = "bg-color3";
+  if (formData?.type == "Marble") stoneTypeColor = "bg-color1";
 
   const handleDelete = async (id: string, imageId: string[] | undefined) => {
     const confirmed = confirm("Are you sure you want to delete this product?");
@@ -46,6 +54,8 @@ export default function Card({ signedInUser, formData }: Props) {
   return (
     <div
       className="relative flex flex-col items-center gap-4 rounded-md text-sm text-secondary"
+      onMouseOver={() => setIsHovering(true)}
+      onMouseOut={() => setIsHovering(false)}
     >
       {formData?.salePrice && (
         <div className="absolute right-0 top-0 z-10 rounded-bl-md rounded-tr-md bg-red-500 px-2 py-1 font-semibold text-secondary">
@@ -53,14 +63,15 @@ export default function Card({ signedInUser, formData }: Props) {
         </div>
       )}
       <CardCarousel
+        isHovering={isHovering}
         signedInUser={signedInUser || null}
         formData={formData}
         images={formData?.images ? formData.images : [""]}
       />
-      <div className="card-carousel-gradient absolute left-0 bottom-0 flex h-1/3 w-full flex-col justify-end gap-3 px-5 py-2">
+      <div className="card-carousel-gradient absolute bottom-0 left-0 flex h-1/3 w-full flex-col justify-end gap-3 px-5 py-2">
         <div className="flex flex-col gap-1">
           <div
-            className="flex cursor-pointer items-center gap-2 min-w-10 "
+            className="flex min-w-10 cursor-pointer items-center gap-2"
             onClick={() => {
               formData?.User
                 ? router.push(`/vendor/${formData?.User?.id}`)
@@ -85,7 +96,12 @@ export default function Card({ signedInUser, formData }: Props) {
           <p className="text-2xl font-bold">
             {formData?.title || "Pick a name"}
           </p>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
+            <p
+              className={`flex items-center justify-center rounded-2xl ${stoneTypeColor} px-2 py-1 font-semibold`}
+            >
+              {formData?.type}
+            </p>
             <p
               className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
             >

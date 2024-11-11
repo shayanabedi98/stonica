@@ -12,10 +12,12 @@ export default function CardCarousel({
   images,
   signedInUser,
   formData,
+  isHovering,
 }: {
   images: string[];
   signedInUser?: User | null;
   formData?: Product | null;
+  isHovering?: boolean;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
@@ -64,22 +66,34 @@ export default function CardCarousel({
           )}
         </div>
       )}
-      <button
-        className="absolute z-10 rounded-3xl border border-neutral-300 bg-neutral-800 bg-opacity-10 px-5 py-1 text-base font-semibold backdrop-blur-sm transition duration-200 lg:hover:border-neutral-800 lg:hover:bg-opacity-100"
-        onClick={() =>
-          path == "/vendor/dashboard/create-new"
-            ? null
-            : router.push(`/products/${formData?.id}`)
-        }
-      >
-        View
-      </button>
-      <button
-        className={`absolute left-1 z-20 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
-        onClick={handlePrevious}
-      >
-        <IoIosArrowBack className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
-      </button>
+      {isHovering && (
+        <button
+          className="absolute z-10 rounded-3xl border border-neutral-300 bg-neutral-800 bg-opacity-50 px-5 py-1 text-base backdrop-blur-sm transition duration-200 lg:hover:bg-opacity-100"
+          onClick={() =>
+            path == "/vendor/dashboard/create-new"
+              ? null
+              : router.push(`/products/${formData?.id}`)
+          }
+        >
+          View
+        </button>
+      )}
+      {isHovering && (
+        <button
+          className={`absolute left-1 z-20 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+          onClick={handlePrevious}
+        >
+          <IoIosArrowBack className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
+        </button>
+      )}
+      {isHovering && (
+        <button
+          className={`absolute right-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
+          onClick={handleNext}
+        >
+          <IoIosArrowForward className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
+        </button>
+      )}
       <div className="flex items-center justify-center">
         {images.length > 0 ? (
           images.map((src, index) => (
@@ -112,12 +126,6 @@ export default function CardCarousel({
           </div>
         )}
       </div>
-      <button
-        className={`absolute right-1 z-10 text-4xl ${images.length > 1 ? "flex" : "hidden"}`}
-        onClick={handleNext}
-      >
-        <IoIosArrowForward className="rounded-full bg-primary bg-opacity-80 p-1 text-secondary transition lg:hover:scale-105 lg:hover:bg-opacity-100" />
-      </button>
     </div>
   );
 }
