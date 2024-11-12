@@ -28,7 +28,7 @@ const FooterItemHeader = ({ content }: { content: string }) => {
   return (
     <div className="flex flex-col gap-[2px]">
       <p className="text-sm font-semibold">{content}</p>
-      <hr className="w-10 border-b border-color3" />
+      <hr className="w-10 border-b border-color4" />
     </div>
   );
 };
@@ -89,7 +89,7 @@ export default function Footer() {
           <Link
             href={"https://shayanabedi.com"}
             target="_blank"
-            className="font-semibold text-color3"
+            className="font-semibold text-color4"
           >
             Shayan Abedi
           </Link>

@@ -81,7 +81,7 @@ export default function Navbar({ user, session }: Props) {
                   className={`cursor-pointer rounded-full border-2 border-secondary ${user.image ? "" : "bg-primary"} transition duration-200 lg:hover:scale-110`}
                 />
                 {showUserMenu && (
-                  <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-color2 px-4 py-4 text-sm text-primary shadow-md">
+                  <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-4 text-sm text-primary shadow-md">
                     <span className="font-semibold">{user.name}</span>
                     <hr className="w-full text-primary" />
                     {user.isVendor && (
@@ -110,7 +110,7 @@ export default function Navbar({ user, session }: Props) {
                     <Btn
                       content={"Sign Out"}
                       onClick={() => signOut()}
-                      styles="bg-color1"
+                      styles="bg-primary"
                     />
                   </div>
                 )}

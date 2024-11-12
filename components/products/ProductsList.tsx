@@ -25,7 +25,8 @@ export default function ProductsList({ signedInUser }: Props) {
   }, []);
 
   return (
-    <div className="grid grid-cols-3 justify-items-center gap-6">
+    <div className="grid w-full grid-cols-3 justify-items-center gap-12">
+      {loading && <LoadingCard style="loading-card" />}
       {loading && <LoadingCard style="loading-card" />}
       {loading && <LoadingCard style="loading-card" />}
       {loading && <LoadingCard style="loading-card" />}

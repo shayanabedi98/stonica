@@ -29,3 +29,13 @@ export type Product = {
   qty: number;
   colors: string[] | null;
 };
+
+export type FilterOptions = {
+  minPriceRange: string | number;
+  maxPriceRange: string | number;
+  stoneType: string[];
+  textureType: string[];
+  colors: string[] | null;
+  veins: string | null;
+  bookmatched: string | null;
+};

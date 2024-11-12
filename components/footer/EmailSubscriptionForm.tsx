@@ -76,7 +76,7 @@ export default function EmailSubscriptionForm() {
           />
           <button
             type="submit"
-            className="flex min-w-24 items-center justify-center rounded-lg bg-color1 px-3 text-sm font-semibold transition lg:hover:bg-color2"
+            className="flex min-w-24 items-center justify-center rounded-lg bg-color1 px-3 text-sm font-semibold transition lg:hover:bg-opacity-80"
           >
             {isLoading ? <LuLoader className="loading text-xl" /> : "Subscribe"}
           </button>

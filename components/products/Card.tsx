@@ -22,7 +22,7 @@ export default function Card({ signedInUser, formData }: Props) {
   const path = usePathname();
   const router = useRouter();
 
-  let stoneTypeColor: string;
+  let stoneTypeColor: string = "bg-color1";
   if (formData?.type == "Porcelain") stoneTypeColor = "bg-color2";
   if (formData?.type == "Onyx") stoneTypeColor = "bg-color4";
   if (formData?.type == "Quartz") stoneTypeColor = "bg-color3";
@@ -70,8 +70,11 @@ export default function Card({ signedInUser, formData }: Props) {
       />
       <div className="card-carousel-gradient absolute bottom-0 left-0 flex h-1/3 w-full flex-col justify-end gap-3 px-5 py-2">
         <div className="flex flex-col gap-1">
+          <p className="text-2xl font-bold">
+            {formData?.title || "Pick a name"}
+          </p>
           <div
-            className="flex min-w-10 cursor-pointer items-center gap-2"
+            className="mb-1 flex min-w-10 max-w-[190px] cursor-pointer items-center gap-2"
             onClick={() => {
               formData?.User
                 ? router.push(`/vendor/${formData?.User?.id}`)
@@ -85,17 +88,14 @@ export default function Card({ signedInUser, formData }: Props) {
                 "/assets/avatar.png"
               }
               alt="Vendor profile picture"
-              height={28}
-              width={28}
+              height={25}
+              width={25}
               className="rounded-full border-2"
             />
             <p className="font-semibold">
               {formData?.User?.companyName || signedInUser?.companyName}
             </p>
           </div>
-          <p className="text-2xl font-bold">
-            {formData?.title || "Pick a name"}
-          </p>
           <div className="flex items-center gap-4">
             <p
               className={`flex items-center justify-center rounded-2xl ${stoneTypeColor} px-2 py-1 font-semibold`}

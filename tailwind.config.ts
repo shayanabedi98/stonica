@@ -20,6 +20,9 @@ const config: Config = {
         color4: "#8855ff",
         color5: "#b5c5d7",
       },
+      // screens: {
+      //   "xl": "1280px",
+      // },
     },
   },
   plugins: [require("tailwindcss-animate")],

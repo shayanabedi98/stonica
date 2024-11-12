@@ -174,3 +174,7 @@ input[type="color"]::-webkit-color-swatch {
 .product-card-button {
   @apply flex w-full items-center justify-center rounded-md bg-secondary py-3 font-semibold text-primary;
 }
+
+.filter label {
+  @apply font-semibold h-4;
+}
