@@ -4,6 +4,7 @@ import { FilterOptions, User } from "@/types";
 import { Filter } from "./Filter";
 import ProductsList from "./ProductsList";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 type Props = {
   signedInUser: User;
@@ -18,8 +19,8 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
     stoneType: [],
     textureType: [],
     colors: ["None", "None", "None"],
-    veins: null,
-    bookmatched: null,
+    veins: "- Select -",
+    bookmatched: "- Select -",
   });
 
   useEffect(() => {
@@ -75,10 +76,32 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
     }));
   }
 
+  // function handleRemoveFilters() {}
+  async function handleSubmitFilters(e: React.FormEvent) {
+    setLoading(true);
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/filter", {
+        method: "POST",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify({ filterOptions }),
+      });
+      const data = await res.json();
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
+
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="relative grid grid-cols-4 gap-10 px-10">
       <div className="relative col-span-1">
         <Filter
+          handleSubmitFilters={handleSubmitFilters}
           filterOptions={filterOptions}
           handleColorChange={handleColorChange}
           handleFilterChange={handleFilterChange}

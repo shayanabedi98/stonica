@@ -15,7 +15,7 @@ import { Product, User } from "@/types";
 type Props = {
   signedInUser: User | null;
   pubKey: string;
-  postData?: Product
+  postData?: Product;
   fetchMethod: "PUT" | "POST";
 };
 
@@ -36,7 +36,7 @@ export default function PostForm({
     price: postData?.price || "",
     salePrice: postData?.salePrice || "",
     qty: postData?.qty || 0,
-    veins: postData?.veins || "Thin",
+    veins: postData?.veins || "- Select -",
     bookmatched: postData?.bookmatched || "No",
     colors: postData?.colors || ["Black", "None", "None"],
     imageId: postData?.imageId || [],
@@ -153,6 +153,11 @@ export default function PostForm({
       return;
     }
 
+    if (formData.veins == "- Select -") {
+      toast.error("Please pick a vein style");
+      return;
+    }
+
     try {
       const res = await fetch("/api/post", {
         method: fetchMethod,
@@ -244,7 +249,7 @@ export default function PostForm({
                 name="veins"
                 onChange={handleChange}
                 value={formData.veins}
-                options={["None", "Thick", "Thin"]}
+                options={["- Select -", "Thick", "Thin", "No Veins"]}
               />
             </div>
             <div className="flex w-full flex-col gap-2">
@@ -276,7 +281,7 @@ export default function PostForm({
                     !formData.images[index] && openWidget(index);
                   }}
                   key={index}
-                  className={`relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition lg:hover:bg-accent ${formData.images[index] ? "cursor-default" : "cursor-pointer lg:hover:bg-accent"}`}
+                  className={`lg:hover:bg-accent relative flex h-28 w-28 flex-col items-center justify-center rounded-md bg-secondary transition ${formData.images[index] ? "cursor-default" : "lg:hover:bg-accent cursor-pointer"}`}
                 >
                   {formData.images[index] ? (
                     <div>
@@ -288,7 +293,7 @@ export default function PostForm({
                         className="rounded-md object-cover"
                       />
                       <span
-                        className="absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-primary text-sm font-semibold text-secondary transition lg:hover:bg-accent"
+                        className="lg:hover:bg-accent absolute bottom-0 left-0 right-0 flex h-6 cursor-pointer items-center justify-center bg-primary text-sm font-semibold text-secondary transition"
                         onClick={() =>
                           handleRemoveImage(formData.imageId[index], index)
                         }

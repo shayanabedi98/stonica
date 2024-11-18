@@ -6,6 +6,7 @@ import Btn from "../Btn";
 import { FilterOptions } from "@/types";
 
 type Props = {
+  handleSubmitFilters: (e: React.FormEvent) => void;
   handleColorChange: (index: number, value: string) => void;
   handleFilterChange: (
     name: string,
@@ -17,6 +18,7 @@ type Props = {
 
 export function Filter({
   filterOptions,
+  handleSubmitFilters,
   handleFilterChange,
   handleColorChange,
 }: Props) {
@@ -27,7 +29,6 @@ export function Filter({
   const stoneTypes = ["Marble", "Quartz", "Onyx", "Porcelain"];
   const textureType = ["Matte/Honed", "Polished/Shiny"];
   const colorOptions = [
-    "None",
     "White",
     "Black",
     "Gray",
@@ -45,7 +46,10 @@ export function Filter({
   const colorCategories = ["Base", "Veins", "Secondary"];
 
   return (
-    <form className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-700 px-8 py-6 text-sm shadow-sm filter">
+    <form
+      className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-700 px-8 py-6 text-sm shadow-sm filter"
+      onClick={(e: React.FormEvent) => handleSubmitFilters(e)}
+    >
       <div className="flex flex-col gap-1">
         <label htmlFor="minPriceRange">Minimum Price</label>
         <hr className="w-10 border-b border-color4" />
@@ -149,7 +153,42 @@ export function Filter({
           ))}
         </div>
       </div>
-      <Btn content={"Apply Filters"} styles="bg-color1 rounded-md" />
+      <div className="flex flex-col gap-1">
+        <label>Vein Thickness</label>
+        <hr className="w-10 border-b border-color4" />
+        <div className="grid grid-cols-3 gap-2">
+          <select
+            name="veins"
+            className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+            onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
+          >
+            <option value="- Select -">Select</option>
+            <option value="Thin">Thin</option>
+            <option value="Thick">Thick</option>
+            <option value="No Veins">No Veins</option>
+          </select>
+        </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <label>Bookmatched</label>
+        <hr className="w-10 border-b border-color4" />
+        <div className="grid grid-cols-3 gap-2">
+          <select
+            name="bookmatched"
+            className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+            onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
+          >
+            <option value="- Select -">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+      </div>
+      <Btn
+        type={"submit"}
+        content={"Apply Filters"}
+        styles="bg-color1 rounded-md"
+      />
     </form>
   );
 }
