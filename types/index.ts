@@ -35,7 +35,7 @@ export type FilterOptions = {
   maxPriceRange: string | number;
   stoneType: string[];
   textureType: string[];
-  colors: string[] | null;
+  colors: string[];
   veins: string | null;
   bookmatched: string | null;
 };

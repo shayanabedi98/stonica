@@ -1,60 +1,48 @@
 "use client";
 
-import { FilterOptions } from "@/types";
 import { formatPrice } from "@/utils/formatPrice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Btn from "../Btn";
+import { FilterOptions } from "@/types";
 
-export function Filter() {
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    minPriceRange: 100,
-    maxPriceRange: 10000,
-    stoneType: [],
-    textureType: [],
-    colors: null,
-    veins: null,
-    bookmatched: null,
-  });
+type Props = {
+  handleColorChange: (index: number, value: string) => void;
+  handleFilterChange: (
+    name: string,
+    value: string | boolean | number,
+    itemValue?: string,
+  ) => void;
+  filterOptions: FilterOptions;
+};
 
+export function Filter({
+  filterOptions,
+  handleFilterChange,
+  handleColorChange,
+}: Props) {
   useEffect(() => {
     console.log(filterOptions);
   }, [filterOptions]);
 
-  function handleFilterChange(
-    name: string,
-    value: string | boolean | number,
-    itemValue?: string,
-  ) {
-    if (name === "stoneType" || name === "textureType") {
-      setFilterOptions((prev) => {
-        const currentArray = prev[name] as string[];
-        if (value && itemValue) {
-          // Add item if it doesn't exist
-          return {
-            ...prev,
-            [name]: currentArray.includes(itemValue)
-              ? currentArray
-              : [...currentArray, itemValue],
-          };
-        } else {
-          // Remove item
-          return {
-            ...prev,
-            [name]: currentArray.filter((item) => item !== itemValue),
-          };
-        }
-      });
-    } else {
-      // Handle non-array values (like price ranges)
-      setFilterOptions((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
-    }
-  }
-
   const stoneTypes = ["Marble", "Quartz", "Onyx", "Porcelain"];
   const textureType = ["Matte/Honed", "Polished/Shiny"];
+  const colorOptions = [
+    "None",
+    "White",
+    "Black",
+    "Gray",
+    "Beige",
+    "Brown",
+    "Red",
+    "Green",
+    "Blue",
+    "Yellow",
+    "Pink",
+    "Gold",
+    "Cream",
+    "Silver",
+  ];
+  const colorCategories = ["Base", "Veins", "Secondary"];
 
   return (
     <form className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-700 px-8 py-6 text-sm shadow-sm filter">
@@ -87,7 +75,7 @@ export function Filter() {
             type="range"
             name="maxPriceRange"
             max={10000}
-            min={100}
+            min={filterOptions.minPriceRange}
             value={filterOptions.maxPriceRange || 10000}
             step={10}
             onChange={(e) =>
@@ -134,6 +122,29 @@ export function Filter() {
                 }
               />
               <span className="capitalize">{type}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <label>Colors</label>
+        <hr className="w-10 border-b border-color4" />
+        <div className="grid grid-cols-3 gap-2">
+          {colorCategories.map((cat, catIndex) => (
+            <div key={catIndex} className="flex flex-col gap-1">
+              <label htmlFor="">{cat}</label>
+              <select
+                name="color"
+                className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+                onChange={(e) => handleColorChange(catIndex, e.target.value)}
+              >
+                <option value="None">Select</option>
+                {colorOptions.map((i, index) => (
+                  <option key={index} value={i}>
+                    {i}
+                  </option>
+                ))}
+              </select>
             </div>
           ))}
         </div>
