@@ -69,13 +69,17 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
     }
   }
 
-  function handleColorChange(index: number, value: string) {
-    setFilterOptions((prev) => ({
-      ...prev,
-      colors: prev.colors.map((color, _index) =>
-        _index === index ? value : color,
-      ),
-    }));
+  async function handleClearFilter() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/post", { method: "GET" });
+      const data = await res.json();
+      setProducts(data);
+    } catch (error) {
+      toast.error("Something went wrong, try again later");
+    } finally {
+      setLoading(false);
+    }
   }
 
   // function handleRemoveFilters() {}
@@ -91,9 +95,7 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
       const data = await res.json();
       setProducts(data);
     } catch (error) {
-      console.log(error);
-
-      toast.error("Something went wrong");
+      toast.error("Something went wrong, try again later");
     } finally {
       setLoading(false);
     }
@@ -103,9 +105,9 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
     <div className="relative grid grid-cols-4 gap-10 px-10">
       <div className="relative col-span-1">
         <Filter
+          handleClearFilter={handleClearFilter}
           handleSubmitFilters={handleSubmitFilters}
           filterOptions={filterOptions}
-          handleColorChange={handleColorChange}
           handleFilterChange={handleFilterChange}
         />
       </div>

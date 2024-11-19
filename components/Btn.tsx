@@ -1,7 +1,7 @@
 type Props = {
   content: string | JSX.Element;
   styles?: string;
-  type?: "submit";
+  type?: "submit" | "button";
   onClick?: () => void;
 };
 

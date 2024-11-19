@@ -4,8 +4,10 @@ import { formatPrice } from "@/utils/formatPrice";
 import { useEffect } from "react";
 import Btn from "../Btn";
 import { FilterOptions } from "@/types";
+import { FaFilter } from "react-icons/fa";
 
 type Props = {
+  handleClearFilter: () => void;
   handleSubmitFilters: (e: React.FormEvent) => void;
   handleFilterChange: (
     name: string,
@@ -17,6 +19,7 @@ type Props = {
 
 export function Filter({
   filterOptions,
+  handleClearFilter,
   handleSubmitFilters,
   handleFilterChange,
 }: Props) {
@@ -45,9 +48,12 @@ export function Filter({
 
   return (
     <form
-      className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-700 px-8 py-6 text-sm shadow-sm filter"
+      className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-800 px-8 py-6 text-sm shadow-sm filter"
       onSubmit={(e: React.FormEvent) => handleSubmitFilters(e)}
     >
+      <h3 className="flex items-center gap-1">
+        <FaFilter /> Filter Options
+      </h3>
       <div className="flex flex-col gap-1">
         <label htmlFor="minPriceRange">Minimum Price</label>
         <hr className="w-10 border-b border-color4" />
@@ -213,11 +219,15 @@ export function Filter({
           </select>
         </div>
       </div>
-      <Btn
-        type={"submit"}
-        content={"Apply Filters"}
-        styles="bg-color1 rounded-md"
-      />
+      <div className="flex gap-2">
+        <Btn content={"Apply Filters"} styles="bg-color1 w-full rounded-md" />
+        <Btn
+          onClick={handleClearFilter}
+          type="button"
+          content={"Clear Filters"}
+          styles="bg-secondary w-full rounded-md"
+        />
+      </div>
     </form>
   );
 }
