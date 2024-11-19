@@ -202,6 +202,7 @@ export default function AccountSetupForm({
             preferredTypes="image/*"
             imageShrink="1024x1024"
             imagePreviewMaxSize={4000000}
+            crop="1:1"
           />
         </div>
       </div>

@@ -57,7 +57,7 @@ export default function Card({ signedInUser, formData }: Props) {
       onMouseOver={() => setIsHovering(true)}
       onMouseOut={() => setIsHovering(false)}
     >
-      {formData?.salePrice && (
+      {formData?.salePrice && formData?.salePrice > 0 && (
         <div className="absolute right-0 top-0 z-10 rounded-bl-md rounded-tr-md bg-red-500 px-2 py-1 font-semibold text-secondary">
           On Sale
         </div>
@@ -106,18 +106,14 @@ export default function Card({ signedInUser, formData }: Props) {
               className={`${formData?.salePrice ? "text-neutral-400 line-through" : ""}`}
             >
               {formData?.price
-                ? parseFloat(formData.price) <= 20000
-                  ? formatPrice(parseFloat(formData.price))
+                ? formData.price <= 20000
+                  ? formatPrice(formData.price)
                   : "Set a real price"
                 : formatPrice(0)}
             </p>
-            {formData?.salePrice && (
+            {formData?.salePrice && formData.salePrice > 0 && (
               <p className="font-semibold text-red-500">
-                {formData?.salePrice
-                  ? parseFloat(formData.salePrice) <= 20000
-                    ? formatPrice(parseFloat(formData.salePrice))
-                    : "Set a real price"
-                  : 0}
+                {formatPrice(formData.salePrice)}
               </p>
             )}
           </div>

@@ -71,22 +71,24 @@ model Session {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  User        User?    @relation(fields: [userId], references: [id])
-  userId      String?
-  price       String
-  salePrice   String?
-  images      String[]
-  qty         Int
-  title       String
-  type        String
-  textureType String
-  colors      String[]
-  veins       String
-  bookmatched String
-  width       String?
-  height      String?
-  imageId     String[]
+  id             String   @id @default(cuid())
+  User           User?    @relation(fields: [userId], references: [id])
+  userId         String?
+  price          Float
+  salePrice      Float?
+  images         String[]
+  qty            Int
+  title          String
+  type           String
+  textureType    String
+  baseColor      String?
+  veinColor      String?
+  secondaryColor String?
+  veins          String
+  bookmatched    String?
+  width          String?
+  height         String?
+  imageId        String[]
 }
 
 model EmailSubscriber {

@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
+import getAuthUser from "@/utils/getAuthUser";
 
 export async function GET() {
   try {
@@ -16,29 +17,31 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
+  const getUser = await getAuthUser("select", { id: true });
   const { formData } = await req.json();
 
-  if (!session) {
+  if (!getUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   } else {
     try {
-      const getUser = await prisma.user.findUnique({
-        where: { email: session.user?.email as string },
-      });
-
       if (getUser) {
         const createPost = await prisma.post.create({
           data: {
-            userId: getUser?.id,
-            price: formData.price,
-            salePrice: formData.salePrice,
+            userId: getUser.id,
+            price: parseFloat(formData.price),
+            salePrice: parseFloat(formData.salePrice),
             images: formData.images,
             qty: parseInt(formData.qty),
             veins: formData.veins,
             bookmatched: formData.bookmatched,
             title: formData.title,
-            colors: formData.colors,
+            baseColor: formData.baseColor,
+            veinColor:
+              formData.veinColor !== "- Select -" ? formData.veinColor : null,
+            secondaryColor:
+              formData.secondaryColor !== "- Select -"
+                ? formData.secondaryColor
+                : null,
             width: formData.width,
             height: formData.height,
             type: formData.type,
@@ -91,13 +94,19 @@ export async function PUT(req: Request) {
           data: {
             userId: getUser?.id,
             price: formData.price,
-            salePrice: formData.salePrice,
+            salePrice: formData.salePrice ? formData.salePrice : null,
             images: formData.images,
             qty: parseInt(formData.qty),
             veins: formData.veins,
             bookmatched: formData.bookmatched,
             title: formData.title,
-            colors: formData.colors,
+            baseColor: formData.baseColor,
+            veinColor:
+              formData.veinColor !== "- Select -" ? formData.veinColor : null,
+            secondaryColor:
+              formData.secondaryColor !== "- Select -"
+                ? formData.secondaryColor
+                : null,
             width: formData.width,
             height: formData.height,
             type: formData.type,

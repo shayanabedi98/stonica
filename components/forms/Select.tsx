@@ -5,7 +5,7 @@ type Props = {
   name: string;
   disabled?: boolean;
   notRequired?: boolean;
-  value: number | string;
+  value: number | string | undefined;
   autoComplete?: string;
   showPasswordOption?: boolean;
   options: string[];
@@ -31,7 +31,7 @@ export default function Select({
         disabled={disabled}
         autoComplete={autoComplete}
         required={notRequired ? false : true}
-        value={value}
+        value={value ? value : undefined}
         className={`block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 ${disabled ? "cursor-not-allowed text-neutral-500" : ""}`}
         name={name}
         onChange={(e) => onChange(e.target.name, e.target.value)}

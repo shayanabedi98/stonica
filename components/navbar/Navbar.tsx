@@ -78,7 +78,7 @@ export default function Navbar({ user, session }: Props) {
                   height={40}
                   width={40}
                   priority
-                  className={`cursor-pointer rounded-full border-2 border-secondary ${user.image ? "" : "bg-primary"} transition duration-200 lg:hover:scale-110`}
+                  className={`${!user.image ? "bg-secondary" : ""} cursor-pointer rounded-full border-2 border-secondary ${user.image ? "" : "bg-primary"} transition duration-200 lg:hover:scale-110`}
                 />
                 {showUserMenu && (
                   <div className="absolute right-0 top-12 flex min-w-36 flex-col items-center justify-center gap-2 rounded-md bg-secondary px-4 py-4 text-sm text-primary shadow-md">

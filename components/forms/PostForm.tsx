@@ -25,7 +25,7 @@ export default function PostForm({
   fetchMethod,
   pubKey,
 }: Props) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Product>({
     id: postData?.id,
     title: postData?.title || "",
     type: postData?.type || "",
@@ -33,16 +33,18 @@ export default function PostForm({
     width: postData?.width || "",
     height: postData?.height || "",
     images: postData?.images || [],
-    price: postData?.price || "",
-    salePrice: postData?.salePrice || "",
+    price: postData?.price || null,
+    salePrice: postData?.salePrice || null,
     qty: postData?.qty || 0,
     veins: postData?.veins || "- Select -",
     bookmatched: postData?.bookmatched || "No",
-    colors: postData?.colors || ["Black", "None", "None"],
+    baseColor: postData?.baseColor || "- Select -",
+    veinColor: postData?.veinColor || "- Select -",
+    secondaryColor: postData?.secondaryColor || "- Select -",
     imageId: postData?.imageId || [],
   });
   const colorOptions = [
-    "None",
+    "- Select -",
     "White",
     "Black",
     "Gray",
@@ -131,14 +133,14 @@ export default function PostForm({
     }
   };
 
-  const handleColorChange = (name: string, value: string) => {
-    const colors = ["base", "vein", "secondary"];
-    const index = colors.indexOf(name);
-    setFormData((prev) => ({
-      ...prev,
-      colors: prev.colors.map((i, idx) => (idx === index ? value : i)),
-    }));
-  };
+  // const handleColorChange = (name: string, value: string) => {
+  //   const colors = ["base", "vein", "secondary"];
+  //   const index = colors.indexOf(name);
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     colors: prev.colors.map((i, idx) => (idx === index ? value : i)),
+  //   }));
+  // };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -148,7 +150,7 @@ export default function PostForm({
       return;
     }
 
-    if (formData.colors[0] == "None") {
+    if (formData.baseColor == "- Select -") {
       toast.error("Please pick a base color");
       return;
     }
@@ -222,23 +224,23 @@ export default function PostForm({
               <Select
                 label="Base Color"
                 options={colorOptions}
-                name="base"
-                value={formData.colors[0]}
-                onChange={handleColorChange}
+                name="baseColor"
+                value={formData.baseColor!}
+                onChange={handleChange}
               />
               <Select
                 label="Vein Color"
                 options={colorOptions}
-                name="vein"
-                value={formData.colors[1]}
-                onChange={handleColorChange}
+                name="veinColor"
+                value={formData.veinColor!}
+                onChange={handleChange}
               />
               <Select
-                label="Second Color"
+                label="Secondary Color"
                 options={colorOptions}
-                name="secondary"
-                value={formData.colors[2]}
-                onChange={handleColorChange}
+                name="secondaryColor"
+                value={formData.secondaryColor!}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -342,7 +344,7 @@ export default function PostForm({
             name="price"
             type="number"
             label="Price (CAD)"
-            value={formData.price}
+            value={formData.price!}
             placeholder="$1000"
             step={0.01}
             onChange={handleChange}
@@ -350,11 +352,11 @@ export default function PostForm({
           <Input
             min={0.01}
             notRequired
-            max={formData.price ? parseFloat(formData.price) - 1 : undefined}
+            max={formData.price ? formData.price - 1 : undefined}
             name="salePrice"
             type="number"
             label="Sale Price (CAD) (Optional)"
-            value={formData.salePrice}
+            value={formData.salePrice!}
             placeholder="$1000"
             step={0.01}
             onChange={handleChange}
@@ -365,7 +367,7 @@ export default function PostForm({
             name="width"
             type="number"
             label="Stone Width (Inch)"
-            value={formData.width}
+            value={formData.width!}
             placeholder="Inches"
             step={0.01}
             onChange={handleChange}
@@ -376,7 +378,7 @@ export default function PostForm({
             name="height"
             type="number"
             label="Stone Height (Inch)"
-            value={formData.height}
+            value={formData.height!}
             placeholder="Inches"
             step={0.01}
             onChange={handleChange}

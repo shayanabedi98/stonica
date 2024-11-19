@@ -23,11 +23,13 @@ export type Product = {
   images: string[];
   veins: string;
   bookmatched: string;
-  price: string;
-  salePrice?: string | null;
+  price: number | null;
+  salePrice?: number | null;
   imageId: string[];
   qty: number;
-  colors: string[] | null;
+  baseColor: string | null;
+  veinColor: string | null;
+  secondaryColor: string | null;
 };
 
 export type FilterOptions = {
@@ -35,7 +37,9 @@ export type FilterOptions = {
   maxPriceRange: string | number;
   stoneType: string[];
   textureType: string[];
-  colors: string[];
+  baseColor: string | null;
+  veinColor: string | null;
+  secondaryColor: string | null;
   veins: string | null;
   bookmatched: string | null;
 };

@@ -7,7 +7,6 @@ import { FilterOptions } from "@/types";
 
 type Props = {
   handleSubmitFilters: (e: React.FormEvent) => void;
-  handleColorChange: (index: number, value: string) => void;
   handleFilterChange: (
     name: string,
     value: string | boolean | number,
@@ -20,7 +19,6 @@ export function Filter({
   filterOptions,
   handleSubmitFilters,
   handleFilterChange,
-  handleColorChange,
 }: Props) {
   useEffect(() => {
     console.log(filterOptions);
@@ -29,6 +27,7 @@ export function Filter({
   const stoneTypes = ["Marble", "Quartz", "Onyx", "Porcelain"];
   const textureType = ["Matte/Honed", "Polished/Shiny"];
   const colorOptions = [
+    "- Select -",
     "White",
     "Black",
     "Gray",
@@ -43,12 +42,11 @@ export function Filter({
     "Cream",
     "Silver",
   ];
-  const colorCategories = ["Base", "Veins", "Secondary"];
 
   return (
     <form
       className="sticky top-44 flex min-w-80 flex-col gap-3 rounded-md border-2 border-neutral-700 px-8 py-6 text-sm shadow-sm filter"
-      onClick={(e: React.FormEvent) => handleSubmitFilters(e)}
+      onSubmit={(e: React.FormEvent) => handleSubmitFilters(e)}
     >
       <div className="flex flex-col gap-1">
         <label htmlFor="minPriceRange">Minimum Price</label>
@@ -134,23 +132,54 @@ export function Filter({
         <label>Colors</label>
         <hr className="w-10 border-b border-color4" />
         <div className="grid grid-cols-3 gap-2">
-          {colorCategories.map((cat, catIndex) => (
-            <div key={catIndex} className="flex flex-col gap-1">
-              <label htmlFor="">{cat}</label>
-              <select
-                name="color"
-                className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
-                onChange={(e) => handleColorChange(catIndex, e.target.value)}
-              >
-                <option value="None">Select</option>
-                {colorOptions.map((i, index) => (
-                  <option key={index} value={i}>
-                    {i}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
+          <div className="flex flex-col gap-1">
+            <label>Base</label>
+            <select
+              name="baseColor"
+              className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+              onChange={(e) =>
+                handleFilterChange(e.target.name, e.target.value)
+              }
+            >
+              {colorOptions.map((color, index) => (
+                <option value={color} key={index}>
+                  {color}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label>Veins</label>
+            <select
+              name="veinColor"
+              className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+              onChange={(e) =>
+                handleFilterChange(e.target.name, e.target.value)
+              }
+            >
+              {colorOptions.map((color, index) => (
+                <option value={color} key={index}>
+                  {color}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-1">
+            <label>Secondary</label>
+            <select
+              name="secondaryColor"
+              className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
+              onChange={(e) =>
+                handleFilterChange(e.target.name, e.target.value)
+              }
+            >
+              {colorOptions.map((color, index) => (
+                <option value={color} key={index}>
+                  {color}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-1">

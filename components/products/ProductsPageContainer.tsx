@@ -18,7 +18,9 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
     maxPriceRange: 10000,
     stoneType: [],
     textureType: [],
-    colors: ["None", "None", "None"],
+    baseColor: "- Select -",
+    veinColor: "- Select -",
+    secondaryColor: "- Select -",
     veins: "- Select -",
     bookmatched: "- Select -",
   });
