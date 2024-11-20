@@ -5,6 +5,7 @@ import { Filter } from "./Filter";
 import ProductsList from "./ProductsList";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { formatPrice } from "@/utils/formatPrice";
 
 type Props = {
   signedInUser: User;
@@ -75,6 +76,17 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
       const res = await fetch("/api/post", { method: "GET" });
       const data = await res.json();
       setProducts(data);
+      setFilterOptions({
+        minPriceRange: 100,
+        maxPriceRange: 10000,
+        stoneType: [],
+        textureType: [],
+        baseColor: "- Select -",
+        veinColor: "- Select -",
+        secondaryColor: "- Select -",
+        veins: "- Select -",
+        bookmatched: "- Select -",
+      });
     } catch (error) {
       toast.error("Something went wrong, try again later");
     } finally {
@@ -84,8 +96,19 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
 
   // function handleRemoveFilters() {}
   async function handleSubmitFilters(e: React.FormEvent) {
-    setLoading(true);
     e.preventDefault();
+    if (
+      parseFloat(filterOptions.minPriceRange) >
+      parseFloat(filterOptions.maxPriceRange)
+    ) {
+      toast.error(
+        `Maximum price cannot be lower than ${formatPrice(parseFloat(filterOptions.minPriceRange))}`,
+      );
+      return;
+    }
+
+    setLoading(true);
+
     try {
       const res = await fetch("/api/post/filter", {
         method: "POST",

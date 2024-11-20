@@ -142,6 +142,7 @@ export function Filter({
             <label>Base</label>
             <select
               name="baseColor"
+              value={filterOptions.baseColor!}
               className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
               onChange={(e) =>
                 handleFilterChange(e.target.name, e.target.value)
@@ -158,6 +159,7 @@ export function Filter({
             <label>Veins</label>
             <select
               name="veinColor"
+              value={filterOptions.veinColor!}
               className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
               onChange={(e) =>
                 handleFilterChange(e.target.name, e.target.value)
@@ -174,6 +176,7 @@ export function Filter({
             <label>Secondary</label>
             <select
               name="secondaryColor"
+              value={filterOptions.secondaryColor!}
               className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
               onChange={(e) =>
                 handleFilterChange(e.target.name, e.target.value)
@@ -194,6 +197,7 @@ export function Filter({
         <div className="grid grid-cols-3 gap-2">
           <select
             name="veins"
+            value={filterOptions.veins!}
             className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
             onChange={(e) => handleFilterChange(e.target.name, e.target.value)}
           >
@@ -209,6 +213,7 @@ export function Filter({
         <hr className="w-10 border-b border-color4" />
         <div className="grid grid-cols-3 gap-2">
           <select
+            value={filterOptions.bookmatched!}
             name="bookmatched"
             className="mt-1 h-8 rounded-md border-2 border-neutral-600 bg-primary px-2 py-1 text-secondary"
             onChange={(e) => handleFilterChange(e.target.name, e.target.value)}

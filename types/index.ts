@@ -33,8 +33,8 @@ export type Product = {
 };
 
 export type FilterOptions = {
-  minPriceRange: string | number;
-  maxPriceRange: string | number;
+  minPriceRange: string;
+  maxPriceRange: string;
   stoneType: string[];
   textureType: string[];
   baseColor: string | null;

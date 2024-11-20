@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         };
       }
 
-      // Add veins filter if selected
+      // Add x filter if selected
       if (baseColor !== "- Select -") {
         where.baseColor = baseColor;
       }
@@ -81,7 +81,6 @@ export async function POST(req: Request) {
         where.veins = veins;
       }
 
-      // Add bookmatched filter if selected
       if (bookmatched !== "- Select -") {
         where.bookmatched = bookmatched;
       }
