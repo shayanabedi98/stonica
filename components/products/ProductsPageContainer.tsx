@@ -15,8 +15,8 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    minPriceRange: 100,
-    maxPriceRange: 10000,
+    minPriceRange: "100",
+    maxPriceRange: "10000",
     stoneType: [],
     textureType: [],
     baseColor: "- Select -",
@@ -77,8 +77,8 @@ export default function ProductsPageContainer({ signedInUser }: Props) {
       const data = await res.json();
       setProducts(data);
       setFilterOptions({
-        minPriceRange: 100,
-        maxPriceRange: 10000,
+        minPriceRange: "100",
+        maxPriceRange: "10000",
         stoneType: [],
         textureType: [],
         baseColor: "- Select -",

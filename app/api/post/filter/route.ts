@@ -32,8 +32,8 @@ export async function POST(req: Request) {
           {
             salePrice: {
               not: null,
-              gte: minPriceRange,
-              lte: maxPriceRange,
+              gte: parseFloat(minPriceRange),
+              lte: parseFloat(maxPriceRange),
             },
           },
           {
@@ -41,8 +41,8 @@ export async function POST(req: Request) {
               { salePrice: null },
               {
                 price: {
-                  gte: minPriceRange,
-                  lte: maxPriceRange,
+                  gte: parseFloat(minPriceRange),
+                  lte: parseFloat(maxPriceRange),
                 },
               },
             ],

@@ -1,7 +1,6 @@
 "use client";
 
 import { formatPrice } from "@/utils/formatPrice";
-import { useEffect } from "react";
 import Btn from "../Btn";
 import { FilterOptions } from "@/types";
 import { FaFilter } from "react-icons/fa";
@@ -23,9 +22,9 @@ export function Filter({
   handleSubmitFilters,
   handleFilterChange,
 }: Props) {
-  useEffect(() => {
-    console.log(filterOptions);
-  }, [filterOptions]);
+  // useEffect(() => {
+  //   console.log(filterOptions);
+  // }, [filterOptions]);
 
   const stoneTypes = ["Marble", "Quartz", "Onyx", "Porcelain"];
   const textureType = ["Matte/Honed", "Polished/Shiny"];
